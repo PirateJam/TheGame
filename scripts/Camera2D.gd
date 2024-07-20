@@ -20,24 +20,25 @@ var off_acc_y = 0
 var border_range = 200
 var d_speed=  8
 func _process(delta):
-	var move_speed = d_speed / zoom.x
-	var viewPortMousePos = get_viewport().get_mouse_position()
+	if get_node("/root/Menu").render == get_node("/root/Menu").RENDERS.MAP:
+		var move_speed = d_speed / zoom.x
+		var viewPortMousePos = get_viewport().get_mouse_position()
 
-	if get_viewport().get_mouse_position().x<border_range or (get_viewport().size.x-get_viewport().get_mouse_position().x)<border_range:
-		offset.x = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).x
-	if get_viewport().get_mouse_position().y<border_range or (get_viewport().size.y-get_viewport().get_mouse_position().y)<border_range:
-		offset.y = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).y
-	
-	
-	acceleration= clamp(acceleration, -max_acc, max_acc)
+		if get_viewport().get_mouse_position().x<border_range or (get_viewport().size.x-get_viewport().get_mouse_position().x)<border_range:
+			offset.x = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).x
+		if get_viewport().get_mouse_position().y<border_range or (get_viewport().size.y-get_viewport().get_mouse_position().y)<border_range:
+			offset.y = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).y
+		
+		
+		acceleration= clamp(acceleration, -max_acc, max_acc)
 
-	if acceleration>0:
-		acceleration = clamp(acceleration - slowness*delta, -max_acc, acceleration)
-	elif acceleration<0:
-		acceleration = clamp(acceleration + slowness*delta, acceleration, max_acc)
-	if zoom.x==clamp(zoom.x-acceleration*speed, min_zoom, max_zoom) or zoom.y==clamp(zoom.y-acceleration*speed, min_zoom, max_zoom): #resetting acceleration on reaching max
-		acceleration=0
-	zoom = Vector2(clamp(zoom.x-acceleration*speed, min_zoom, max_zoom), clamp(zoom.y-acceleration*speed, min_zoom, max_zoom))
+		if acceleration>0:
+			acceleration = clamp(acceleration - slowness*delta, -max_acc, acceleration)
+		elif acceleration<0:
+			acceleration = clamp(acceleration + slowness*delta, acceleration, max_acc)
+		if zoom.x==clamp(zoom.x-acceleration*speed, min_zoom, max_zoom) or zoom.y==clamp(zoom.y-acceleration*speed, min_zoom, max_zoom): #resetting acceleration on reaching max
+			acceleration=0
+		zoom = Vector2(clamp(zoom.x-acceleration*speed, min_zoom, max_zoom), clamp(zoom.y-acceleration*speed, min_zoom, max_zoom))
 
 
 func _input(event):

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv7ipoabn0w2q"
-path="res://.godot/imported/tablica_temp.png-2f5f22bc2295a4d63fc406960ec53294.ctex"
+uid="uid://oaqas3ibge0p"
+path="res://.godot/imported/unknown.png-6cbf462d383e206a9d48c26b31b38e12.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/tablica_temp.png"
-dest_files=["res://.godot/imported/tablica_temp.png-2f5f22bc2295a4d63fc406960ec53294.ctex"]
+source_file="res://assets/images/misc/unknown.png"
+dest_files=["res://.godot/imported/unknown.png-6cbf462d383e206a9d48c26b31b38e12.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
 @tool
 extends Node
-class_name State
+class_name MenuSupplier
 
 var utils = load("res://scripts/utils.gd").new()
 var state_area = load("res://scripts/state_area.gd")
@@ -26,9 +26,6 @@ func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], a
 	self.area = state_area.new(self)
 	self.poly = CollisionPolygon2D.new()
 	self.color_obj = Polygon2D.new()
-	
-	self.buildings = buildings
-	self.army = army
 	
 # Called when the node enters the scene tree for the first time.
 
