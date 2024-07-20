@@ -9,8 +9,6 @@
 [node name="Menu" type="Node2D"]
 script = ExtResource("1_ge7qy")
 
-[node name="BACKGROUND_OBJ" type="Sprite2D" parent="."]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
 
@@ -31,6 +29,21 @@ offset_right = -37.4313
 offset_bottom = -21.6171
 scale = Vector2(0.687635, 0.688746)
 theme_override_fonts/font = ExtResource("4_87u51")
+
+[node name="controls_info" type="Sprite2D" parent="ui"]
+position = Vector2(1152, 278)
+
+[node name="font-resize" type="Sprite2D" parent="ui/controls_info"]
+scale = Vector2(0.341871, 0.864954)
+
+[node name="example_available_action" type="Label" parent="ui/controls_info/font-resize"]
+offset_left = -494.338
+offset_top = 4.62453
+offset_right = -326.338
+offset_bottom = 53.6245
+scale = Vector2(2.88, 1)
+text = "[KEY] DO SOMETHING 
+*static - todo"
 
 [node name="Icon" type="Sprite2D" parent="."]
 visible = false

@@ -4,6 +4,8 @@ extends Node2D
 var utils = load("res://scripts/utils.gd").new()
 var state_supplier = load("res://scripts/state.gd")
 
+var commons = load("res://scripts/commons.gd").new()
+
 var font
 var states = []
 var border_line_width = 2
@@ -29,8 +31,32 @@ func _draw() -> void:
 		draw_line(last_line, state.position, border_color, border_line_width)
 		print("Drawn: ", state.id)
 		
+
+
+func reset_hover_focus():
+	for state in states:
+		state.area.hover_focus = false;
+func reset_select_focus():
+	for state in states:
+		state.area.select_focus = false;
+
+
+func update_focus():
+	for state in states:
+		if state.area.select_focus:
+			print("FOCUS ON STATE: " + state.id)
+			state.area.get_children()[1].color = commons.select_state_color
+		elif state.area.hover_focus:
+			print(" (hover) FOCUS ON STATE: " + state.id)
+			state.area.get_children()[1].color = commons.hover_state_color
+			
+		else:
+			state.area.get_children()[1].color = commons.default_state_color
+			
+
 func resize(x):
 	return x*constant_mul
+
 
 func _ready():
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
@@ -89,7 +115,8 @@ func _ready():
 			tree.position = get_random_point(state.poly.polygon)
 			tree.texture = load("res://assets/images/tree_temp.png")
 			print(tree.position)
-			$BACKGROUND_OBJ.add_child(tree)
+			#$BACKGROUND_OBJ.
+			add_child(tree)
 			
 
 
