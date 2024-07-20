@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://brbost6856v51"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ge7qy"]
-[ext_resource type="Script" path="res://Camera2D.gd" id="2_r0noo"]
+[ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_r0noo"]
 [ext_resource type="Texture2D" uid="uid://bv7ipoabn0w2q" path="res://assets/images/tablica_temp.png" id="3_atnsh"]
 [ext_resource type="FontFile" uid="uid://ca26oej50rc4k" path="res://assets/fonts/DaysOne.ttf" id="4_87u51"]
 [ext_resource type="Texture2D" uid="uid://wg57ehtf5t2a" path="res://icon.svg" id="5_vi1pi"]
