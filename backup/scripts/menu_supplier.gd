@@ -3,7 +3,7 @@ extends Node
 class_name MenuSupplier
 
 var utils = load("res://scripts/utils.gd").new()
-var state_area = load("res://scripts/button_area.gd")
+var state_area = load("res://scripts/state_area.gd")
 var commons = load("res://scripts/commons.gd").new()
 # Declare member variables here. Examples:
 # var a = 2
@@ -18,26 +18,14 @@ var color_obj
 var buildings			# array of Building
 var army				# array of Monster
 
-var label
-var action
 
-func default_fun():
-	pass
-
-func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = [], action = default_fun, font=null):
+func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = []):
 	self.id = id
 	self.position = position
 	self.curves = curves
-	self.action = action
 	self.area = state_area.new(self)
 	self.poly = CollisionPolygon2D.new()
-	self.label = Label.new()
-	self.label.position = position
-	self.label.add_theme_font_override("font", font)
-	self.label.text = id
 	self.color_obj = Polygon2D.new()
-	
-	
 	
 # Called when the node enters the scene tree for the first time.
 
@@ -54,7 +42,6 @@ func gen_poly() -> CollisionPolygon2D:
 func gen_area() -> Area2D:
 	self.area.add_child(gen_poly())
 	self.area.add_child(self.color_obj)
-	self.area.add_child(self.label)
 	return self.area
 
 

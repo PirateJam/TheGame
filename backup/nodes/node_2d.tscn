@@ -1,20 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://brbost6856v51"]
+[gd_scene load_steps=5 format=3 uid="uid://brbost6856v51"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ge7qy"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_r0noo"]
 [ext_resource type="Texture2D" uid="uid://bv7ipoabn0w2q" path="res://assets/images/UI/tablica_temp.png" id="3_atnsh"]
-[ext_resource type="FontFile" uid="uid://ca26oej50rc4k" path="res://assets/fonts/DaysOne.ttf" id="4_87u51"]
 [ext_resource type="Texture2D" uid="uid://wg57ehtf5t2a" path="res://icon.svg" id="5_vi1pi"]
 
 [node name="Menu" type="Node2D"]
 script = ExtResource("1_ge7qy")
 
-[node name="menu_ui" type="CanvasGroup" parent="."]
-
-[node name="buttons" type="Sprite2D" parent="menu_ui"]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
+
+[node name="menu_ui" type="CanvasLayer" parent="."]
+
+[node name="buttons" type="Sprite2D" parent="menu_ui"]
 
 [node name="map_ui" type="CanvasLayer" parent="."]
 visible = false
@@ -33,7 +32,6 @@ offset_top = -44.6171
 offset_right = -37.4313
 offset_bottom = -21.6171
 scale = Vector2(0.687635, 0.688746)
-theme_override_fonts/font = ExtResource("4_87u51")
 
 [node name="controls_info" type="Sprite2D" parent="map_ui"]
 position = Vector2(1152, 278)

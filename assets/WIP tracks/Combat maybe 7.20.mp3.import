@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqomtq5xi7cgl"
+path="res://.godot/imported/Combat maybe 7.20.mp3-736cd9819bd3592d87d950d624d72377.mp3str"
+
+[deps]
+
+source_file="res://assets/WIP tracks/Combat maybe 7.20.mp3"
+dest_files=["res://.godot/imported/Combat maybe 7.20.mp3-736cd9819bd3592d87d950d624d72377.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

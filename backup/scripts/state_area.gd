@@ -5,7 +5,7 @@ extends Area2D
 # var a = 2
 # var b = "text"
 var menu = load("res://scripts/menu.gd").new()
-
+var font
 var fparent
 var select_focus = false
 var hover_focus = false
@@ -38,7 +38,8 @@ func _ready():
 	self.input_pickable = true
 	pass # Replace with function body.
 
-
+	font = FontFile.new()
+	font.font_data = load("res://assets/fonts/DaysOne.ttf")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -31,8 +31,6 @@ const hover_button_color = Color(229, 226 , 71, 0.4)
 const select_button_color = Color(229, 226 , 71, 0.6)
 
 
-var font_data = load("res://assets/fonts/DaysOne.ttf")
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

@@ -43,8 +43,7 @@ func _draw() -> void:
 				draw_line(last_line, state.position, border_color, border_line_width)
 				logger.log("Drawn: "+ state.id)
 		RENDERS.MAIN_MENU:
-			var text = 'Example Title :D - (if we want to go with text)'#'Example Title (Fok)!'
-			draw_string(font, Vector2.UP*250+Vector2.LEFT*4*text.length(), text) # move to left by 4/char - to center text
+			draw_string(font, Vector2.DOWN*10+Vector2.RIGHT*100, 'FOKO TEST TITLE TEXT YOOOOOOOO')
 			for button in buttons:
 				var last_line = button.position
 				for line in button.curves:
@@ -93,9 +92,13 @@ func update_focus():
 				if button.area.select_focus:
 					logger.log("FOCUS ON BUTTON: " + button.id)
 					button.area.get_children()[1].color = commons.select_state_color
+					await get_tree().create_timer(1).timeout
+					reset_select_focus()
+					update_focus()
 				elif button.area.hover_focus:
 					logger.log(" (hover) FOCUS ON BUTTON: " + button.id)
 					button.area.get_children()[1].color = commons.hover_state_color
+					reset_hover_focus()
 					
 				else:
 					if button.area.get_children().size()>1:
@@ -107,8 +110,7 @@ func resize(x):
 
 
 func _ready():
-	font = FontFile.new()
-	font.font_data = commons.font_data
+	
 	# SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
 		Vector2.LEFT*6+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*6, Vector2.RIGHT*3+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*12 + Vector2.UP*3, 
@@ -133,23 +135,15 @@ func _ready():
 	states.append(basic_state2)
 	
 	
-	var map_button = menu_supplier.new(" Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550, [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15], null, null, render_map, font)
+	var map_button = menu_supplier.new("Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550, [Vector2.RIGHT*120, Vector2.DOWN*20, Vector2.LEFT*120])
 	buttons.append(map_button)	
-
-
-	render = RENDERS.MAIN_MENU
-	reload_render()
-func reload_render():
+	
+	
 	match render:
 		RENDERS.MAIN_MENU:
 			draw_menu()
 		RENDERS.MAP:
 			draw_map()
-
-func render_map():
-	logger.warn("changing render to map")
-	render = RENDERS.MAP
-	reload_render()
 
 
 
@@ -162,7 +156,7 @@ func draw_menu():
 	print("Initializing buttons:")
 	for button in buttons:
 		print(button.id)
-		$menu_ui/buttons.add_child(button.gen_area())
+		add_child(button.gen_area())
 	queue_redraw()
 
 
@@ -178,7 +172,8 @@ func draw_map():
 	for state in states:
 		print(state.id)
 		add_child(state.gen_area())
-
+	font = FontFile.new()
+	font.font_data = load("res://assets/fonts/DaysOne.ttf")
 	
 	
 	# TREES
@@ -205,7 +200,6 @@ func draw_map():
 			print(tree.position)
 			#$BACKGROUND_OBJ.
 			add_child(tree)
-	queue_redraw()
 			
 
 
