@@ -48,7 +48,7 @@ func getID():
 func gen_poly() -> CollisionPolygon2D:
 	self.poly.set_polygon(PackedVector2Array(utils.correctify(self.position,curves)))
 	self.color_obj.set_polygon(PackedVector2Array(utils.correctify(self.position,curves)))
-	self.color_obj.color = commons.default_state_color
+	self.color_obj.color = commons.default_button_color
 	return self.poly
 
 func gen_area() -> Area2D:

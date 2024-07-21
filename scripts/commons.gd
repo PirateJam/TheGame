@@ -22,13 +22,25 @@ func get_monster_textures(kind: MONSTER_KINDS, level):
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
+
+
+const state_view_zoom = 1.5
+
 const default_state_color = Color(255, 255 , 255, 0.2)
 const hover_state_color = Color(255, 255, 255, 0.4)
 const select_state_color = Color(200, 200, 255, 0.6)
 
-const default_button_color = Color(229, 226 , 71, 0.2)
-const hover_button_color = Color(229, 226 , 71, 0.4)
-const select_button_color = Color(229, 226 , 71, 0.6)
+const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
+const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)
+const select_button_color = Color(0.847, 0.765, 0.015, 0.35)
+
+var tree_textures = [
+	load("res://assets/images/misc/tree1.png"),
+	load("res://assets/images/misc/tree2.png"),
+	load("res://assets/images/misc/tree3.png"),
+	load("res://assets/images/misc/tree4.png"),
+]
+
 
 
 var font_data = load("res://assets/fonts/DaysOne.ttf")

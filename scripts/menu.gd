@@ -11,6 +11,7 @@ var commons = load("res://scripts/commons.gd").new()
 
 var font
 var states = []
+var trees = []
 var buttons = []
 var border_line_width = 2
 var border_color = Color.BLACK
@@ -24,6 +25,9 @@ var _rand
 enum RENDERS {MAIN_MENU, MAP, STATE}
 
 var render = RENDERS.MAIN_MENU
+
+
+
 
 const production = false
 
@@ -52,6 +56,14 @@ func _draw() -> void:
 					last_line = last_line+line
 				draw_line(last_line, button.position, border_color, border_line_width)
 				logger.log("Drawn: "+ button.id)
+		RENDERS.STATE:
+			draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Welcome to the State View!')
+			var last_line = peeked_state.position
+			for line in peeked_state.curves:
+				draw_line(last_line, last_line+line, border_color, border_line_width)
+				last_line = last_line+line
+			draw_line(last_line, peeked_state.position, border_color, border_line_width)
+			logger.log("(STATE VIEW) Drawn: "+ peeked_state.id)
 
 
 func reset_hover_focus():
@@ -92,19 +104,21 @@ func update_focus():
 				
 				if button.area.select_focus:
 					logger.log("FOCUS ON BUTTON: " + button.id)
-					button.area.get_children()[1].color = commons.select_state_color
+					button.area.get_children()[1].color = commons.select_button_color
 				elif button.area.hover_focus:
 					logger.log(" (hover) FOCUS ON BUTTON: " + button.id)
-					button.area.get_children()[1].color = commons.hover_state_color
+					button.area.get_children()[1].color = commons.hover_button_color
 					
 				else:
 					if button.area.get_children().size()>1:
-						button.area.get_children()[1].color = commons.default_state_color
-				
+						button.area.get_children()[1].color = commons.default_button_color
 
 func resize(x):
 	return x*constant_mul
 
+
+func exit():
+	get_tree().quit()
 
 func _ready():
 	font = FontFile.new()
@@ -133,30 +147,80 @@ func _ready():
 	states.append(basic_state2)
 	
 	
-	var map_button = menu_supplier.new(" Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550, [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15], null, null, render_map, font)
-	buttons.append(map_button)	
+	var map_button = menu_supplier.new(" Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550,
+	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
+	, null, null, render_map, font)
+	buttons.append(map_button)
+
+
+	var exit_button = menu_supplier.new("Exit", Vector2.DOWN*95 + Vector2.LEFT*550,
+	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
+	, null, null, exit, font)
+	buttons.append(exit_button)
 
 
 	render = RENDERS.MAIN_MENU
 	reload_render()
+
+
+
 func reload_render():
+	$menu_ui.visible = false
+	$map_ui.visible = false
+	stateVisibility(false)
 	match render:
 		RENDERS.MAIN_MENU:
 			draw_menu()
 		RENDERS.MAP:
 			draw_map()
+		RENDERS.STATE:
+			draw_state()
 
 func render_map():
 	logger.warn("changing render to map")
 	render = RENDERS.MAP
 	reload_render()
 
+func get_selected_state():
+	for i in states:
+		if i.area.select_focus:
+			return i
 
 
+
+func stateVisibility(bol):
+	for i in states:
+		i.area.visible = bol
+	for i in trees:
+		i.visible = bol
+
+
+
+
+
+var peeked_state
+
+func draw_state():
+	var cstate = get_selected_state()
+	reset_select_focus()
+	print(cstate.curves)
+	peeked_state = cstate
+	
+	queue_redraw()
+
+
+
+
+
+
+func _process(delta):
+	if Input.is_action_pressed("key_exit"):
+		render = RENDERS.MAIN_MENU
+		print("ESC")
+		reload_render()
+		queue_redraw()
 
 func draw_menu():
-	
-	$map_ui.visible = false
 	$menu_ui.visible = true
 
 	print("Initializing buttons:")
@@ -169,8 +233,8 @@ func draw_menu():
 
 
 func draw_map():
-	$menu_ui.visible = false
 	$map_ui.visible = true
+	stateVisibility(true)
 	
 	
 	
@@ -196,15 +260,16 @@ func draw_map():
 			var b: Vector2 = state.poly.polygon[triangles[3 * i + 1]]
 			var c: Vector2 = state.poly.polygon[triangles[3 * i + 2]]
 			cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
-		for i in range(12):
+		for i in range(6):
 			var tree = Sprite2D.new()
-			tree.offset.y = -32
-			tree.scale = Vector2(0.3,0.5)
+			tree.offset.y = -256
+			tree.scale = Vector2(0.012,0.025)
 			tree.position = get_random_point(state.poly.polygon)
-			tree.texture = load("res://assets/images/misc/tree_temp.png")
+			tree.texture = commons.tree_textures[randi() % commons.tree_textures.size()]
 			print(tree.position)
 			#$BACKGROUND_OBJ.
 			add_child(tree)
+			trees.append(tree)
 	queue_redraw()
 			
 

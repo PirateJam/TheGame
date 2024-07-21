@@ -55,3 +55,5 @@ visible = false
 position = Vector2(107, 268)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("5_vi1pi")
+
+[node name="states" type="CanvasGroup" parent="."]
