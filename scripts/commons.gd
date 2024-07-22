@@ -4,15 +4,17 @@ enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {YIPEEE}	#this is just an example monster because I lack ideas:tm:
 
 enum BUILDING_KINDS {WALL}
+enum ROTATION {FRONT, LEFT, BACK, RIGHT}
 
-func get_building_textures(kind: BUILDING_KINDS, level):
+func get_building_textures(kind: BUILDING_KINDS, level: int):
 	if level>5 or level<0:
 		return [unknown_texture, unknown_texture]
 	match kind:
 		BUILDING_KINDS.WALL:
+			print("res://assets/images/buildings/wall_front-" + str(level) + ".png")
 			return [load("res://assets/images/buildings/wall_front-" + str(level) + ".png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 
-func get_monster_textures(kind: MONSTER_KINDS, level):
+func get_monster_textures(kind: MONSTER_KINDS, level: int):
 	if level>5 or level<0:
 		return unknown_texture
 	match kind:
@@ -23,7 +25,7 @@ func get_monster_textures(kind: MONSTER_KINDS, level):
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
 
-
+const map_size = 10
 const state_view_zoom = 1.5
 
 const default_state_color = Color(255, 255 , 255, 0.2)

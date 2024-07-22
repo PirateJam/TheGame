@@ -15,7 +15,6 @@ var trees = []
 var buttons = []
 var border_line_width = 2
 var border_color = Color.BLACK
-var constant_mul = 5
 
 var triangles
 var cumulated_areas: Array
@@ -114,7 +113,7 @@ func update_focus():
 						button.area.get_children()[1].color = commons.default_button_color
 
 func resize(x):
-	return x*constant_mul
+	return x*commons.map_size
 
 
 func exit():
@@ -125,13 +124,14 @@ func _ready():
 	font.font_data = commons.font_data
 	# SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
-		Vector2.LEFT*6+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*6, Vector2.RIGHT*3+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*12 + Vector2.UP*3, 
+		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
+		Vector2.RIGHT*5,
 		Vector2.UP*15+Vector2.RIGHT*5
-	].map(resize))
+	].map(resize), [load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)])
 	states.append(player_state)
 	
 	
-	var basic_state = state_supplier.new("Enemy Tribe", Vector2.ZERO+ 268*Vector2.DOWN + 107*Vector2.RIGHT, [
+	var basic_state = state_supplier.new("Enemy Tribe", Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, [
 		Vector2.UP*15+Vector2.RIGHT*5, Vector2.UP*14+Vector2.RIGHT*12,
 		Vector2.DOWN*10+Vector2.RIGHT*5, Vector2.DOWN*8+Vector2.LEFT*7
 		
@@ -139,9 +139,9 @@ func _ready():
 	states.append(basic_state)
 	
 	
-	var basic_state2 = state_supplier.new("Enemy Tribe 2", Vector2.ZERO+ 193*Vector2.DOWN + 132*Vector2.RIGHT, [
-				Vector2.LEFT*2+Vector2.UP*15,
-				Vector2.RIGHT*12+Vector2.UP, Vector2.DOWN*2+Vector2.RIGHT*2
+	var basic_state2 = state_supplier.new("Enemy Tribe 2", Vector2.ZERO+ 278*Vector2.DOWN + 262*Vector2.RIGHT, [
+				Vector2.LEFT*14+Vector2.UP*16,
+				Vector2.RIGHT*12+Vector2.UP*4, Vector2.RIGHT*8, Vector2.DOWN*6+Vector2.RIGHT*6
 		
 	].map(resize))
 	states.append(basic_state2)
@@ -205,7 +205,13 @@ func draw_state():
 	reset_select_focus()
 	print(cstate.curves)
 	peeked_state = cstate
+	$Camera2D.zoom = Vector2(commons.state_view_zoom, commons.state_view_zoom)
 	
+	for i in cstate.buildings:
+		add_child(i.render())
+		print(i.sprite.position)
+		
+		print(i.kind, " rendered")
 	queue_redraw()
 
 
