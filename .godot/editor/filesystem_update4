@@ -1,0 +1,9 @@
+res://nodes/battlefield.tscn
+res://scripts/monster.gd
+res://nodes/monster.tscn
+res://scripts/monsters_config.gd
+res://scripts/battlefield.gd
+res://scripts/utils.gd
+res://nodes/node_2d.tscn
+res://scripts/menu.gd
+res://scripts/commons.gd

@@ -1,7 +1,7 @@
-extends Node
+extends Node2D
 class_name Commons
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
-enum MONSTER_KINDS {YIPEEE}	#this is just an example monster because I lack ideas:tm:
+enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL}
 
@@ -17,6 +17,10 @@ func get_monster_textures(kind: MONSTER_KINDS, level):
 		return unknown_texture
 	match kind:
 		MONSTER_KINDS.YIPEEE:
+			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+		MONSTER_KINDS.YIPEEEARCHER:
+			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+		MONSTER_KINDS.YIPEEHORSE:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 
 

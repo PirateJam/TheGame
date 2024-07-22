@@ -135,8 +135,7 @@ func _ready():
 	
 	var map_button = menu_supplier.new(" Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550, [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15], null, null, render_map, font)
 	buttons.append(map_button)	
-
-
+	
 	render = RENDERS.MAIN_MENU
 	reload_render()
 func reload_render():
@@ -150,9 +149,6 @@ func render_map():
 	logger.warn("changing render to map")
 	render = RENDERS.MAP
 	reload_render()
-
-
-
 
 func draw_menu():
 	
