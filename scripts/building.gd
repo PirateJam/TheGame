@@ -31,6 +31,7 @@ func render():
 			self.sprite.texture = get_building_textures(self.kind, self.level)[0]
 		ROTATION.BACK:
 			self.sprite.texture = get_building_textures(self.kind, self.level)[0]
+	self.sprite.offset.y = -32
 	return self.sprite
 # Called when the node enters the scene tree for the first time.
 func _ready():

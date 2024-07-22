@@ -32,7 +32,7 @@ func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], a
 	self.area = state_area.new(self)
 	self.poly = CollisionPolygon2D.new()
 	self.label = Label.new()
-	self.label.position = position
+	self.label.position = position+Vector2.RIGHT*5
 	self.label.add_theme_font_override("font", font)
 	self.label.text = id
 	self.color_obj = Polygon2D.new()

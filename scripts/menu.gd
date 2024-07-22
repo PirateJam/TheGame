@@ -147,7 +147,7 @@ func _ready():
 	states.append(basic_state2)
 	
 	
-	var map_button = menu_supplier.new(" Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550,
+	var map_button = menu_supplier.new("Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550,
 	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
 	, null, null, render_map, font)
 	buttons.append(map_button)
@@ -168,6 +168,7 @@ func reload_render():
 	$menu_ui.visible = false
 	$map_ui.visible = false
 	stateVisibility(false)
+	buildingVisibility(false)
 	match render:
 		RENDERS.MAIN_MENU:
 			draw_menu()
@@ -194,8 +195,10 @@ func stateVisibility(bol):
 	for i in trees:
 		i.visible = bol
 
-
-
+func buildingVisibility(bol):
+	if peeked_state:
+		for i in peeked_state.buildings:
+			i.sprite.visible = bol
 
 
 var peeked_state
@@ -212,6 +215,7 @@ func draw_state():
 		print(i.sprite.position)
 		
 		print(i.kind, " rendered")
+	buildingVisibility(true)
 	queue_redraw()
 
 
@@ -277,7 +281,7 @@ func draw_map():
 			add_child(tree)
 			trees.append(tree)
 	queue_redraw()
-			
+
 
 
 
