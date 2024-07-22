@@ -4,15 +4,17 @@ enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL}
+enum ROTATION {FRONT, LEFT, BACK, RIGHT}
 
-func get_building_textures(kind: BUILDING_KINDS, level):
+func get_building_textures(kind: BUILDING_KINDS, level: int):
 	if level>5 or level<0:
 		return [unknown_texture, unknown_texture]
 	match kind:
 		BUILDING_KINDS.WALL:
+			print("res://assets/images/buildings/wall_front-" + str(level) + ".png")
 			return [load("res://assets/images/buildings/wall_front-" + str(level) + ".png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 
-func get_monster_textures(kind: MONSTER_KINDS, level):
+func get_monster_textures(kind: MONSTER_KINDS, level: int):
 	if level>5 or level<0:
 		return unknown_texture
 	match kind:
@@ -26,13 +28,25 @@ func get_monster_textures(kind: MONSTER_KINDS, level):
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
+
+const map_size = 10
+const state_view_zoom = 1.5
+
 const default_state_color = Color(255, 255 , 255, 0.2)
 const hover_state_color = Color(255, 255, 255, 0.4)
 const select_state_color = Color(200, 200, 255, 0.6)
 
-const default_button_color = Color(229, 226 , 71, 0.2)
-const hover_button_color = Color(229, 226 , 71, 0.4)
-const select_button_color = Color(229, 226 , 71, 0.6)
+const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
+const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)
+const select_button_color = Color(0.847, 0.765, 0.015, 0.35)
+
+var tree_textures = [
+	load("res://assets/images/misc/tree1.png"),
+	load("res://assets/images/misc/tree2.png"),
+	load("res://assets/images/misc/tree3.png"),
+	load("res://assets/images/misc/tree4.png"),
+]
+
 
 
 var font_data = load("res://assets/fonts/DaysOne.ttf")

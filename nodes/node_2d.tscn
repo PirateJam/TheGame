@@ -13,6 +13,8 @@ script = ExtResource("1_ge7qy")
 
 [node name="buttons" type="Sprite2D" parent="menu_ui"]
 
+[node name="state_ui" type="CanvasGroup" parent="."]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
 
@@ -52,6 +54,6 @@ text = "[KEY] DO SOMETHING
 
 [node name="Icon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(107, 268)
+position = Vector2(211, 429)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("5_vi1pi")

@@ -29,14 +29,23 @@ func _input_event(viewport, event, shape_idx):
 			self.select_focus = true
 			get_node("/root/Menu").update_focus()
 			pass
+		
+		
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			#open country info
+			get_node("/root/Menu/map_ui/state_info_ui/font-resize/state_name").text = fparent.id
+			get_node("/root/Menu").reset_select_focus()
+			self.select_focus = true
+			get_node("/root/Menu").update_focus()
+			
+			get_node("/root/Menu").render = get_node("/root/Menu").RENDERS.STATE
+			get_node("/root/Menu").reload_render()
 			pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.input_pickable = true
-	pass # Replace with function body.
+	
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
