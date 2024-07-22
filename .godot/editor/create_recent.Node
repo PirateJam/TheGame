@@ -1,0 +1,8 @@
+CanvasLayer
+Button
+HBoxContainer
+CollisionShape2D
+Area2D
+AnimationPlayer
+Sprite2D
+Node2D

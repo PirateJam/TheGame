@@ -147,6 +147,7 @@ func _ready():
 	states.append(basic_state2)
 	
 	
+
 	var map_button = menu_supplier.new("Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550,
 	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
 	, null, null, render_map, font)
@@ -181,6 +182,7 @@ func render_map():
 	logger.warn("changing render to map")
 	render = RENDERS.MAP
 	reload_render()
+
 
 func get_selected_state():
 	for i in states:

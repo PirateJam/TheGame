@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://5h0gmqx8hwan"]
+
+[ext_resource type="Script" path="res://scripts/monster.gd" id="1_a8nu3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bduuc"]
+size = Vector2(64, 64)
+
+[node name="Monster" type="Node2D"]
+script = ExtResource("1_a8nu3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_bduuc")
