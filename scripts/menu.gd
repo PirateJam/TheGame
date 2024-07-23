@@ -107,19 +107,30 @@ func update_focus():
 			for state in states:
 				if state.area.select_focus:
 					logger.log("FOCUS ON STATE: " + state.id)
-					state.area.get_children()[1].color = commons.select_state_color
+					if state.controlled:
+						state.area.get_children()[1].color = commons.controlled_select_state_color
+					else:
+						state.area.get_children()[1].color = commons.select_state_color
 				elif state.area.hover_focus:
 					logger.log(" (hover) FOCUS ON STATE: " + state.id)
-					state.area.get_children()[1].color = commons.hover_state_color
+					if state.controlled:
+						state.area.get_children()[1].color = commons.controlled_hover_state_color
+						
+					else:
+						state.area.get_children()[1].color = commons.hover_state_color
 					
 				else:
 					if state.area.get_children().size()>1:
-						state.area.get_children()[1].color = commons.default_state_color
+						if state.controlled:
+							state.area.get_children()[1].color = commons.controlled_default_state_color
+						else:
+							state.area.get_children()[1].color = commons.default_state_color
 		RENDERS.MAIN_MENU:
 			for button in buttons:
 				
 				if button.area.select_focus:
 					logger.log("FOCUS ON BUTTON: " + button.id)
+					
 					button.area.get_children()[1].color = commons.select_button_color
 				elif button.area.hover_focus:
 					logger.log(" (hover) FOCUS ON BUTTON: " + button.id)
@@ -144,8 +155,18 @@ func _ready():
 		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
 		Vector2.RIGHT*5,
 		Vector2.UP*15+Vector2.RIGHT*5
-	].map(resize), [load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)],
-	[load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)])
+	].map(resize), 
+	[
+		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)
+	],
+	[
+		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+	],
+	{
+		"wood": 100,
+		"iron": 100,
+		"elixir": 50,
+	})
 	
 	player_state.controlled = true
 	states.append(player_state)

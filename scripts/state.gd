@@ -18,9 +18,9 @@ var controlled
 
 var buildings			# array of Building
 var army				# array of Monster
+var resources
 
-
-func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = []):
+func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = [], resources={}):
 	self.id = id
 	self.position = position
 	self.curves = curves
@@ -31,6 +31,7 @@ func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], a
 	self.buildings = buildings
 	self.army = army
 	self.controlled = false
+	self.resources = resources
 	
 # Called when the node enters the scene tree for the first time.
 
@@ -41,7 +42,10 @@ func getID():
 func gen_poly() -> CollisionPolygon2D:
 	self.poly.set_polygon(PackedVector2Array(utils.correctify(self.position,curves)))
 	self.color_obj.set_polygon(PackedVector2Array(utils.correctify(self.position,curves)))
-	self.color_obj.color = commons.default_state_color
+	if self.controlled:
+		self.color_obj.color = commons.controlled_default_state_color
+	else:
+		self.color_obj.color = commons.default_state_color
 	return self.poly
 
 func gen_area() -> Area2D:
