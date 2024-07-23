@@ -5,9 +5,12 @@ var kind#: BUILDING_KINDS		# pre-init
 var level: int = -1					# pre-init
 var sprite_rotation: ROTATION
 var sprite: Sprite2D
+var area: Area2D
 
-var position
+#var r_position
 var parent_position
+
+
 
 func _init(kind=null, level=-1, position=Vector2.ZERO, parent_position=Vector2.ZERO, sprite_rotation=ROTATION.FRONT):
 	self.kind = kind
@@ -17,6 +20,8 @@ func _init(kind=null, level=-1, position=Vector2.ZERO, parent_position=Vector2.Z
 	self.parent_position = parent_position
 	
 	self.sprite_rotation = sprite_rotation
+	
+	self.area = Area2D.new() # TO BE DONE - make it do something on click, dependent on self.kind :>
 
 
 func render():

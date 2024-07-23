@@ -1,4 +1,4 @@
-extends Node2d
+extends Node2D
 
 var unit_configs = {
 	UNIT_TYPE.WARRIOR: {

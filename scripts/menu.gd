@@ -57,6 +57,23 @@ func _draw() -> void:
 				logger.log("Drawn: "+ button.id)
 		RENDERS.STATE:
 			draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Welcome to the State View!')
+			if !peeked_state.controlled:
+				draw_string(font, Vector2.ZERO+Vector2.DOWN*50+Vector2.LEFT*50, 'state not controlled, shall we attack?')
+				triangles = Geometry2D.triangulate_polygon(peeked_state.poly.polygon)
+				_rand = RandomNumberGenerator.new()
+				var triangle_count = triangles.size()/3
+				assert(triangle_count>0)
+				cumulated_areas.resize(triangle_count)
+				cumulated_areas[-1] = 0
+				for i in range(triangle_count):
+					var a: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 0]]
+					var b: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 1]]
+					var c: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 2]]
+					cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
+				for x in peeked_state.army:
+					#x.position = get_random_point(peeked_state.poly.polygon)
+					x.render(get_random_point(peeked_state.poly.polygon), self)
+					pass
 			var last_line = peeked_state.position
 			for line in peeked_state.curves:
 				draw_line(last_line, last_line+line, border_color, border_line_width)
@@ -127,7 +144,10 @@ func _ready():
 		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
 		Vector2.RIGHT*5,
 		Vector2.UP*15+Vector2.RIGHT*5
-	].map(resize), [load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)])
+	].map(resize), [load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)],
+	[load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)])
+	
+	player_state.controlled = true
 	states.append(player_state)
 	
 	
@@ -135,7 +155,14 @@ func _ready():
 		Vector2.UP*15+Vector2.RIGHT*5, Vector2.UP*14+Vector2.RIGHT*12,
 		Vector2.DOWN*10+Vector2.RIGHT*5, Vector2.DOWN*8+Vector2.LEFT*7
 		
-	].map(resize))
+	].map(resize), 
+	[
+		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
+		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+	],
+	[
+		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+	])
 	states.append(basic_state)
 	
 	

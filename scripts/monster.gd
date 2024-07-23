@@ -16,6 +16,22 @@ var attack_timer: float = 0.0 # Timer for handling attack intervals
 var is_enemy: bool = false
 
 var level: int = -1
+var sprite: Sprite2D
+
+
+#foko stuff
+func _init(id, kind, level=1):
+	self.level = level
+	self.sprite = Sprite2D.new()
+	self.set_monster_kind(kind)
+	pass
+	
+func render(position, at):
+	self.sprite.position = position
+	
+	at.add_child(self.sprite)
+#foko end
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -100,7 +116,7 @@ func set_monster_kind(type: MONSTER_KINDS):
 	attack_range = stats["attack_range"]
 	movement_speed = stats["movement_speed"]
 	monster_type = stats["type"]
-	$Sprite2D.texture = get_monster_textures(monster_kind, 1)
+	self.sprite.texture = get_monster_textures(monster_kind, 1)
 
 
 var monster_stats = {
@@ -114,3 +130,6 @@ var monster_stats = {
 		"health": 100, "attack_power": 20, "attack_speed": 2.0, "attack_range": 30.0, "movement_speed": 150, "type": MONSTER_TYPES.CAVALRY
 	}
 }
+
+
+
