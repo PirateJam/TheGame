@@ -65,6 +65,36 @@ var tree_textures = [
 
 var font_data = load("res://assets/fonts/DaysOne.ttf")
 
+
+#Monsters Data
+var monster_stats = {
+	MONSTER_KINDS.YIPEEE: {
+		"locked": false,
+		"name": "Yipee", "health": 150, "attack_power": 20, "attack_speed": 1.5, "attack_range": 30.0, "movement_speed": 100, "type": MONSTER_TYPES.MEELEE,
+		"costs": {
+			"recruit": {"resource1": 100, "resource2": 100, "resource3": 100},
+			"upgrade": {}
+		},
+	},
+	MONSTER_KINDS.YIPEEEARCHER: {
+		"locked": false,
+		"name": "Yipee Archer", "health": 80, "attack_power": 15, "attack_speed": 1.0, "attack_range": 200.0, "movement_speed": 80, "type": MONSTER_TYPES.RANGED,
+		"costs": {
+			"recruit": {"resource1": 100, "resource2": 200, "resource3": 50,},
+			"upgrade": {}
+		},
+	},
+	MONSTER_KINDS.YIPEEHORSE: {
+		"locked": false,
+		"name": "Yipee Cavalry", "health": 100, "attack_power": 20, "attack_speed": 2.0, "attack_range": 30.0, "movement_speed": 150, "type": MONSTER_TYPES.CAVALRY,
+		"costs": {
+			"recruit": {"resource1": 200, "resource2": 150, "resource3": 150},
+			"upgrade": {}
+		},
+	}
+}
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

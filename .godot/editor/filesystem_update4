@@ -1,0 +1,7 @@
+res://nodes/node_2d.tscn
+res://nodes/monster.tscn
+res://nodes/lab.tscn
+res://nodes/battlefield.tscn
+res://nodes/tribe.tscn
+res://scripts/monster.gd
+res://scripts/commons.gd

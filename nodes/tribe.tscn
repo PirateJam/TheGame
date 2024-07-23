@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq8cnliupdv22"]
+
+[ext_resource type="Script" path="res://scripts/tribe.gd" id="1_2ekjp"]
+[ext_resource type="Script" path="res://scripts/lab.gd" id="2_8qim5"]
+
+[node name="Tribe" type="Node2D"]
+script = ExtResource("1_2ekjp")
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="Lab" type="Node2D" parent="Buildings"]
+script = ExtResource("2_8qim5")
+
+[node name="Panel" type="Panel" parent="Buildings/Lab"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buildings/Lab/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Recruit" type="Button" parent="Buildings/Lab/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Recruit"
+
+[node name="Upgrade" type="Button" parent="Buildings/Lab/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Upgrade"
+
+[node name="Army" type="Node2D" parent="."]

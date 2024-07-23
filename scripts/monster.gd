@@ -117,19 +117,3 @@ func set_monster_kind(type: MONSTER_KINDS):
 	movement_speed = stats["movement_speed"]
 	monster_type = stats["type"]
 	self.sprite.texture = get_monster_textures(monster_kind, 1)
-
-
-var monster_stats = {
-	MONSTER_KINDS.YIPEEE: {
-		"health": 150, "attack_power": 20, "attack_speed": 1.5, "attack_range": 30.0, "movement_speed": 100, "type": MONSTER_TYPES.MEELEE
-	},
-	MONSTER_KINDS.YIPEEEARCHER: {
-		"health": 80, "attack_power": 15, "attack_speed": 1.0, "attack_range": 200.0, "movement_speed": 80, "type": MONSTER_TYPES.RANGED
-	},
-	MONSTER_KINDS.YIPEEHORSE: {
-		"health": 100, "attack_power": 20, "attack_speed": 2.0, "attack_range": 30.0, "movement_speed": 150, "type": MONSTER_TYPES.CAVALRY
-	}
-}
-
-
-
