@@ -15,6 +15,7 @@ func _ready():
 	populate_recruitment_menu()
 
 func _on_Recruit_Button_Pressed():
+	print("test1 - recruit button press")
 	$Recruit.visible = not $Recruit.visible
 	$RecruitmentMenu/VBoxContainer/Back.visible = not $RecruitmentMenu/VBoxContainer/Back.visible
 	recruitment_menu.visible = not recruitment_menu.visible
@@ -25,6 +26,7 @@ func populate_recruitment_menu():
 		var monster_detail = monster_stats[MONSTER_KINDS[monster]]
 		button.text = monster_detail['name']
 		button.disabled = monster_detail['locked']
+		button.connect("pressed", Callable(self, "_on_Recruit_Monster").bindv([monster]))
 		#Button to call _on_Recruit_Monster for the kind clicked
 		vbox.add_child(button)
 
