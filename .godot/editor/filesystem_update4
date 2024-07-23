@@ -5,3 +5,7 @@ res://nodes/battlefield.tscn
 res://nodes/tribe.tscn
 res://scripts/monster.gd
 res://scripts/commons.gd
+res://scripts/lab.gd
+res://scripts/tribe.gd
+res://scripts/tribe_variables.gd
+res://scripts/tribe_management.gd

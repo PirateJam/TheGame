@@ -2,9 +2,9 @@ extends Commons
 
 @export var monster_scene = preload("res://nodes/monster.tscn")
 
+
 var recruitment_menu: Control
 var vbox
-var callable
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,22 +23,20 @@ func _on_Recruit_Button_Pressed():
 func populate_recruitment_menu():
 	for monster in MONSTER_KINDS: 
 		var button = Button.new()
-		var monster_detail = monster_stats[MONSTER_KINDS[monster]]
-		button.text = monster_detail['name']
-		button.disabled = monster_detail['locked']
+		var monster_details = monster_stats[MONSTER_KINDS[monster]]
+		button.text = monster_details['name']
+		button.disabled = monster_details['locked']
 		button.connect("pressed", Callable(self, "_on_Recruit_Monster").bindv([monster]))
-		#Button to call _on_Recruit_Monster for the kind clicked
 		vbox.add_child(button)
 
+
 func _on_Recruit_Monster(monster):
-	print("Recruiting: " + str(monster))
-	#var unit_data = unit_scenes[unit_type]
-	"""
-	if resources >= recruitment_cost and not unit_data.locked:
-		resources -= recruitment_cost
-		recruit_unit(unit_type)
+	var monster_details = monster_stats[MONSTER_KINDS[monster]]
+	
+	if not monster_details["locked"] and TribeManagement.spend_resources(monster_details["costs"]["recruit"]):
+		print("Unit created")
 	else:
-		print("Not enough resources or unit is locked")"""
+		print("Unit is locked")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
