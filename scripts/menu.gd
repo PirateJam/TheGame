@@ -13,6 +13,7 @@ var font
 var states = []
 var trees = []
 var buttons = []
+var state_ui_buttons = []
 var border_line_width = 2
 var border_color = Color.BLACK
 
@@ -59,27 +60,15 @@ func _draw() -> void:
 			draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Welcome to the State View!')
 			if !peeked_state.controlled:
 				draw_string(font, Vector2.ZERO+Vector2.DOWN*50+Vector2.LEFT*50, 'state not controlled, shall we attack?')
-				triangles = Geometry2D.triangulate_polygon(peeked_state.poly.polygon)
-				_rand = RandomNumberGenerator.new()
-				var triangle_count = triangles.size()/3
-				assert(triangle_count>0)
-				cumulated_areas.resize(triangle_count)
-				cumulated_areas[-1] = 0
-				for i in range(triangle_count):
-					var a: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 0]]
-					var b: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 1]]
-					var c: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 2]]
-					cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
-				for x in peeked_state.army:
-					#x.position = get_random_point(peeked_state.poly.polygon)
-					x.render(get_random_point(peeked_state.poly.polygon), self)
-					pass
+				
 			var last_line = peeked_state.position
 			for line in peeked_state.curves:
 				draw_line(last_line, last_line+line, border_color, border_line_width)
 				last_line = last_line+line
 			draw_line(last_line, peeked_state.position, border_color, border_line_width)
 			logger.log("(STATE VIEW) Drawn: "+ peeked_state.id)
+			
+ 
 
 
 func reset_hover_focus():
@@ -90,6 +79,9 @@ func reset_hover_focus():
 		RENDERS.MAIN_MENU:
 			for button in buttons:
 				button.area.hover_focus = false;
+		RENDERS.STATE:
+			for button in state_ui_buttons:
+				button.area.hover_focus = false;
 
 func reset_select_focus():
 	match render:
@@ -98,6 +90,9 @@ func reset_select_focus():
 				state.area.select_focus = false;
 		RENDERS.MAIN_MENU:
 			for button in buttons:
+				button.area.select_focus = false;
+		RENDERS.STATE:
+			for button in state_ui_buttons:
 				button.area.select_focus = false;
 
 
@@ -139,6 +134,23 @@ func update_focus():
 				else:
 					if button.area.get_children().size()>1:
 						button.area.get_children()[1].color = commons.default_button_color
+		RENDERS.STATE:
+			for button in state_ui_buttons:
+				if button.area.select_focus:
+					logger.log("FOCUS ON BUTTON: " + button.id)
+					
+					button.area.get_children()[1].color = commons.select_button_color
+				elif button.area.hover_focus:
+					logger.log(" (hover) FOCUS ON BUTTON: " + button.id)
+					button.area.get_children()[1].color = commons.hover_button_color
+					
+				else:
+					if button.area.get_children().size()>1:
+						button.area.get_children()[1].color = commons.default_button_color
+
+
+
+
 
 func resize(x):
 	return x*commons.map_size
@@ -147,10 +159,20 @@ func resize(x):
 func exit():
 	get_tree().quit()
 
+
+func prepare_attack():
+	logger.error("attack preparation!")
+
+func building_mode():
+	logger.error("building boy!")
+
+
 func _ready():
 	font = FontFile.new()
 	font.font_data = commons.font_data
-	# SETUP_STATES
+	
+	
+	### SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
 		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
 		Vector2.RIGHT*5,
@@ -195,7 +217,7 @@ func _ready():
 	states.append(basic_state2)
 	
 	
-
+	### MAIN_MENU BUTTONS
 	var map_button = menu_supplier.new("Peek at Map", Vector2.DOWN*50 + Vector2.LEFT*550,
 	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
 	, null, null, render_map, font)
@@ -207,6 +229,33 @@ func _ready():
 	, null, null, exit, font)
 	buttons.append(exit_button)
 
+	### STATE ACTION BUTTONS
+	
+	var attack_button = menu_supplier.new("Prepare an Attack", Vector2.UP*50 + Vector2.LEFT*90,
+	 [Vector2.RIGHT*180, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*180, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
+	, null, null, prepare_attack, font)
+	state_ui_buttons.append(attack_button)
+	var build_button = menu_supplier.new("Build", Vector2.UP*50 + Vector2.LEFT*90,
+	 [Vector2.RIGHT*180, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*180, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
+	, null, null, prepare_attack, font)
+	state_ui_buttons.append(build_button)
+	
+	
+	
+	
+	# SETUP :D
+	
+	
+	for button in state_ui_buttons:
+		print(button.id)
+		
+		
+		print(button.id)
+		$state_ui/options/resize.add_child(button.gen_area())
+	print("Initializing buttons:")
+	for button in buttons:
+		print(button.id)
+		$menu_ui/buttons.add_child(button.gen_area())
 
 	render = RENDERS.MAIN_MENU
 	reload_render()
@@ -216,8 +265,13 @@ func _ready():
 func reload_render():
 	$menu_ui.visible = false
 	$map_ui.visible = false
+	$state_ui.visible = false
 	stateVisibility(false)
 	buildingVisibility(false)
+	armyVisibility(false)
+	
+	
+	
 	match render:
 		RENDERS.MAIN_MENU:
 			draw_menu()
@@ -250,14 +304,36 @@ func buildingVisibility(bol):
 		for i in peeked_state.buildings:
 			i.sprite.visible = bol
 
+func armyVisibility(bol):
+	if peeked_state:
+		if bol:
+			triangles = Geometry2D.triangulate_polygon(peeked_state.poly.polygon)
+			_rand = RandomNumberGenerator.new()
+			var triangle_count = triangles.size()/3
+			assert(triangle_count>0)
+			cumulated_areas.resize(triangle_count)
+			cumulated_areas[-1] = 0
+			for i in range(triangle_count):
+				var a: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 0]]
+				var b: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 1]]
+				var c: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 2]]
+				cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
+			for x in peeked_state.army:
+				#x.position = get_random_point(peeked_state.poly.polygon)
+				x.render(get_random_point(peeked_state.poly.polygon), self)
+		else:
+			for x in peeked_state.army:
+				x.sprite.visible = false
 
 var peeked_state
+
 
 func draw_state():
 	var cstate = get_selected_state()
 	reset_select_focus()
 	print(cstate.curves)
 	peeked_state = cstate
+	$state_ui.visible = true
 	$Camera2D.zoom = Vector2(commons.state_view_zoom, commons.state_view_zoom)
 	
 	for i in cstate.buildings:
@@ -266,6 +342,17 @@ func draw_state():
 		
 		print(i.kind, " rendered")
 	buildingVisibility(true)
+	armyVisibility(!peeked_state.controlled)
+
+	for button in state_ui_buttons:
+		if ([state_ui_buttons[1].id].has(button.id) && !cstate.controlled) or ([state_ui_buttons[0].id].has(button.id) && cstate.controlled):			# disable controlled state buttons for not-controlled state and vice versa
+			button.area.visible = false
+			button.color_obj.visible = false
+		else:
+			button.area.visible = true
+			button.color_obj.visible = true
+	
+
 	queue_redraw()
 
 
@@ -282,11 +369,6 @@ func _process(delta):
 
 func draw_menu():
 	$menu_ui.visible = true
-
-	print("Initializing buttons:")
-	for button in buttons:
-		print(button.id)
-		$menu_ui/buttons.add_child(button.gen_area())
 	queue_redraw()
 
 
@@ -309,6 +391,7 @@ func draw_map():
 	print("adding trees")
 	
 	for state in states:
+		print("adding trees for", state.id)
 		triangles = Geometry2D.triangulate_polygon(state.poly.polygon)
 		_rand = RandomNumberGenerator.new()
 		var triangle_count = triangles.size()/3
@@ -322,8 +405,8 @@ func draw_map():
 			cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
 		for i in range(6):
 			var tree = Sprite2D.new()
-			tree.offset.y = -256
-			tree.scale = Vector2(0.012,0.025)
+			tree.offset.y = -32
+			tree.scale = Vector2(1,1)
 			tree.position = get_random_point(state.poly.polygon)
 			tree.texture = commons.tree_textures[randi() % commons.tree_textures.size()]
 			print(tree.position)

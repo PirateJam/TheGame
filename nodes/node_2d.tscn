@@ -13,10 +13,19 @@ script = ExtResource("1_ge7qy")
 
 [node name="buttons" type="Sprite2D" parent="menu_ui"]
 
-[node name="state_ui" type="CanvasGroup" parent="."]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
+
+[node name="state_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="options" type="Sprite2D" parent="state_ui"]
+position = Vector2(114, 361)
+scale = Vector2(0.40625, 0.453125)
+texture = ExtResource("3_atnsh")
+
+[node name="resize" type="Sprite2D" parent="state_ui/options"]
+scale = Vector2(2.37846, 1.97104)
 
 [node name="map_ui" type="CanvasLayer" parent="."]
 visible = false

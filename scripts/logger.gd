@@ -1,16 +1,11 @@
 extends Node
 
 
-var escape = PackedByteArray([0x1b]).get_string_from_ascii()
-
-
 func error(message):
-	var code = "[1;32m"
-	print("ERROR: " + str(message))
+	print_rich("[color=red]ERROR: " + str(message) + "[/color]")
 
 func warn(message):
-	var code = "[1;93m"
-	print("WARNING: " + str(message))
+	print_rich("[color=yellow]WARNING: " + str(message) + "[/color]")
 
 func log(message):
 	print("LOG: " + str(message))

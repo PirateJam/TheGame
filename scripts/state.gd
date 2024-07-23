@@ -14,7 +14,9 @@ var curves
 var area
 var poly
 var color_obj
+
 var controlled
+var attacked
 
 var buildings			# array of Building
 var army				# array of Monster
@@ -31,6 +33,7 @@ func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], a
 	self.buildings = buildings
 	self.army = army
 	self.controlled = false
+	self.attacked = false		# by player
 	self.resources = resources
 	
 # Called when the node enters the scene tree for the first time.
