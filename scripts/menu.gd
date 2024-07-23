@@ -205,7 +205,7 @@ func _ready():
 	],
 	[
 		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
-	])
+	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
 	
 	

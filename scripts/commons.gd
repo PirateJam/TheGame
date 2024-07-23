@@ -1,12 +1,20 @@
 extends Node2D
 class_name Commons
 
+enum BIOMES {FOREST, DESERT, SWAMP}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL, WITCH_HUT, }
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
+
+func get_biome_texture(biome: BIOMES):
+	match biome:
+		BIOMES.FOREST:
+			return load("res://assets/images/biomes/forest.png")
+		BIOMES.DESERT:
+			return load("res://assets/images/biomes/desert.png")
 
 func get_building_textures(kind: BUILDING_KINDS, level: int):
 	if level>5 or level<0:
@@ -34,9 +42,9 @@ var unknown_texture = load("res://assets/images/misc/unknown.png")
 const map_size = 10
 const state_view_zoom = 1.5
 
-const controlled_default_state_color = Color(0.4, 0.8, 0.4, 0.2)
-const controlled_hover_state_color = Color(0.4, 0.8, 0.4, 0.4)
-const controlled_select_state_color = Color(0.4, 0.8, 0.4, 0.6)
+const controlled_default_state_color = Color(0.4, 1, 0.4, 0.3)
+const controlled_hover_state_color = Color(0.4, 1, 0.4, 0.5)
+const controlled_select_state_color = Color(0.4, 1, 0.4, 0.7)
 
 
 const default_state_color = Color(1, 0.6 , 0.6, 0.2)

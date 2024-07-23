@@ -21,8 +21,9 @@ var attacked
 var buildings			# array of Building
 var army				# array of Monster
 var resources
+var biome
 
-func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = [], resources={}):
+func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], army = [], resources={}, biome = commons.BIOMES.FOREST):
 	self.id = id
 	self.position = position
 	self.curves = curves
@@ -36,6 +37,7 @@ func _init(id="unspecified", position=Vector2.ZERO, curves=[], buildings = [], a
 	self.attacked = false		# by player
 	self.resources = resources
 	
+	self.biome = biome
 # Called when the node enters the scene tree for the first time.
 
 func getID():
@@ -49,6 +51,7 @@ func gen_poly() -> CollisionPolygon2D:
 		self.color_obj.color = commons.controlled_default_state_color
 	else:
 		self.color_obj.color = commons.default_state_color
+	self.color_obj.texture = commons.get_biome_texture(self.biome)
 	return self.poly
 
 func gen_area() -> Area2D:

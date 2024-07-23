@@ -66,3 +66,11 @@ visible = false
 position = Vector2(211, 429)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("5_vi1pi")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+modulate = Color(0.0837888, 0.462656, 0.420781, 1)
+position = Vector2(114, 361)
+scale = Vector2(0.966249, 0.893128)
+color = Color(0.687461, 0, 0.285308, 1)
+polygon = PackedVector2Array(23.8034, 34.7095, 68.3053, 52.6241, 179.043, 5.59833, 35.1876, -76.1369, -8.27943, -29.1112)
