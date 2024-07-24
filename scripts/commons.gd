@@ -1,7 +1,7 @@
 extends Node2D
 class_name Commons
 
-enum BIOMES {FOREST, DESERT, SWAMP}
+enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
 enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
@@ -16,6 +16,10 @@ func get_biome_texture(biome: BIOMES):
 			return load("res://assets/images/biomes/forest.png")
 		BIOMES.DESERT:
 			return load("res://assets/images/biomes/desert.png")
+		BIOMES.SWAMP:
+			return load("res://assets/images/biomes/swamp.png")
+		BIOMES.WATER_BODY:
+			return load("res://assets/images/biomes/water.png")
 
 func get_building_textures(kind: BUILDING_KINDS, level: int):
 	if level>5 or level<0:

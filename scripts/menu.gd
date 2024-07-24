@@ -176,7 +176,9 @@ func _ready():
 	
 	### SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
-		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
+		Vector2.LEFT*9+Vector2.DOWN*3,
+		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, 
+		Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
 		Vector2.RIGHT*5,
 		Vector2.UP*15+Vector2.RIGHT*5
 	].map(resize), 
@@ -217,6 +219,24 @@ func _ready():
 		
 	].map(resize))
 	states.append(basic_state2)
+	
+	var lake1 = state_supplier.new("Lake 1", Vector2.ZERO+ 148*Vector2.DOWN + 32*Vector2.RIGHT, [
+		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,
+		Vector2.LEFT*10, Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10, 
+		
+	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
+	states.append(lake1)
+	
+	var swamp1 = state_supplier.new("Swamp 1", Vector2.ZERO+ 448*Vector2.DOWN + 98*Vector2.LEFT, [
+		Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10,
+		Vector2.LEFT*15+Vector2.UP*5,Vector2.DOWN*10+Vector2.LEFT*5,
+		Vector2.RIGHT*2+Vector2.DOWN*5,Vector2.LEFT*2+Vector2.DOWN*5, Vector2.DOWN*8+Vector2.RIGHT, Vector2.DOWN*4+Vector2.LEFT, Vector2.RIGHT*5
+		
+	].map(resize), [], [], {}, commons.BIOMES.SWAMP)
+	states.append(swamp1)
+	
+	
+	
 	
 	
 	### MAIN_MENU BUTTONS
@@ -408,8 +428,8 @@ func state_init():
 	
 	# TREES
 	print("adding trees")
-	
-	for state in states:
+
+	'''for state in states:
 		print("adding trees for", state.id)
 		triangles = Geometry2D.triangulate_polygon(state.poly.polygon)
 		_rand = RandomNumberGenerator.new()
@@ -455,7 +475,7 @@ func state_init():
 					print(tree.position)
 					#$BACKGROUND_OBJ.
 					add_child(tree)
-					trees.append(tree)
+					trees.append(tree)'''
 
 
 
