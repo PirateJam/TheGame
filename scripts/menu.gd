@@ -1,6 +1,7 @@
 @tool
 extends Node2D
 
+@export var monster_scene: PackedScene = preload("res://nodes/monster.tscn")
 var utils = load("res://scripts/utils.gd").new()
 var state_supplier = load("res://scripts/state.gd")
 var menu_supplier = load("res://scripts/menu_supplier.gd")
@@ -8,7 +9,6 @@ var menu_supplier = load("res://scripts/menu_supplier.gd")
 var logger = load("res://scripts/logger.gd").new()
 
 var commons = load("res://scripts/commons.gd").new()
-
 var font
 var states = []
 var trees = []
@@ -170,7 +170,9 @@ func building_mode():
 func _ready():
 	font = FontFile.new()
 	font.font_data = commons.font_data
-	
+
+	### DEFAULT MONSTERS
+
 	
 	### SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
@@ -182,12 +184,12 @@ func _ready():
 		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)
 	],
 	[
-		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+		#ARMY
 	],
 	{
-		"wood": 100,
-		"iron": 100,
-		"elixir": 50,
+		commons.RESOURCES.WOOD: 100,
+		commons.RESOURCES.IRON: 100,
+		commons.RESOURCES.ELIXIR: 50,	#or something
 	})
 	
 	player_state.controlled = true
@@ -204,7 +206,7 @@ func _ready():
 		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
 	],
 	[
-		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+		#ARMY
 	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
 	
@@ -241,7 +243,7 @@ func _ready():
 	state_ui_buttons.append(build_button)
 	
 	
-	
+	#hey @darkran , sorry to bother ya again. But army is initialized in state as a list of `monster.gd`, ho
 	
 	# SETUP :D
 	
@@ -325,11 +327,14 @@ func armyVisibility(bol):
 				var c: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 2]]
 				cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
 			for x in peeked_state.army:
-				#x.position = get_random_point(peeked_state.poly.polygon)
-				x.render(get_random_point(peeked_state.poly.polygon), self)
+				x.position = get_random_point(peeked_state.poly.polygon)
+				x.visible = true
+				print(x.position)
+				#x.render(get_random_point(peeked_state.poly.polygon), self)
+				
 		else:
 			for x in peeked_state.army:
-				x.sprite.visible = false
+				x.visible = false
 
 var peeked_state
 

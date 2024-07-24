@@ -19,19 +19,6 @@ var level: int = -1
 var sprite: Sprite2D
 
 
-#foko stuff
-func _init(id, kind, level=1):
-	self.level = level
-	self.sprite = Sprite2D.new()
-	self.set_monster_kind(kind)
-	pass
-	
-func render(position, at):
-	self.sprite.position = position
-	
-	at.add_child(self.sprite)
-#foko end
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,7 +27,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
 	if target and is_instance_valid(target):
 		var distance_to_target = position.distance_to(target.position)
 		if distance_to_target <= attack_range:
@@ -50,6 +36,8 @@ func _process(delta):
 	else:
 		target = find_target(get_target())
 	
+
+
 
 # Function to set the target for the unit
 func find_target(targets: Array) -> Node2D:
@@ -116,7 +104,7 @@ func set_monster_kind(type: MONSTER_KINDS):
 	attack_range = stats["attack_range"]
 	movement_speed = stats["movement_speed"]
 	monster_type = stats["type"]
-	self.sprite.texture = get_monster_textures(monster_kind, 1)
+	$Sprite2D.texture = get_monster_textures(monster_kind, 1)
 
 
 var monster_stats = {

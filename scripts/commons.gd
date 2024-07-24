@@ -2,6 +2,7 @@ extends Node2D
 class_name Commons
 
 enum BIOMES {FOREST, DESERT, SWAMP}
+enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
