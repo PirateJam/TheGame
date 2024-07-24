@@ -372,11 +372,18 @@ func draw_state():
 
 
 func _process(delta):
-	if Input.is_action_pressed("key_exit"):
-		render = RENDERS.MAIN_MENU
-		print("ESC")
-		reload_render()
-		queue_redraw()
+	if Input.is_action_just_pressed("key_exit"):
+		match render:
+			RENDERS.MAP:
+				render = RENDERS.MAIN_MENU
+				reload_render()
+				queue_redraw()
+			RENDERS.STATE:
+				render = RENDERS.MAP
+				reload_render()
+				queue_redraw()
+
+
 
 func draw_menu():
 	$menu_ui.visible = true
