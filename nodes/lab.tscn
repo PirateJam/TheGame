@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/lab.gd" id="1_e6erg"]
 
 [node name="Lab" type="Node2D"]
+position = Vector2(0, 2)
 script = ExtResource("1_e6erg")
 
 [node name="LabMenu" type="VBoxContainer" parent="."]
@@ -37,15 +38,17 @@ text = "Back"
 visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 502.0
+offset_bottom = 314.0
 
 [node name="UnitList" type="VBoxContainer" parent="UpgradeMenu"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 228.0
+offset_bottom = 324.0
 
 [node name="StatsResume" type="VBoxContainer" parent="UpgradeMenu"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 256.0
+offset_right = 463.0
+offset_bottom = 315.0
+scale = Vector2(1.05882, 1.03226)

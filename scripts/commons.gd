@@ -107,7 +107,11 @@ var monster_stats = {
 				},
 				3: {
 					"stats": {
-						
+						"health": 250, 
+						"attack_power": 30, 
+						"attack_speed": 1.2, 
+						"attack_range": 30.0, 
+						"movement_speed": 110,
 					},
 					"cost": {
 						"resource1": 300, 
@@ -155,10 +159,175 @@ var monster_stats = {
 		MONSTER_KINDS.YIPEEEARCHER: {
 			"locked": false,
 			"name": "Yipee Archer",
+						"type": MONSTER_TYPES.RANGED,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 80, 
+						"attack_power": 10, 
+						"attack_speed": 1.0, 
+						"attack_range": 300.0, 
+						"movement_speed": 90,
+					},
+					"cost": {
+						"resource1": 100, 
+						"resource2": 200
+					},
+					"skills": {
+					}
+				},
+				2: {
+					"stats": {
+						"health": 85, 
+						"attack_power": 15, 
+						"attack_speed": 1.2, 
+						"attack_range": 310.0, 
+						"movement_speed": 93,
+					},
+					"cost": {
+						"resource1": 200, 
+						"resource2": 600, 
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 90, 
+						"attack_power": 20, 
+						"attack_speed": 1.4, 
+						"attack_range": 340.0, 
+						"movement_speed": 95,
+					},
+					"cost": {
+						"resource1": 300, 
+						"resource2": 900,
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 500, 
+						"resource2": 500, 
+						"resource3": 500
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 800, 
+						"resource2": 800, 
+						"resource3": 800
+					},
+					"skills": {
+						0: "snipe"
+					}
+				},
+			},
 		},
 		MONSTER_KINDS.YIPEEHORSE: {
 			"locked": false,
-			"name": "Yipee Cavalry"
+			"name": "Yipee Cavalry",
+						"type": MONSTER_TYPES.CAVALRY,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 30, 
+						"attack_speed": 0.5, 
+						"attack_range": 30.0, 
+						"movement_speed": 200,
+					},
+					"cost": {
+						"resource1": 150, 
+						"resource2": 100, 
+						"resource3": 300
+					},
+					"skills": {
+					}
+				},
+				2: {
+					"stats": {
+						"health": 250, 
+						"attack_power": 35, 
+						"attack_speed": 0.6, 
+						"attack_range": 30.0, 
+						"movement_speed": 215,
+					},
+					"cost": {
+						"resource1": 300, 
+						"resource2": 200, 
+						"resource3": 600
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 300, 
+						"attack_power": 40, 
+						"attack_speed": 0.7, 
+						"attack_range": 30.0, 
+						"movement_speed": 230,
+					},
+					"cost": {
+						"resource1": 300, 
+						"resource2": 300, 
+						"resource3": 300
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 500, 
+						"resource2": 500, 
+						"resource3": 500
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 800, 
+						"resource2": 800, 
+						"resource3": 800
+					},
+					"skills": {
+						0: "charge"
+					}
+				},
+			},
 		}
 }
 

@@ -30,8 +30,10 @@ func spawn_unit(monster_kind: MONSTER_KINDS, position: Vector2, is_enemy: bool):
 		monster_instance.is_enemy = is_enemy
 		if is_enemy:
 			monster_instance.add_to_group("enemies")
+			monster_instance.set_color(Color(1,0,0,1))
 		else:
 			monster_instance.add_to_group("allies")
+			monster_instance.set_color(Color(0,1,0,1))
 		print("Spawned unit: ", monster_kind, " at position: ", position, " (Enemy: ", is_enemy, ")")
 	else:
 		print("Error: unit_scene is not loaded.")

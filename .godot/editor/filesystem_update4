@@ -6,3 +6,7 @@ res://scripts/lab.gd
 res://scripts/tribe_management.gd
 res://scripts/monster.gd
 res://scripts/commons.gd
+res://nodes/healthbar.tscn
+res://scripts/healthbar.gd
+res://scripts/battlefield.gd
+res://nodes/Healthbar.tscn

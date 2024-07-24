@@ -1,7 +1,8 @@
 extends Commons
 
 # pre-init basic stats
-@export var health: int
+@export var health = 100
+@export var current_health: int
 @export var attack_power: int
 @export var attack_speed: float
 @export var attack_range: float
@@ -11,6 +12,8 @@ extends Commons
 # pre-init other stats
 var monster_kind: MONSTER_KINDS
 var monster_type: MONSTER_TYPES
+
+
 
 var target: Node2D = null # Variable to store the target node this unit will attack
 var attack_timer: float = 0.0 # Timer for handling attack intervals
@@ -35,12 +38,12 @@ func render(position, at):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
-
+	set_max_health(health)
+	set_current_health(health)
+	
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
 	if target and is_instance_valid(target):
 		var distance_to_target = position.distance_to(target.position)
 		if distance_to_target <= attack_range:
@@ -49,7 +52,7 @@ func _process(delta):
 			move_towards_target(target, delta)
 	else:
 		target = find_target(get_target())
-	
+
 
 # Function to set the target for the unit
 func find_target(targets: Array) -> Node2D:
@@ -96,8 +99,9 @@ func attack_target(target: Node2D, delta: float):
 
 
 func take_damage(amount: int):
-	health -= amount
-	if health <= 0:
+	current_health -= amount
+	set_current_health(current_health)
+	if current_health <= 0:
 		die()
 
 
@@ -111,13 +115,38 @@ func set_monster_kind(type: MONSTER_KINDS, level = 1):
 	self.monster_kind = type
 	var stats = monster_stats[monster_kind]
 	health = stats["levels"][level]["stats"]["health"]
+	current_health = health
 	attack_power = stats["levels"][level]["stats"]["attack_power"]
 	attack_speed = stats["levels"][level]["stats"]["attack_speed"]
 	attack_range = stats["levels"][level]["stats"]["attack_range"]
 	movement_speed = stats["levels"][level]["stats"]["movement_speed"]
 	monster_type = stats["type"]
 	skills = stats["levels"][level]["skills"]
+	
+	set_max_health(health)
+	set_current_health(health)
+		
+		
 	if not skills:
 		print("Monster has not skills")
 	$Sprite2D.texture = get_monster_textures(monster_kind, 1)
 	#self.sprite.texture = get_monster_textures(monster_kind, 1)
+
+#Healthbar
+func set_max_health(value: int):
+	$Healthbar.max_value = value
+	update_health_bar()
+
+func set_current_health(value: int):
+	current_health = value
+	update_health_bar()
+
+func update_health_bar():
+	$Healthbar.value = current_health
+
+func set_color(color: Color):
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = color
+	$Healthbar.add_theme_stylebox_override("fill", style_box)
+
+

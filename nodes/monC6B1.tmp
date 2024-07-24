@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://5h0gmqx8hwan"]
+[gd_scene load_steps=4 format=3 uid="uid://5h0gmqx8hwan"]
 
 [ext_resource type="Script" path="res://scripts/monster.gd" id="1_a8nu3"]
+[ext_resource type="PackedScene" uid="uid://dlwoxc2d6vggp" path="res://nodes/healthbar.tscn" id="2_cd2a7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bduuc"]
 size = Vector2(64, 64)
@@ -17,8 +18,4 @@ script = ExtResource("1_a8nu3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_bduuc")
 
-[node name="Healthbar" type="ProgressBar" parent="."]
-offset_left = -33.0
-offset_top = 34.0
-offset_right = 33.0
-offset_bottom = 61.0
+[node name="Healthbar" parent="." instance=ExtResource("2_cd2a7")]

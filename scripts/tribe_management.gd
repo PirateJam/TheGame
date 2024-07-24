@@ -15,6 +15,12 @@ func add_to_army(monster, level = 1):
 	print("Current army: ")
 	print(army)
 
+func level_monster(monster):
+	#TODO resource consumition
+	var unit_key = TribeManagement.army.find(monster)
+	print(unit_key)
+	print(monster)
+	TribeManagement.army[unit_key]["level"] += 1
 
 func clear_army():
 	army.clear()
