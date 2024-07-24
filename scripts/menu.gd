@@ -245,7 +245,18 @@ func _ready():
 	
 	# SETUP :D
 	
+	state_init()
 	
+	button_init()
+
+	
+	
+		
+	render = RENDERS.MAIN_MENU
+	reload_render()
+
+
+func button_init():
 	for button in state_ui_buttons:
 		print(button.id)
 		
@@ -256,11 +267,6 @@ func _ready():
 	for button in buttons:
 		print(button.id)
 		$menu_ui/buttons.add_child(button.gen_area())
-
-	render = RENDERS.MAIN_MENU
-	reload_render()
-
-
 
 func reload_render():
 	$menu_ui.visible = false
@@ -377,15 +383,16 @@ func draw_menu():
 func draw_map():
 	$map_ui.visible = true
 	stateVisibility(true)
+	queue_redraw()
 	
 	
 	
+	
+func state_init():
 	print("Initializing states:")
 	for state in states:
 		print(state.id)
 		add_child(state.gen_area())
-
-	
 	
 	# TREES
 	print("adding trees")
@@ -403,17 +410,40 @@ func draw_map():
 			var b: Vector2 = state.poly.polygon[triangles[3 * i + 1]]
 			var c: Vector2 = state.poly.polygon[triangles[3 * i + 2]]
 			cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
-		for i in range(6):
-			var tree = Sprite2D.new()
-			tree.offset.y = -32
-			tree.scale = Vector2(1,1)
-			tree.position = get_random_point(state.poly.polygon)
-			tree.texture = commons.tree_textures[randi() % commons.tree_textures.size()]
-			print(tree.position)
-			#$BACKGROUND_OBJ.
-			add_child(tree)
-			trees.append(tree)
-	queue_redraw()
+		match state.biome:
+			commons.BIOMES.FOREST:
+				for i in range(commons.forest_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.forest_trees[randi() % commons.forest_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.DESERT:
+				for i in range(commons.desert_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.desert_trees[randi() % commons.desert_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.SWAMP:
+				for i in range(commons.swamp_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.swamp_trees[randi() % commons.swamp_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
 
 
 

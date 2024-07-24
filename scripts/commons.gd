@@ -55,11 +55,31 @@ const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
 const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)
 const select_button_color = Color(0.847, 0.765, 0.015, 0.35)
 
+
+
 var tree_textures = [
 	load("res://assets/images/misc/tree1.png"),
 	load("res://assets/images/misc/tree2.png"),
 	load("res://assets/images/misc/tree3.png"),
+]														# OUTDATES / NOT USED
+
+var forest_trees = [
+	load("res://assets/images/misc/tree1.png"),
+	load("res://assets/images/misc/tree2.png"),
 ]
+
+var desert_trees = [
+	load("res://assets/images/misc/tree3.png"),
+]
+
+var swamp_trees = [
+	load("res://assets/images/misc/tree2.png"),
+]
+
+const forest_trees_amount = 8
+const swamp_trees_amount = 10
+const desert_trees_amount = 4
+
 
 
 
