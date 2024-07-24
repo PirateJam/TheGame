@@ -69,30 +69,99 @@ var font_data = load("res://assets/fonts/DaysOne.ttf")
 #Monsters Data
 var monster_stats = {
 	MONSTER_KINDS.YIPEEE: {
-		"locked": false,
-		"name": "Yipee", "health": 150, "attack_power": 20, "attack_speed": 1.5, "attack_range": 30.0, "movement_speed": 100, "type": MONSTER_TYPES.MEELEE,
-		"costs": {
-			"recruit": {"resource1": 100, "resource2": 100, "resource3": 100},
-			"upgrade": {}
+			"locked": false,
+			"name": "Yipee", 
+			"type": MONSTER_TYPES.MEELEE,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 100, 
+						"attack_power": 20, 
+						"attack_speed": 1.0, 
+						"attack_range": 30.0, 
+						"movement_speed": 100,
+					},
+					"cost": {
+						"resource1": 100, 
+						"resource2": 100, 
+						"resource3": 100
+					},
+					"skills": {
+					}
+				},
+				2: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 200, 
+						"resource2": 200, 
+						"resource3": 200
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						
+					},
+					"cost": {
+						"resource1": 300, 
+						"resource2": 300, 
+						"resource3": 300
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 500, 
+						"resource2": 500, 
+						"resource3": 500
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 30.0, 
+						"movement_speed": 105,
+					},
+					"cost": {
+						"resource1": 800, 
+						"resource2": 800, 
+						"resource3": 800
+					},
+					"skills": {
+						0: "strong_attack"
+					}
+				},
+			},
 		},
-	},
-	MONSTER_KINDS.YIPEEEARCHER: {
-		"locked": false,
-		"name": "Yipee Archer", "health": 80, "attack_power": 15, "attack_speed": 1.0, "attack_range": 200.0, "movement_speed": 80, "type": MONSTER_TYPES.RANGED,
-		"costs": {
-			"recruit": {"resource1": 100, "resource2": 200, "resource3": 50,},
-			"upgrade": {}
+		MONSTER_KINDS.YIPEEEARCHER: {
+			"locked": false,
+			"name": "Yipee Archer",
 		},
-	},
-	MONSTER_KINDS.YIPEEHORSE: {
-		"locked": false,
-		"name": "Yipee Cavalry", "health": 100, "attack_power": 20, "attack_speed": 2.0, "attack_range": 30.0, "movement_speed": 150, "type": MONSTER_TYPES.CAVALRY,
-		"costs": {
-			"recruit": {"resource1": 200, "resource2": 150, "resource3": 150},
-			"upgrade": {}
-		},
-	}
+		MONSTER_KINDS.YIPEEHORSE: {
+			"locked": false,
+			"name": "Yipee Cavalry"
+		}
 }
+
 
 
 # Called when the node enters the scene tree for the first time.

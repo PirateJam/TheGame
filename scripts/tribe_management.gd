@@ -1,18 +1,23 @@
-extends Node
+extends Commons
 #For tribe and army management
 
 var resources = {}
-var units_state = []
+var army = []
 
 
-func save_unit_state(unit):
-	var unit_info = {
-		"type": unit.unit_type,
+func add_to_army(monster, level = 1):
+	var monster_info = {
+		"kind": monster,
+		"name": monster_stats[monster]["name"],
+		"level": level,
 	}
-	units_state.append(unit_info)
+	army.append(monster_info)
+	print("Current army: ")
+	print(army)
 
-func clear_units_state():
-	units_state.clear()
+
+func clear_army():
+	army.clear()
 
 
 func spend_resources(resources_cost) -> bool:
@@ -44,7 +49,6 @@ func _ready():
 	resources["resource1"] = 999999
 	resources["resource2"] = 999999
 	resources["resource3"] = 999999
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

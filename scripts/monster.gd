@@ -6,6 +6,7 @@ extends Commons
 @export var attack_speed: float
 @export var attack_range: float
 @export var movement_speed: float
+@export var skills: Dictionary
 
 # pre-init other stats
 var monster_kind: MONSTER_KINDS
@@ -20,12 +21,11 @@ var sprite: Sprite2D
 
 
 #foko stuff
-func _init(id, kind, level=1):
+"""func _init(id, kind, level=1):
 	self.level = level
 	self.sprite = Sprite2D.new()
 	self.set_monster_kind(kind)
-	pass
-	
+	"""
 func render(position, at):
 	self.sprite.position = position
 	
@@ -107,13 +107,17 @@ func die():
 	queue_free()
 
 
-func set_monster_kind(type: MONSTER_KINDS):
+func set_monster_kind(type: MONSTER_KINDS, level = 1):
 	self.monster_kind = type
 	var stats = monster_stats[monster_kind]
-	health = stats["health"]
-	attack_power = stats["attack_power"]
-	attack_speed = stats["attack_speed"]
-	attack_range = stats["attack_range"]
-	movement_speed = stats["movement_speed"]
+	health = stats["levels"][level]["stats"]["health"]
+	attack_power = stats["levels"][level]["stats"]["attack_power"]
+	attack_speed = stats["levels"][level]["stats"]["attack_speed"]
+	attack_range = stats["levels"][level]["stats"]["attack_range"]
+	movement_speed = stats["levels"][level]["stats"]["movement_speed"]
 	monster_type = stats["type"]
-	self.sprite.texture = get_monster_textures(monster_kind, 1)
+	skills = stats["levels"][level]["skills"]
+	if not skills:
+		print("Monster has not skills")
+	$Sprite2D.texture = get_monster_textures(monster_kind, 1)
+	#self.sprite.texture = get_monster_textures(monster_kind, 1)
