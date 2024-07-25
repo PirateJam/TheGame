@@ -46,7 +46,7 @@ layout_mode = 0
 offset_right = 228.0
 offset_bottom = 324.0
 
-[node name="StatsResume" type="VBoxContainer" parent="UpgradeMenu"]
+[node name="StatsResume" type="VBoxContainer" parent="."]
 offset_left = 256.0
 offset_right = 463.0
 offset_bottom = 315.0

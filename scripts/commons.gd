@@ -87,7 +87,8 @@ var monster_stats = {
 						"resource2": 100, 
 						"resource3": 100
 					},
-					"skills": {
+					"skills": { 
+						0: "Strong Attack"
 					}
 				},
 				2: {
@@ -152,7 +153,7 @@ var monster_stats = {
 						"resource3": 800
 					},
 					"skills": {
-						0: "Strong attack"
+						0: "Strong Attack"
 					}
 				},
 			},
