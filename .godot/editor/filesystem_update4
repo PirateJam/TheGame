@@ -1,12 +1,7 @@
+res://nodes/lab.tscn
+res://scripts/tribe_management.gd
 res://nodes/node_2d.tscn
 res://nodes/monster.tscn
-res://nodes/lab.tscn
 res://nodes/battlefield.tscn
-res://scripts/lab.gd
-res://scripts/tribe_management.gd
-res://scripts/monster.gd
 res://scripts/commons.gd
-res://nodes/healthbar.tscn
-res://scripts/healthbar.gd
-res://scripts/battlefield.gd
-res://nodes/Healthbar.tscn
+res://scripts/lab.gd

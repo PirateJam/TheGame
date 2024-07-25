@@ -39,9 +39,15 @@ func populate_upgrade_menu():
 	for unit in TribeManagement.army:
 		var button = Button.new()
 		button.text = unit['name'] + " Level: " + str(unit["level"])
+		if unit["level"] < max_level:
+			print("Unit level:::::::::::")
+			print( unit["level"])
+			button.connect("pressed", Callable(self, "_on_Upgrade_Monster").bindv([unit]))
+		else:
+			button.text = unit['name'] + " Max Level"
+			button.disabled = true
+			
 		button.connect("mouse_entered", Callable(self, "_on_Monster_Button_Hovered").bindv([unit]))
-		button.connect("pressed", Callable(self, "_on_Upgrade_Monster").bindv([unit]))
-		#TODO disble button if unit is max level or not resources to upgrade.
 		vbox.add_child(button)
 
 	#Create Back Button
@@ -50,6 +56,12 @@ func populate_upgrade_menu():
 	back.name = "Back"
 	back.connect("pressed", Callable(self, "_on_Upgrade_Button_Pressed"))
 	vbox.add_child(back)
+
+func populate_info_labels(labels):
+	for label_text in labels:
+		var label = Label.new()
+		label.text = label_text
+		vbox.add_child(label)
 
 func _on_Recruit_Button_Pressed():
 	print("test1 - recruit button press")
@@ -78,9 +90,8 @@ func update_monster_stats(monster: Dictionary):
 	for child in vbox.get_children():
 		child.queue_free()
 		
+		
 	var monster_details = monster_stats[monster["kind"]]
-
-	
 	var current_stats = [
 		"Level: " + str(monster["level"]),
 		"Health: " + str(monster_details["levels"][monster["level"]]["stats"]["health"]),
@@ -88,45 +99,65 @@ func update_monster_stats(monster: Dictionary):
 		"Attack Speed: " + str(monster_details["levels"][monster["level"]]["stats"]["attack_speed"]),
 		"Attack Range: " + str(monster_details["levels"][monster["level"]]["stats"]["attack_range"]),
 		"Movement Speed: " + str(monster_details["levels"][monster["level"]]["stats"]["movement_speed"]),
-		"Skills: " + str(monster_details["levels"][monster["level"]]["skills"])
 	]
-	#TODO bock this when the monster is at max level
-	var upgraded_stats = [
-		"Level: " + str(monster["level"]+1),
-		"Health: " + str(monster_details["levels"][monster["level"]+1]["stats"]["health"]),
-		"Attack Power: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_power"]),
-		"Attack Speed: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_speed"]),
-		"Attack Range: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_range"]),
-		"Movement Speed: " + str(monster_details["levels"][monster["level"]+1]["stats"]["movement_speed"]),
-		"Skills: " + str(monster_details["levels"][monster["level"]]["skills"])
-	]
-	#Resources cost
-	var upgrade_cost = {}
-	for resource in monster_details["levels"][monster["level"]+1]["cost"]:
-		upgrade_cost[resource] = monster_details["levels"][monster["level"]+1]["cost"][resource]
+	var current_skills = []
+	for skill in monster_details["levels"][monster["level"]]["skills"]:
+		current_skills.append(monster_details["levels"][monster["level"]]["skills"][skill])
+
 	
-	var costLabel = Label.new()
-	costLabel.text = "Resource cost: "
-	vbox.add_child(costLabel)
-	
-	for cost in upgrade_cost:
-		var label = Label.new()
-		label.text = cost + ": " + str(upgrade_cost[cost])
-		vbox.add_child(label)
+	if monster["level"] < max_level:
+		var upgraded_stats = [
+			"Level: " + str(monster["level"]+1),
+			"Health: " + str(monster_details["levels"][monster["level"]+1]["stats"]["health"]),
+			"Attack Power: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_power"]),
+			"Attack Speed: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_speed"]),
+			"Attack Range: " + str(monster_details["levels"][monster["level"]+1]["stats"]["attack_range"]),
+			"Movement Speed: " + str(monster_details["levels"][monster["level"]+1]["stats"]["movement_speed"]),
+		]
 		
-	for stat in current_stats:
-		var label = Label.new()
-		label.text = stat
-		vbox.add_child(label)
+		var upgrade_skills = []
+		for skill in monster_details["levels"][monster["level"]+1]["skills"]:
+			upgrade_skills.append( monster_details["levels"][monster["level"]+1]["skills"][skill])
 		
-	var upgradeLabel = Label.new()
-	upgradeLabel.text = "Upgrades To: "
-	vbox.add_child(upgradeLabel)
+		#Resources cost
+		var upgrade_cost = []
+		for resource in monster_details["levels"][monster["level"]+1]["cost"]:
+			upgrade_cost.append(resource + ": " + str(monster_details["levels"][monster["level"]+1]["cost"][resource]))
 		
-	for stat in upgraded_stats:
-		var label = Label.new()
-		label.text = stat
-		vbox.add_child(label)
+		#Cost labels
+		var costLabel = Label.new()
+		costLabel.text = "Resource cost: "
+		vbox.add_child(costLabel)
+		populate_info_labels(upgrade_cost)
+		
+		#stats labels
+		populate_info_labels(current_stats)
+		var skillLabel = Label.new()
+		skillLabel.text = "Skills: "
+		vbox.add_child(skillLabel)
+		populate_info_labels(current_skills)
+		
+		#upgrade labels
+		var upgradeLabel = Label.new()
+		upgradeLabel.text = "Upgrades To: "
+		vbox.add_child(upgradeLabel)
+		populate_info_labels(upgraded_stats)
+		var upgradeSkillLabel = Label.new()
+		upgradeSkillLabel.text = "Skills: "
+		vbox.add_child(upgradeSkillLabel)
+		populate_info_labels(upgrade_skills)
+		
+	else:
+		var upgradeLabel = Label.new()
+		upgradeLabel.text = "MAX LEVEL REACHED"
+		vbox.add_child(upgradeLabel)
+		populate_info_labels(current_stats)
+		
+		var skillLabel = Label.new()
+		skillLabel.text = "Skills: "
+		vbox.add_child(skillLabel)
+		populate_info_labels(current_skills)
+		
 
 func _on_Recruit_Monster(monster):
 	var monster_details = monster_stats[MONSTER_KINDS[monster]]

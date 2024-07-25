@@ -20,7 +20,11 @@ func level_monster(monster):
 	var unit_key = TribeManagement.army.find(monster)
 	print(unit_key)
 	print(monster)
-	TribeManagement.army[unit_key]["level"] += 1
+	var costs = monster_stats[monster["kind"]]["levels"][monster["level"]+1]["cost"]
+	if spend_resources(costs):
+		TribeManagement.army[unit_key]["level"] += 1
+	else:
+		print("More Resources needed")
 
 func clear_army():
 	army.clear()

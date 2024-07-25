@@ -148,5 +148,3 @@ func set_color(color: Color):
 	var style_box = StyleBoxFlat.new()
 	style_box.bg_color = color
 	$Healthbar.add_theme_stylebox_override("fill", style_box)
-
-

@@ -67,6 +67,7 @@ var font_data = load("res://assets/fonts/DaysOne.ttf")
 
 
 #Monsters Data
+var max_level = 5
 var monster_stats = {
 	MONSTER_KINDS.YIPEEE: {
 			"locked": false,
@@ -151,7 +152,7 @@ var monster_stats = {
 						"resource3": 800
 					},
 					"skills": {
-						0: "strong_attack"
+						0: "Strong attack"
 					}
 				},
 			},
@@ -236,7 +237,7 @@ var monster_stats = {
 						"resource3": 800
 					},
 					"skills": {
-						0: "snipe"
+						0: "Snipe"
 					}
 				},
 			},
@@ -324,7 +325,7 @@ var monster_stats = {
 						"resource3": 800
 					},
 					"skills": {
-						0: "charge"
+						0: "Charge"
 					}
 				},
 			},
