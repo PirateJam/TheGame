@@ -1,0 +1,27 @@
+Peace
+BPM - 165
+Time signature 6/8
+Intro: 16 bars
+Loop: from bar 17 to 88 (72 bars of loop)
+Loop starting from 1:36:000
+
+Combat A
+BPM - 207
+Time signature: 6/8
+Intro: 16 bars
+Loop: from bar 17 to 96 (80 bars of loop)
+Loop starting from 1:23:478
+
+Combat B
+BPM - 222
+Time signature: 3/4
+Intro: 32 bars
+Loop: from bar 33 to 128 (96 bars of loop)
+Loop starting from 1:51:304
+
+Combat C
+BPM - 314
+Time signature 4/4
+Intro: 16 bars
+Loop: from bar 17 to 112 (96 bars of loop)
+Loop starting from 1:25:600 

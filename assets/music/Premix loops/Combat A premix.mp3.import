@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b8i8ynmprdl7c"
+path="res://.godot/imported/Combat A premix.mp3-7ce796a642fe4f95550aefaae40e4b1f.mp3str"
+
+[deps]
+
+source_file="res://assets/music/Premix loops/Combat A premix.mp3"
+dest_files=["res://.godot/imported/Combat A premix.mp3-7ce796a642fe4f95550aefaae40e4b1f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

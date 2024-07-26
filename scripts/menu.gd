@@ -1,6 +1,7 @@
 @tool
 extends Node2D
 
+@export var monster_scene: PackedScene = preload("res://nodes/monster.tscn")
 var utils = load("res://scripts/utils.gd").new()
 var state_supplier = load("res://scripts/state.gd")
 var menu_supplier = load("res://scripts/menu_supplier.gd")
@@ -8,7 +9,6 @@ var menu_supplier = load("res://scripts/menu_supplier.gd")
 var logger = load("res://scripts/logger.gd").new()
 
 var commons = load("res://scripts/commons.gd").new()
-
 var font
 var states = []
 var trees = []
@@ -170,11 +170,15 @@ func building_mode():
 func _ready():
 	font = FontFile.new()
 	font.font_data = commons.font_data
-	
+
+	### DEFAULT MONSTERS
+
 	
 	### SETUP_STATES
 	var player_state = state_supplier.new("Shadow Empire", Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, [
-		Vector2.LEFT*9+Vector2.DOWN*3, Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
+		Vector2.LEFT*9+Vector2.DOWN*3,
+		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, 
+		Vector2.DOWN*9,Vector2.RIGHT*16 + Vector2.UP*2,
 		Vector2.RIGHT*5,
 		Vector2.UP*15+Vector2.RIGHT*5
 	].map(resize), 
@@ -182,12 +186,12 @@ func _ready():
 		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, commons.ROTATION.FRONT)
 	],
 	[
-		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+		#ARMY
 	],
 	{
-		"wood": 100,
-		"iron": 100,
-		"elixir": 50,
+		commons.RESOURCES.WOOD: 100,
+		commons.RESOURCES.IRON: 100,
+		commons.RESOURCES.ELIXIR: 50,	#or something
 	})
 	
 	player_state.controlled = true
@@ -204,7 +208,7 @@ func _ready():
 		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
 	],
 	[
-		load("res://scripts/monster.gd").new("Yipee", commons.MONSTER_KINDS.YIPEEE)
+		#ARMY
 	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
 	
@@ -215,6 +219,24 @@ func _ready():
 		
 	].map(resize))
 	states.append(basic_state2)
+	
+	var lake1 = state_supplier.new("Lake 1", Vector2.ZERO+ 148*Vector2.DOWN + 32*Vector2.RIGHT, [
+		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,
+		Vector2.LEFT*10, Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10, 
+		
+	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
+	states.append(lake1)
+	
+	var swamp1 = state_supplier.new("Swamp 1", Vector2.ZERO+ 448*Vector2.DOWN + 98*Vector2.LEFT, [
+		Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10,
+		Vector2.LEFT*15+Vector2.UP*5,Vector2.DOWN*10+Vector2.LEFT*5,
+		Vector2.RIGHT*2+Vector2.DOWN*5,Vector2.LEFT*2+Vector2.DOWN*5, Vector2.DOWN*8+Vector2.RIGHT, Vector2.DOWN*4+Vector2.LEFT, Vector2.RIGHT*5
+		
+	].map(resize), [], [], {}, commons.BIOMES.SWAMP)
+	states.append(swamp1)
+	
+	
+	
 	
 	
 	### MAIN_MENU BUTTONS
@@ -241,11 +263,22 @@ func _ready():
 	state_ui_buttons.append(build_button)
 	
 	
-	
+	#hey @darkran , sorry to bother ya again. But army is initialized in state as a list of `monster.gd`, ho
 	
 	# SETUP :D
 	
+	state_init()
 	
+	button_init()
+
+	
+	
+		
+	render = RENDERS.MAIN_MENU
+	reload_render()
+
+
+func button_init():
 	for button in state_ui_buttons:
 		print(button.id)
 		
@@ -256,11 +289,6 @@ func _ready():
 	for button in buttons:
 		print(button.id)
 		$menu_ui/buttons.add_child(button.gen_area())
-
-	render = RENDERS.MAIN_MENU
-	reload_render()
-
-
 
 func reload_render():
 	$menu_ui.visible = false
@@ -319,11 +347,14 @@ func armyVisibility(bol):
 				var c: Vector2 = peeked_state.poly.polygon[triangles[3 * i + 2]]
 				cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
 			for x in peeked_state.army:
-				#x.position = get_random_point(peeked_state.poly.polygon)
-				x.render(get_random_point(peeked_state.poly.polygon), self)
+				x.position = get_random_point(peeked_state.poly.polygon)
+				x.visible = true
+				print(x.position)
+				#x.render(get_random_point(peeked_state.poly.polygon), self)
+				
 		else:
 			for x in peeked_state.army:
-				x.sprite.visible = false
+				x.visible = false
 
 var peeked_state
 
@@ -361,11 +392,18 @@ func draw_state():
 
 
 func _process(delta):
-	if Input.is_action_pressed("key_exit"):
-		render = RENDERS.MAIN_MENU
-		print("ESC")
-		reload_render()
-		queue_redraw()
+	if Input.is_action_just_pressed("key_exit"):
+		match render:
+			RENDERS.MAP:
+				render = RENDERS.MAIN_MENU
+				reload_render()
+				queue_redraw()
+			RENDERS.STATE:
+				render = RENDERS.MAP
+				reload_render()
+				queue_redraw()
+
+
 
 func draw_menu():
 	$menu_ui.visible = true
@@ -377,20 +415,21 @@ func draw_menu():
 func draw_map():
 	$map_ui.visible = true
 	stateVisibility(true)
+	queue_redraw()
 	
 	
 	
+	
+func state_init():
 	print("Initializing states:")
 	for state in states:
 		print(state.id)
 		add_child(state.gen_area())
-
-	
 	
 	# TREES
 	print("adding trees")
-	
-	for state in states:
+
+	'''for state in states:
 		print("adding trees for", state.id)
 		triangles = Geometry2D.triangulate_polygon(state.poly.polygon)
 		_rand = RandomNumberGenerator.new()
@@ -403,17 +442,40 @@ func draw_map():
 			var b: Vector2 = state.poly.polygon[triangles[3 * i + 1]]
 			var c: Vector2 = state.poly.polygon[triangles[3 * i + 2]]
 			cumulated_areas[i] = cumulated_areas[i - 1] + triangle_area(a, b, c)
-		for i in range(6):
-			var tree = Sprite2D.new()
-			tree.offset.y = -32
-			tree.scale = Vector2(1,1)
-			tree.position = get_random_point(state.poly.polygon)
-			tree.texture = commons.tree_textures[randi() % commons.tree_textures.size()]
-			print(tree.position)
-			#$BACKGROUND_OBJ.
-			add_child(tree)
-			trees.append(tree)
-	queue_redraw()
+		match state.biome:
+			commons.BIOMES.FOREST:
+				for i in range(commons.forest_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.forest_trees[randi() % commons.forest_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.DESERT:
+				for i in range(commons.desert_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.desert_trees[randi() % commons.desert_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.SWAMP:
+				for i in range(commons.swamp_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.swamp_trees[randi() % commons.swamp_trees.size()]
+					print(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)'''
 
 
 

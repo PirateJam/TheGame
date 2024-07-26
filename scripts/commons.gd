@@ -1,7 +1,8 @@
 extends Node2D
 class_name Commons
 
-enum BIOMES {FOREST, DESERT, SWAMP}
+enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
+enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
@@ -15,6 +16,10 @@ func get_biome_texture(biome: BIOMES):
 			return load("res://assets/images/biomes/forest.png")
 		BIOMES.DESERT:
 			return load("res://assets/images/biomes/desert.png")
+		BIOMES.SWAMP:
+			return load("res://assets/images/biomes/swamp.png")
+		BIOMES.WATER_BODY:
+			return load("res://assets/images/biomes/water.png")
 
 func get_building_textures(kind: BUILDING_KINDS, level: int):
 	if level>5 or level<0:
@@ -55,11 +60,31 @@ const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
 const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)
 const select_button_color = Color(0.847, 0.765, 0.015, 0.35)
 
+
+
 var tree_textures = [
 	load("res://assets/images/misc/tree1.png"),
 	load("res://assets/images/misc/tree2.png"),
 	load("res://assets/images/misc/tree3.png"),
+]														# OUTDATES / NOT USED
+
+var forest_trees = [
+	load("res://assets/images/misc/tree1.png"),
+	load("res://assets/images/misc/tree2.png"),
 ]
+
+var desert_trees = [
+	load("res://assets/images/misc/tree3.png"),
+]
+
+var swamp_trees = [
+	load("res://assets/images/misc/tree2.png"),
+]
+
+const forest_trees_amount = 8
+const swamp_trees_amount = 10
+const desert_trees_amount = 4
+
 
 
 

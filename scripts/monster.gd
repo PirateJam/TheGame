@@ -23,18 +23,6 @@ var level: int = -1
 var sprite: Sprite2D
 
 
-#foko stuff
-"""func _init(id, kind, level=1):
-	self.level = level
-	self.sprite = Sprite2D.new()
-	self.set_monster_kind(kind)
-	"""
-func render(position, at):
-	self.sprite.position = position
-	
-	at.add_child(self.sprite)
-#foko end
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -55,6 +43,8 @@ func _process(delta):
 	# Update skill cooldowns
 	for skill_name in skill_timers.keys():
 		skill_timers[skill_name] -= delta
+
+
 
 
 # Function to set the target for the unit
@@ -124,6 +114,8 @@ func set_monster_kind(type: MONSTER_KINDS, level = 1):
 	attack_range = stats["levels"][level]["stats"]["attack_range"]
 	movement_speed = stats["levels"][level]["stats"]["movement_speed"]
 	monster_type = stats["type"]
+
+
 	for skill in stats["levels"][level]["skills"]:
 		skills = [load("res://nodes/skills/" + stats["levels"][level]["skills"][skill].replace(" ", "") + ".tres" )]
 	

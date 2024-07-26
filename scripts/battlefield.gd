@@ -24,6 +24,7 @@ func _process(delta):
 func spawn_unit(monster_kind: MONSTER_KINDS, position: Vector2, is_enemy: bool):
 	if monster_scene:
 		var monster_instance = monster_scene.instantiate()
+		
 		add_child(monster_instance)
 		monster_instance.position = position
 		monster_instance.set_monster_kind(monster_kind)
