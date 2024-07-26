@@ -61,10 +61,10 @@ func _process(delta):
 			#zoom = Vector2(commons.state_view_zoom, commons.state_view_zoom)
 			
 			
-			if get_viewport().get_mouse_position().x<border_range or (get_viewport().size.x-get_viewport().get_mouse_position().x)<border_range:
-				offset.x = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).x
-			if get_viewport().get_mouse_position().y<border_range or (get_viewport().size.y-get_viewport().get_mouse_position().y)<border_range:
-				offset.y = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).y
+			#if get_viewport().get_mouse_position().x<border_range or (get_viewport().size.x-get_viewport().get_mouse_position().x)<border_range:
+			#	offset.x = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).x
+			#if get_viewport().get_mouse_position().y<border_range or (get_viewport().size.y-get_viewport().get_mouse_position().y)<border_range:
+			#	offset.y = offset.move_toward(Vector2((-get_viewport().size/2).x, (-get_viewport().size/2).y) + (viewPortMousePos), 1*move_speed).y
 			
 			
 			

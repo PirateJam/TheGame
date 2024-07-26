@@ -3,7 +3,7 @@ extends Commons
 
 var resources = {}
 var army = []
-
+var buildings = []
 
 func add_to_army(monster, level = 1):
 	var monster_info = {
@@ -14,6 +14,17 @@ func add_to_army(monster, level = 1):
 	army.append(monster_info)
 	print("Current army: ")
 	print(army)
+func add_to_buildings(building, state, position, level = 1):
+	var building_info = {
+		"kind": building,
+		#"name": monster_stats[monster]["name"],
+		"state": state,								# BUILDINGS ARE PER STATE
+		"position": position,
+		"level": level,
+	}
+	buildings.append(building_info)
+	print("Current buildings: ")
+	print(buildings)
 
 func level_monster(monster):
 	#TODO resource consumition

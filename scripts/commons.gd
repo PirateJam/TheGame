@@ -10,6 +10,14 @@ enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example m
 enum BUILDING_KINDS {WALL, WITCH_HUT, }
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
 
+var building_info = {
+	BUILDING_KINDS.WALL: {
+		"cost": {RESOURCES.WOOD: 100, RESOURCES.IRON: 20},
+		"rotatable": true,
+		"texture": get_building_textures(BUILDING_KINDS.WALL, 1)
+	}
+}
+
 func get_biome_texture(biome: BIOMES):
 	match biome:
 		BIOMES.FOREST:
@@ -43,9 +51,12 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
+var aim_cursor = load("res://assets/images/misc/crosshair.png")
+
 
 const map_size = 10
 const state_view_zoom = 1.5
+
 
 const controlled_default_state_color = Color(0.4, 1, 0.4, 0.3)
 const controlled_hover_state_color = Color(0.4, 1, 0.4, 0.5)

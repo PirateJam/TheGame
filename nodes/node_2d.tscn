@@ -17,6 +17,14 @@ monster_scene = null
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
 
+[node name="building_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="options" type="Sprite2D" parent="building_ui"]
+position = Vector2(577, 340)
+scale = Vector2(1.29297, 1.4375)
+texture = ExtResource("3_atnsh")
+
 [node name="state_ui" type="CanvasLayer" parent="."]
 visible = false
 
