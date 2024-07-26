@@ -187,6 +187,9 @@ func building_picked(kind):
 
 
 func _process(delta):
+	if !$AudioStreamPlayer2D.is_playing():
+		$AudioStreamPlayer2D.stream = commons.default_soundtrack
+		$AudioStreamPlayer2D.play()
 	if Input.is_action_just_pressed("key_exit"):
 		match render:
 			RENDERS.MAP:
@@ -207,6 +210,7 @@ func _process(delta):
 				#var sprite = Sprite2D.new()
 				var building_i = commons.building_info[to_build]
 				add_child(building.get_area())
+				peeked_state.buildings.append(building)
 				
 			AIMING_MODES.SETUP_ATTACK:
 				Input.set_custom_mouse_cursor(null)		# default cursor6

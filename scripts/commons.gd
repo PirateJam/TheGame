@@ -10,6 +10,12 @@ enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example m
 enum BUILDING_KINDS {WALL, WITCH_HUT, }
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
 
+
+var default_soundtrack = preload("res://assets/music/peace_A.mp3")
+var combat1_soundtrack = preload("res://assets/music/combat_A.mp3")
+var combat2_soundtrack = preload("res://assets/music/combat_B.mp3")
+
+
 var building_info = {
 	BUILDING_KINDS.WALL: {
 		"cost": {RESOURCES.WOOD: 100, RESOURCES.IRON: 20},
