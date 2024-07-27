@@ -61,7 +61,7 @@ func spend_resources(resources_cost) -> bool:
 func add_resources(resources_amount):
 	for resource in resources_amount:
 		resources[resource] += resources_amount[resource]
-		print("Adding " + resource + " " + resources_amount[resource])
+		print("Adding " + str(resource) + " " + str(resources_amount[resource]))
 
 
 

@@ -17,15 +17,19 @@ var combatB_soundtrack = preload("res://assets/music/premix_loops/combatB_premix
 var combatC_soundtrack = preload("res://assets/music/premix_loops/combatC_premix.mp3")
 
 
+var resource_gain_delay = 30	# 30 seconds
+
 var building_info = {
 	BUILDING_KINDS.WALL: {
 		"cost": {"WOOD": 100, "IRON": 20},
 		"rotatable": true,
+		"passive_resource_gain": {},
 		"texture": get_building_textures(BUILDING_KINDS.WALL, 1)
 	},
 	BUILDING_KINDS.COMMANDER_CAMP: {
 		"cost": {"WOOD": 100, "IRON": 100},
 		"rotatable": false,
+		"passive_resource_gain": {"WOOD": 50},
 		"texture": get_building_textures(BUILDING_KINDS.COMMANDER_CAMP, 1)
 	}
 }

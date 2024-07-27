@@ -190,6 +190,20 @@ func building_picked(kind):
 	cutscene.cutscene($cutscene_ui, "Building", "Now, point where the building shall rise", commons.get_building_textures(to_build)[0])
 
 
+
+
+
+func passive_resource_gain(delay):
+	while true:
+		await get_tree().create_timer(delay).timeout
+		for state in states:
+			if state.controlled:
+				for i in state.buildings:
+					TribeManagement.add_resources(commons.building_info[i.kind]['passive_resource_gain'])
+
+
+
+
 func _process(delta):
 	if !$AudioStreamPlayer2D.is_playing():
 		if peeked_state:
@@ -226,19 +240,25 @@ func _process(delta):
 				TribeManagement.spend_resources(building_i["cost"])
 				add_child(building.get_area())
 				peeked_state.buildings.append(building)
+				cutscene.cutscene($cutscene_ui, "Building", "Congratulations! Now you can left-click the building to show info about it.", commons.get_building_textures(to_build)[0]) ### TODO
 			
 			
 			AIMING_MODES.SETUP_ATTACK:
 				Input.set_custom_mouse_cursor(null)		# default cursor6
 				aiming = AIMING_MODES.NONE
 				print(get_global_mouse_position())
-				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT)
+				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, Callable(self, "monster_choice"))
 				#var sprite = Sprite2D.new()
 				var building_i = commons.building_info[commons.BUILDING_KINDS.COMMANDER_CAMP]
 				add_child(building.get_area())
 				peeked_state.buildings.append(building)
+				#cutscene.cutscene($cutscene_ui, "Building", "Congratulations! Now you can left-click the building to show info about it.", commons.get_building_textures(to_build)[0])
 				
-				#cutscene("Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!")
+				cutscene.cutscene($cutscene_ui, "Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!\n Left click on the camp to go into next stage of preparation.", null)
+
+func monster_choice():
+	pass ### FOR TOMORROW 
+
 
 func _ready():
 	
@@ -479,6 +499,9 @@ func _ready():
 
 	
 	
+	
+	
+	
 	### MAIN_MENU BUTTONS
 	var map_button = menu_supplier.new("Play", Vector2.DOWN*50 + Vector2.LEFT*550,
 	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
@@ -490,6 +513,9 @@ func _ready():
 	 [Vector2.RIGHT*120, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.DOWN*15, Vector2.LEFT*5+Vector2.DOWN*5, Vector2.LEFT*120, Vector2.LEFT*5+Vector2.UP*5, Vector2.UP*15]
 	, null, null, exit, font)
 	buttons.append(exit_button)
+
+
+
 
 
 
@@ -508,7 +534,7 @@ func _ready():
 	# SETUP :D
 	
 	state_init()
-	
+	passive_resource_gain(commons.resource_gain_delay)
 	button_init()
 	$cutscene_ui/field.modulate.a = 0.8
 	$cutscene_ui/field/close.connect("button_up", Callable(self, "close_cutscene"))
@@ -663,7 +689,7 @@ func draw_menu():
 
 func draw_map():
 	if first_time_map:
-		cutscene.cutscene($cutscene_ui, "Map View", "This is map view. Here you can see all the states. States controlled by you are highlighted, There you can start building your empire! Controls are listen on the left.", null)
+		cutscene.cutscene($cutscene_ui, "Map View", "This is map view. Here you can see all the states. States controlled by you are highlighted, There you can start building your empire!\n Controls are listen on the right.", null)
 		first_time_map = false
 	$map_ui.visible = true
 	stateVisibility(true)
