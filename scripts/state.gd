@@ -52,6 +52,8 @@ func gen_poly() -> CollisionPolygon2D:
 	else:
 		self.color_obj.color = commons.default_state_color
 	self.color_obj.texture = commons.get_biome_texture(self.biome)
+	self.color_obj.texture_scale = Vector2(4,4)
+
 	return self.poly
 
 func gen_area() -> Area2D:

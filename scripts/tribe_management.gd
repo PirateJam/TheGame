@@ -67,9 +67,12 @@ func add_resources(resources_amount):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	resources["resource1"] = 999999
-	resources["resource2"] = 999999
-	resources["resource3"] = 999999
+	for i in RESOURCES:
+		resources[i] = 5000
+	print("RESOURCES: ", resources)
+	#resources["resource1"] = 999999
+	#resources["resource2"] = 999999
+	#resources["resource3"] = 999999
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
