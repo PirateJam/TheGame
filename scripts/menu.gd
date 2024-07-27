@@ -257,7 +257,7 @@ func _process(delta):
 				cutscene.cutscene($cutscene_ui, "Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!\n Left click on the camp to go into next stage of preparation.", null)
 
 func monster_choice():
-	pass ### FOR TOMORROW 
+	pass ### FOR TOMORROW
 
 
 func _ready():
