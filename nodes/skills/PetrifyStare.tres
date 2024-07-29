@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://cxcsbvgxwh5eb"]
+
+[ext_resource type="Script" path="res://scripts/skill_resource.gd" id="1_3rmnj"]
+
+[resource]
+script = ExtResource("1_3rmnj")
+name = "Petrify Stare"
+cooldown = 15.0
+effects = [{
+"args": [0],
+"function": "modify_power"
+}]
+animation = ""
+status_effects = ["res://nodes/status/Petrify.tres"]

@@ -9,15 +9,20 @@ extends Commons
 @export var movement_speed: float
 @export var skills: Array
 
+var original_attack_speed: float = 0.0
+var original_movement_speed: float = 0.0
+
 # pre-init other stats
 var monster_kind: MONSTER_KINDS
 var monster_type: MONSTER_TYPES
 
 
 var target: Node2D = null # Variable to store the target node this unit will attack
+var skill_target: Node2D = null
 var attack_timer: float = 0.0 # Timer for handling attack intervals
 var is_enemy: bool
 var skill_timers: Dictionary
+var status_effects: Array = []
 
 var level: int = -1
 var sprite: Sprite2D
@@ -26,10 +31,15 @@ var sprite: Sprite2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	original_attack_speed = attack_speed
+	original_movement_speed = movement_speed
+	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# Update status effects
+	update_status_effects(delta)
+	
 	if target and is_instance_valid(target):
 		var distance_to_target = position.distance_to(target.position)
 		if distance_to_target <= attack_range:
@@ -43,20 +53,31 @@ func _process(delta):
 	# Update skill cooldowns
 	for skill_name in skill_timers.keys():
 		skill_timers[skill_name] -= delta
-
-
-
+		
 
 # Function to set the target for the unit
 func find_target(targets: Array) -> Node2D:
 	var closest_target = null
 	var closest_distance = attack_range
+	var distance_to_target
 	for target in targets:
-		var distance_to_target = position.distance_to(target.position)
+		distance_to_target = position.distance_to(target.position)
 		if distance_to_target > closest_distance:
 			closest_target = target
 			closest_distance = distance_to_target
 	return closest_target
+
+func find_low_hp_enemy(args):
+	var enemies_in_range = get_target()
+	var distance_to_target
+	
+	for enemy in enemies_in_range:
+		distance_to_target = position.distance_to(target.position)
+		if float(enemy.current_health) / float(enemy.health) <= args[0] and distance_to_target <= attack_range:
+			skill_target = enemy
+			print("enemy found: " + skill_target.name)
+			return true
+
 
 func get_target() -> Array:
 	var targets_in_range = []
@@ -119,8 +140,12 @@ func set_monster_kind(type: MONSTER_KINDS, level = 1):
 	for skill in stats["levels"][level]["skills"]:
 		skills = [load("res://nodes/skills/" + stats["levels"][level]["skills"][skill].replace(" ", "") + ".tres" )]
 	
+	original_attack_speed = attack_speed
+	original_movement_speed = movement_speed
+	
 	set_max_health(health)
 	set_current_health(health)
+	
 	
 	skill_timers = {}
 	for skill in skills:
@@ -144,6 +169,11 @@ func use_skill(skill_name: String):
 		if skill:
 			for effect in skill.effects:
 				call(effect.function, effect.args)
+				
+			for status_effect_path in skill.status_effects:
+				print(status_effect_path)
+				var status_effect = load(status_effect_path)
+				target.apply_status_effect(status_effect)
 			#play_animation(skill.animation)
 			skill_timers[skill_name] = skill.cooldown  # Reset cooldown
 		else:
@@ -152,16 +182,66 @@ func use_skill(skill_name: String):
 func automatic_skill_usage():
 	for skill in skills:
 		if skill_timers[skill.name] <= 0 and target:
-			use_skill(skill.name)
-			break
+			if skill.name == "Swallow Whole":
+				if find_low_hp_enemy(skill.effects[0].args):
+					use_skill(skill.name)
+				break
+			else:
+				use_skill(skill.name)
+				break
 
 #Skills effect
 func modify_power(power: Array): #Increases or decreases the effect of an attack
-	print("hey")
-	print(target)
-	print(attack_power)
 	if target:
 		target.take_damage(attack_power * power[0])
+
+func drain_execution(args: Array): #Executes below args[0]% and heal args[1]%
+	if skill_target and float(skill_target.current_health) / float(skill_target.health) <= args[0]:
+		current_health += args[1]*health
+		if current_health > health:
+			current_health = health
+		skill_target.die()
+
+func apply_skill_status_effect(skill_status_effect: Resource):
+	apply_status_effect(skill_status_effect)
+
+#Status related functions
+func apply_status_effect(effect: Resource):
+	var status_effect = {
+		"resource": effect,
+		"remaining_time": effect.duration,
+		"tick_timer": effect.tick_interval  # Initialize tick timer
+	}
+	status_effects.append(status_effect)
+
+func update_status_effects(delta: float):
+	for effect_data in status_effects:
+		effect_data["remaining_time"] -= delta
+		effect_data["tick_timer"] -= delta
+		if effect_data["remaining_time"] <= 0:
+			status_effects.erase(effect_data)
+			if effect_data["resource"].effect_function == "apply_petrify":
+				self.end_petrify()
+		elif effect_data["tick_timer"] <= 0:
+			call(effect_data["resource"].effect_function, effect_data["resource"].args)
+			effect_data["tick_timer"] = effect_data["resource"].tick_interval  # Reset tick timer
+
+
+
+func apply_poison(damage: Array):
+	take_damage(damage[0])
+	print("Poison applied. Taking ", damage[0], "damage per tick.")
+	
+func apply_petrify(args: Array):
+	movement_speed = 0  # Immobilize
+	attack_speed = 0  # Reduce attack speed
+	print("Petrified: Immobilized and attack speed reduced.")
+	
+func end_petrify():
+	movement_speed = original_movement_speed  # Restore movement speed
+	attack_speed = original_attack_speed  # Restore attack speed
+	print("Petrify ended: Movement and attack speed restored.")
+
 
 
 

@@ -6,3 +6,4 @@ class_name SkillResource
 @export var cooldown: float
 @export var effects: Array    # Array of dictionaries, each containing function and arguments
 @export var animation: String = ""
+@export var status_effects: Array = []

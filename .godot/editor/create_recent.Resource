@@ -1,2 +1,3 @@
 SkillResource
+StatusResource
 Resource

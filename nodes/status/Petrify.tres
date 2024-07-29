@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusResource" load_steps=2 format=3 uid="uid://caljvu28op8jo"]
+
+[ext_resource type="Script" path="res://scripts/status_resource.gd" id="1_rj36c"]
+
+[resource]
+script = ExtResource("1_rj36c")
+name = "Petrify"
+duration = 5.0
+effect_function = "apply_petrify"
+args = [0]
+tick_interval = 1.0
