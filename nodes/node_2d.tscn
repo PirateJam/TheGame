@@ -1,14 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://brbost6856v51"]
+[gd_scene load_steps=9 format=3 uid="uid://brbost6856v51"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ge7qy"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_r0noo"]
 [ext_resource type="Texture2D" uid="uid://bv7ipoabn0w2q" path="res://assets/images/UI/tablica_temp.png" id="3_atnsh"]
 [ext_resource type="FontFile" uid="uid://ca26oej50rc4k" path="res://assets/fonts/DaysOne.ttf" id="4_87u51"]
 [ext_resource type="Texture2D" uid="uid://wg57ehtf5t2a" path="res://icon.svg" id="5_vi1pi"]
+[ext_resource type="Texture2D" uid="uid://ngg4b2g56c2d" path="res://assets/images/biomes/forest.png" id="6_hsj53"]
+[ext_resource type="AudioStream" uid="uid://bt7xs61gsats3" path="res://assets/music/premix_loops/peace_premix.mp3" id="7_ajhxv"]
+[ext_resource type="Texture2D" uid="uid://cv0edl6kxux8r" path="res://assets/images/misc/close.png" id="8_43lut"]
 
 [node name="Menu" type="Node2D"]
 script = ExtResource("1_ge7qy")
 monster_scene = null
+
+[node name="background" type="CanvasGroup" parent="."]
+visible = false
+z_index = -1
+position = Vector2(4, -3)
 
 [node name="menu_ui" type="CanvasGroup" parent="."]
 
@@ -16,6 +24,22 @@ monster_scene = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
+
+[node name="attack_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="options" type="Sprite2D" parent="attack_ui"]
+position = Vector2(577, 340)
+scale = Vector2(1.29297, 1.4375)
+texture = ExtResource("3_atnsh")
+
+[node name="building_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="options" type="Sprite2D" parent="building_ui"]
+position = Vector2(577, 340)
+scale = Vector2(1.29297, 1.4375)
+texture = ExtResource("3_atnsh")
 
 [node name="state_ui" type="CanvasLayer" parent="."]
 visible = false
@@ -48,7 +72,7 @@ scale = Vector2(0.687635, 0.688746)
 theme_override_fonts/font = ExtResource("4_87u51")
 
 [node name="controls_info" type="Sprite2D" parent="map_ui"]
-position = Vector2(1152, 278)
+position = Vector2(1094, 278)
 
 [node name="font-resize" type="Sprite2D" parent="map_ui/controls_info"]
 scale = Vector2(0.341871, 0.864954)
@@ -59,8 +83,8 @@ offset_top = 4.62453
 offset_right = -326.338
 offset_bottom = 53.6245
 scale = Vector2(2.88, 1)
-text = "[KEY] DO SOMETHING 
-*static - todo"
+text = "[Left Click] - Highlight State
+[Right Click] - Enter the state"
 
 [node name="Icon" type="Sprite2D" parent="."]
 visible = false
@@ -70,8 +94,51 @@ texture = ExtResource("5_vi1pi")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 visible = false
-modulate = Color(0.0837888, 0.462656, 0.420781, 1)
-position = Vector2(114, 361)
+position = Vector2(120, 396)
 scale = Vector2(0.966249, 0.893128)
-color = Color(0.687461, 0, 0.285308, 1)
+texture = ExtResource("6_hsj53")
+texture_scale = Vector2(4, 4)
 polygon = PackedVector2Array(23.8034, 34.7095, 68.3053, 52.6241, 179.043, 5.59833, 35.1876, -76.1369, -8.27943, -29.1112)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_ajhxv")
+stream_paused = true
+panning_strength = 0.0
+
+[node name="cutscene_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="field" type="Polygon2D" parent="cutscene_ui"]
+modulate = Color(1, 1, 1, 0.8)
+position = Vector2(0, 449)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 200, 0, 200)
+
+[node name="title" type="Label" parent="cutscene_ui/field"]
+offset_left = 88.0
+offset_top = 3.0
+offset_right = 128.0
+offset_bottom = 26.0
+scale = Vector2(1.84, 1.45714)
+text = "abc"
+
+[node name="description" type="Label" parent="cutscene_ui/field"]
+offset_left = 18.0
+offset_top = 71.0
+offset_right = 58.0
+offset_bottom = 94.0
+text = "abbc"
+
+[node name="icon" type="Sprite2D" parent="cutscene_ui/field"]
+position = Vector2(30, 24)
+
+[node name="close" type="Button" parent="cutscene_ui/field"]
+offset_left = 1120.0
+offset_top = -4.0
+offset_right = 1144.0
+offset_bottom = 27.0
+scale = Vector2(1.31999, 1.24)
+icon = ExtResource("8_43lut")
+icon_alignment = 1
+
+[node name="dynamic_ui" type="CanvasLayer" parent="."]

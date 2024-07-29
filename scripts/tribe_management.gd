@@ -3,7 +3,7 @@ extends Commons
 
 var resources = {"Food": 0, "Sulfur": 0, "Demon Blood": 0, "Poison": 0}
 var army = []
-
+var buildings = []
 
 func add_to_army(monster, level = 1):
 	var monster_info = {
@@ -14,6 +14,17 @@ func add_to_army(monster, level = 1):
 	army.append(monster_info)
 	print("Current army: ")
 	print(army)
+func add_to_buildings(building, state, position, level = 1):
+	var building_info = {
+		"kind": building,
+		#"name": monster_stats[monster]["name"],
+		"state": state,								# BUILDINGS ARE PER STATE
+		"position": position,
+		"level": level,
+	}
+	buildings.append(building_info)
+	print("Current buildings: ")
+	print(buildings)
 
 func level_monster(monster):
 	#TODO resource consumition
@@ -50,15 +61,18 @@ func spend_resources(resources_cost) -> bool:
 func add_resources(resources_amount):
 	for resource in resources_amount:
 		resources[resource] += resources_amount[resource]
-		print("Adding " + resource + " " + resources_amount[resource])
+		print("Adding " + str(resource) + " " + str(resources_amount[resource]))
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	resources["resource1"] = 999999
-	resources["resource2"] = 999999
-	resources["resource3"] = 999999
+	for i in RESOURCES:
+		resources[i] = 5000
+	print("RESOURCES: ", resources)
+	#resources["resource1"] = 999999
+	#resources["resource2"] = 999999
+	#resources["resource3"] = 999999
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

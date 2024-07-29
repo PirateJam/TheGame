@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqovsj2abyo8h"
-path="res://.godot/imported/water.png-bf86ba7bbc723bce5c334099fd92a1c7.ctex"
+uid="uid://vkew1qkkit0a"
+path="res://.godot/imported/crosshair.png-04d7bbfd0e8880574c60e044c3b3379b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/biomes/water.png"
-dest_files=["res://.godot/imported/water.png-bf86ba7bbc723bce5c334099fd92a1c7.ctex"]
+source_file="res://assets/images/misc/crosshair.png"
+dest_files=["res://.godot/imported/crosshair.png-04d7bbfd0e8880574c60e044c3b3379b.ctex"]
 
 [params]
 

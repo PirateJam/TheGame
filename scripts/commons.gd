@@ -7,8 +7,32 @@ enum RESOURCES {WOOD, IRON, ELIXIR}
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG}	#this is just an example monster because I lack iDeas:tm:
 
-enum BUILDING_KINDS {WALL, WITCH_HUT, }
+enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP}
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
+
+
+var default_soundtrack = preload("res://assets/music/premix_loops/peace_premix.mp3")
+var combatA_soundtrack = preload("res://assets/music/premix_loops/combatA_premix.mp3")
+var combatB_soundtrack = preload("res://assets/music/premix_loops/combatB_premix.mp3")
+var combatC_soundtrack = preload("res://assets/music/premix_loops/combatC_premix.mp3")
+
+
+var resource_gain_delay = 30	# 30 seconds
+
+var building_info = {
+	BUILDING_KINDS.WALL: {
+		"cost": {"WOOD": 100, "IRON": 20},
+		"rotatable": true,
+		"passive_resource_gain": {},
+		"texture": get_building_textures(BUILDING_KINDS.WALL, 1)
+	},
+	BUILDING_KINDS.COMMANDER_CAMP: {
+		"cost": {"WOOD": 100, "IRON": 100},
+		"rotatable": false,
+		"passive_resource_gain": {"WOOD": 50},
+		"texture": get_building_textures(BUILDING_KINDS.COMMANDER_CAMP, 1)
+	}
+}
 
 func get_biome_texture(biome: BIOMES):
 	match biome:
@@ -20,14 +44,26 @@ func get_biome_texture(biome: BIOMES):
 			return load("res://assets/images/biomes/swamp.png")
 		BIOMES.WATER_BODY:
 			return load("res://assets/images/biomes/water.png")
+func get_biome_stateview(biome: BIOMES):
+	match biome:
+		BIOMES.FOREST:
+			return load("res://assets/images/biomes/forest_stateview.png")
+		BIOMES.DESERT:
+			return load("res://assets/images/biomes/desert_stateview.png")
+		BIOMES.SWAMP:
+			return load("res://assets/images/biomes/swamp_stateview.png")
+		BIOMES.WATER_BODY:
+			return load("res://assets/images/biomes/water_stateview.png")
 
-func get_building_textures(kind: BUILDING_KINDS, level: int):
+func get_building_textures(kind: BUILDING_KINDS, level = 1):
 	if level>5 or level<0:
 		return [unknown_texture, unknown_texture]
 	match kind:
 		BUILDING_KINDS.WALL:
-			print("res://assets/images/buildings/wall_front-" + str(level) + ".png")
-			return [load("res://assets/images/buildings/wall_front-" + str(level) + ".png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+			print("res://assets/images/buildings/wall_front-1.png")
+			return [load("res://assets/images/buildings/wall_front-1.png"), load("res://assets/images/buildings/wall_side-1.png")]
+		BUILDING_KINDS.COMMANDER_CAMP:
+			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 
 func get_monster_textures(kind: MONSTER_KINDS, level: int):
 	if level>5 or level<0:
@@ -43,18 +79,21 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
+var aim_cursor = load("res://assets/images/misc/crosshair.png")
+
 
 const map_size = 10
 const state_view_zoom = 1.5
 
-const controlled_default_state_color = Color(0.4, 1, 0.4, 0.3)
-const controlled_hover_state_color = Color(0.4, 1, 0.4, 0.5)
-const controlled_select_state_color = Color(0.4, 1, 0.4, 0.7)
+
+const controlled_default_state_color = Color(1, 1, 1, 0.7)
+const controlled_hover_state_color = Color(1, 1, 1, 0.85)
+const controlled_select_state_color = Color(1, 1, 1, 1)
 
 
-const default_state_color = Color(1, 0.6 , 0.6, 0.2)
-const hover_state_color = Color(1, 0.6, 0.6, 0.4)
-const select_state_color = Color(1, 0.6, 0.6, 0.6)
+const default_state_color = Color(1, 1 , 1, 0.4)
+const hover_state_color = Color(1, 1, 1, 0.6)
+const select_state_color = Color(1, 1, 1, 0.8)
 
 const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
 const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)

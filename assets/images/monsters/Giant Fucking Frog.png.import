@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqovsj2abyo8h"
-path="res://.godot/imported/water.png-bf86ba7bbc723bce5c334099fd92a1c7.ctex"
+uid="uid://d1erhqprt0wji"
+path="res://.godot/imported/Giant Fucking Frog.png-141f309175ba1e8a92d7bfc6d4c6d2df.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/biomes/water.png"
-dest_files=["res://.godot/imported/water.png-bf86ba7bbc723bce5c334099fd92a1c7.ctex"]
+source_file="res://assets/images/monsters/Giant Fucking Frog.png"
+dest_files=["res://.godot/imported/Giant Fucking Frog.png-141f309175ba1e8a92d7bfc6d4c6d2df.ctex"]
 
 [params]
 
