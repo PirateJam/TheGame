@@ -1,10 +1,11 @@
 @tool
 extends Node2D
-
+### this whole thing is foko's swamp like tf is going on here ~ foko
 @export var monster_scene: PackedScene = preload("res://nodes/monster.tscn")
 
 var utils = load("res://scripts/utils.gd").new()
 var state_supplier = load("res://scripts/state.gd")
+var planning = load("res://scripts/planning.gd")
 var building_supplier = load("res://scripts/building.gd")
 var menu_supplier = load("res://scripts/menu_supplier.gd")
 
@@ -13,6 +14,8 @@ var cutscene = load("res://scripts/cutscene.gd").new()
 
 var commons = load("res://scripts/commons.gd").new()
 
+var plan
+
 var font
 var states = []
 var trees = []
@@ -20,6 +23,11 @@ var buttons = []
 var state_ui_buttons = []
 var border_line_width = 2
 var border_color = Color.BLACK
+
+var g_position = Vector2.ZERO
+var is_planning = false
+
+var raid_phase = 0
 
 var triangles
 var cumulated_areas: Array
@@ -54,7 +62,7 @@ func _draw() -> void:
 				draw_line(last_line, state.position, border_color, border_line_width)
 				logger.log("Drawn: "+ state.id)
 		RENDERS.MAIN_MENU:
-			var text = 'Example Title :D - (if we want to go with text)'#'Example Title (Fok)!'
+			var text = 'Bellum Monstrum'#'Example Title (Fok)!'
 			draw_string(font, Vector2.UP*250+Vector2.LEFT*4*text.length(), text) # move to left by 4/char - to center text
 			for button in buttons:
 				var last_line = button.position
@@ -68,6 +76,12 @@ func _draw() -> void:
 			if !peeked_state.controlled:
 				draw_string(font, Vector2.ZERO+Vector2.DOWN*50+Vector2.LEFT*50, 'state not controlled, shall we attack?')
 			
+			if is_planning && plan:
+				var previous = g_position
+				for i in plan.arrow:
+					draw_line(previous, i, Color.BLUE, 3, true)
+					previous = i
+					print("drawing")
 			### STATE VIEW SHOULD BE BIOME BACKGROUND, NOT... this	
 			#var last_line = peeked_state.position
 			#for line in peeked_state.curves:
@@ -155,6 +169,7 @@ func update_focus():
 				else:
 					if button.area.get_children().size()>1:
 						button.area.get_children()[1].color = commons.default_button_color
+			
 
 
 
@@ -209,7 +224,13 @@ func _process(delta):
 	if !$AudioStreamPlayer2D.is_playing():
 		if peeked_state:
 			if !peeked_state.controlled:
-				$AudioStreamPlayer2D.stream = commons.combatA_soundtrack		# peeking state
+				match raid_phase:
+					0:
+						$AudioStreamPlayer2D.stream = commons.combatA_soundtrack		# peeking state
+					1:
+						$AudioStreamPlayer2D.stream = commons.combatB_soundtrack		# preparation
+					2:
+						$AudioStreamPlayer2D.stream = commons.combatC_soundtrack		# war
 			else:
 				$AudioStreamPlayer2D.stream = commons.default_soundtrack			# default idle
 		else:
@@ -248,8 +269,8 @@ func _process(delta):
 				Input.set_custom_mouse_cursor(null)		# default cursor6
 				aiming = AIMING_MODES.NONE
 				print(get_global_mouse_position())
-				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, Callable(self, "monster_choice"))
-				#var sprite = Sprite2D.new()
+				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, Callable(self, "monster_choice").bindv([get_global_mouse_position()]))
+
 				var building_i = commons.building_info[commons.BUILDING_KINDS.COMMANDER_CAMP]
 				add_child(building.get_area())
 				peeked_state.buildings.append(building)
@@ -258,8 +279,15 @@ func _process(delta):
 				cutscene.cutscene($cutscene_ui, "Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!\n Left click on the camp to go into next stage of preparation.", null)
 
 
+	
 
-func monster_choice():
+
+func monster_choice(position):
+	$AudioStreamPlayer2D.stop()
+	raid_phase = 1
+	
+	
+	
 	for i in $attack_ui/options.get_children():
 		$attack_ui/options.remove_child(i)
 	var monster_position = Vector2.LEFT*180+Vector2.UP*90
@@ -284,17 +312,87 @@ func monster_choice():
 	var button = Button.new()
 	button.position = Vector2.RIGHT*180+Vector2.DOWN*90
 	button.text = "Confirm"
-	button.connect("pressed", Callable(self, "monsters_picked"))
+	button.connect("pressed", Callable(self, "monsters_picked").bindv([position]))
 	$attack_ui/options.add_child(button)
 	$attack_ui.visible = true
 
-func monsters_picked():
+
+
+
+func monsters_picked(position):
+	var temp_army=[]
+	var monster_pos = position+Vector2.RIGHT*64
 	$attack_ui.visible = false
 	for i in $attack_ui/options.get_children():
 		if is_instance_of(i, CheckBox):
 			if i.button_pressed:
 				print( i.get_meta("Monster") )
-				utils.spawn_unit(i.get_meta("Monster")["kind"], Vector2.ZERO, false, self)
+				temp_army.append(utils.spawn_unit(i.get_meta("Monster")["kind"], monster_pos, false, self))
+				monster_pos+=Vector2.DOWN*96
+	
+	cutscene.cutscene($cutscene_ui, "Planning!", "Now, the art. Use left mouse button to draw an arrow your units will follow. After that, in top left corner commence the plan.", null)
+
+
+	
+
+
+
+	plan = planning.new(self)
+	var height = 500
+	var poly = CollisionPolygon2D.new()
+	poly.set_polygon(PackedVector2Array([Vector2.LEFT*height*3+Vector2.UP*height, Vector2.LEFT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.UP*height]))
+	plan.add_child(poly)
+	add_child(plan)
+	
+	g_position = position
+	is_planning = true
+	var button = Button.new()
+	button.connect("pressed", Callable(self, "send_confirmation_signal"))
+	button.text = "Commence the Offensive"
+	$dynamic_ui.add_child(button)
+	
+	
+	
+	var enemy_army = []
+	for i in peeked_state.army:
+		
+		enemy_army.append(utils.spawn_unit(i["kind"], Vector2(randi()%(height*3), randi()%height), true, self, i["level"]))
+
+	await attack_conf_signal
+	is_planning = false
+	
+	
+	var path = plan.arrow
+	
+	for i in temp_army:
+		i.path = path
+	remove_child(plan)
+	$dynamic_ui.remove_child(button)
+	plan = null
+	
+	
+	### WAR!!!!
+	$AudioStreamPlayer2D.stop()
+	raid_phase = 2
+	
+	
+	
+	for i in enemy_army:
+		
+		i.ai = true
+	for i in temp_army:
+		i.ai = true
+
+	
+
+
+
+
+signal attack_conf_signal
+
+func send_confirmation_signal():
+	attack_conf_signal.emit()
+
 
 
 
@@ -355,7 +453,7 @@ func _ready():
 	player_state.controlled = true
 	states.append(player_state)
 	### DEFAULT_PLAYER_ARMY
-	TribeManagement.add_to_army(commons.MONSTER_KINDS.YIPEEHORSE, 1)
+	TribeManagement.add_to_army(commons.MONSTER_KINDS.YIPEEE, 1)
 	
 	
 	var basic_state = state_supplier.new("Enemy Tribe", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
@@ -368,6 +466,7 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
+		{"kind": commons.MONSTER_KINDS.YIPEEHORSE, "level": 1},
 		#ARMY
 	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
@@ -380,6 +479,11 @@ func _ready():
 		
 	].map(resize))
 	states.append(basic_state2)
+	
+	
+	
+	
+	
 	
 	var lake1 = state_supplier.new("Lake 1", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*Vector2.LEFT*commons.map_size, [
 		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,
@@ -410,6 +514,12 @@ func _ready():
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
 	states.append(lake4)
 	
+	
+	
+	
+	
+	
+	
 	var forest1 = state_supplier.new("Forest 1", player_state_pos + 33*commons.map_size*Vector2.DOWN + 12*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
 		Vector2.DOWN*9+Vector2.LEFT*5, 
 		Vector2.DOWN*5+Vector2.RIGHT*2,
@@ -421,6 +531,10 @@ func _ready():
 		Vector2.LEFT*5
 	].map(resize))
 	states.append(forest1)
+	
+	
+	
+	
 	
 	var swamp1 = state_supplier.new("Swamp 1", player_state_pos + 42*commons.map_size*Vector2.DOWN + 17*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
 		Vector2.DOWN*5+Vector2.LEFT*5,
@@ -703,6 +817,8 @@ func draw_state():
 	
 	var biome_sprite = Sprite2D.new()
 	biome_sprite.texture = commons.get_biome_stateview(cstate.biome)
+	for i in $background.get_children():
+		$background.remove_child(i)
 	$background.add_child(biome_sprite)
 	
 	for button in state_ui_buttons:

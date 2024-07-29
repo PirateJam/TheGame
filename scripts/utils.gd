@@ -31,13 +31,13 @@ func _ready():
 	pass # Replace with function body.
 
 
-func spawn_unit(monster_kind: MONSTER_KINDS, position: Vector2, is_enemy: bool, root):
+func spawn_unit(monster_kind: MONSTER_KINDS, position: Vector2, is_enemy: bool, root, level = 1, path = []):
 	if monster_scene:
 		var monster_instance = monster_scene.instantiate()
 		
 		root.add_child(monster_instance)
 		monster_instance.position = position
-		monster_instance.set_monster_kind(monster_kind)
+		monster_instance.set_monster_kind(monster_kind, level)
 		monster_instance.is_enemy = is_enemy
 		if is_enemy:
 			monster_instance.add_to_group("enemies")
@@ -45,7 +45,11 @@ func spawn_unit(monster_kind: MONSTER_KINDS, position: Vector2, is_enemy: bool, 
 		else:
 			monster_instance.add_to_group("allies")
 			monster_instance.set_color(Color(0,1,0,1))
+			monster_instance.path = path
+			print("HELLO1", path)
+			monster_instance.current_index = 0
 		print("Spawned unit: ", monster_kind, " at position: ", position, " (Enemy: ", is_enemy, ")")
+		return monster_instance
 	else:
 		print("Error: unit_scene is not loaded.")
 

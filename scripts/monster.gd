@@ -22,7 +22,9 @@ var skill_timers: Dictionary
 var level: int = -1
 var sprite: Sprite2D
 
-
+var current_index = -1
+var path = []
+var ai = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,19 +32,38 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if target and is_instance_valid(target):
-		var distance_to_target = position.distance_to(target.position)
-		if distance_to_target <= attack_range:
-			attack_target(target, delta)
-			automatic_skill_usage()
+	if ai:
+		if get_tree().get_nodes_in_group("allies").has(self):
+			print(self, is_enemy, path)
+			if target and is_instance_valid(target):
+				var distance_to_target = position.distance_to(target.position)
+				if distance_to_target <= attack_range:
+					attack_target(target, delta)
+					automatic_skill_usage()
+				else:
+					if path.size()>current_index:
+						var direction = (path[int(current_index)] - position).normalized()
+						current_index+=0.33
+						position += direction * movement_speed * delta
+					else:
+						move_towards_target(target, delta)
+
+			else:
+				target = find_target(get_target())
 		else:
-			move_towards_target(target, delta)
-	else:
-		target = find_target(get_target())
-	
-	# Update skill cooldowns
-	for skill_name in skill_timers.keys():
-		skill_timers[skill_name] -= delta
+			if target and is_instance_valid(target):
+				var distance_to_target = position.distance_to(target.position)
+				if distance_to_target <= attack_range:
+					attack_target(target, delta)
+					automatic_skill_usage()
+				else:
+					move_towards_target(target, delta)
+			else:
+				target = find_target(get_target())
+
+		# Update skill cooldowns
+		for skill_name in skill_timers.keys():
+			skill_timers[skill_name] -= delta
 
 
 
