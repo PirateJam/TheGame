@@ -86,14 +86,14 @@ const map_size = 10
 const state_view_zoom = 1.5
 
 
-const controlled_default_state_color = Color(1, 1, 1, 0.3)
-const controlled_hover_state_color = Color(1, 1, 1, 0.5)
-const controlled_select_state_color = Color(1, 1, 1, 0.7)
+const controlled_default_state_color = Color(1, 1, 1, 0.7)
+const controlled_hover_state_color = Color(1, 1, 1, 0.85)
+const controlled_select_state_color = Color(1, 1, 1, 1)
 
 
-const default_state_color = Color(1, 1 , 1, 0.2)
-const hover_state_color = Color(1, 1, 1, 0.4)
-const select_state_color = Color(1, 1, 1, 0.6)
+const default_state_color = Color(1, 1 , 1, 0.4)
+const hover_state_color = Color(1, 1, 1, 0.6)
+const select_state_color = Color(1, 1, 1, 0.8)
 
 const default_button_color = Color(0.847, 0.765, 0.015, 0.19)
 const hover_button_color = Color(0.847, 0.765, 0.015, 0.25)

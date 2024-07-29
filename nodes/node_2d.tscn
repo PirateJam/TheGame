@@ -24,6 +24,14 @@ position = Vector2(4, -3)
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
 
+[node name="attack_ui" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="options" type="Sprite2D" parent="attack_ui"]
+position = Vector2(577, 340)
+scale = Vector2(1.29297, 1.4375)
+texture = ExtResource("3_atnsh")
+
 [node name="building_ui" type="CanvasLayer" parent="."]
 visible = false
 
@@ -93,6 +101,7 @@ polygon = PackedVector2Array(23.8034, 34.7095, 68.3053, 52.6241, 179.043, 5.5983
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_ajhxv")
+volume_db = -80.0
 panning_strength = 0.0
 
 [node name="cutscene_ui" type="CanvasLayer" parent="."]

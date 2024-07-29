@@ -2,6 +2,7 @@
 extends Node2D
 
 @export var monster_scene: PackedScene = preload("res://nodes/monster.tscn")
+
 var utils = load("res://scripts/utils.gd").new()
 var state_supplier = load("res://scripts/state.gd")
 var building_supplier = load("res://scripts/building.gd")
@@ -256,8 +257,47 @@ func _process(delta):
 				
 				cutscene.cutscene($cutscene_ui, "Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!\n Left click on the camp to go into next stage of preparation.", null)
 
+
+
 func monster_choice():
-	pass ### FOR TOMORROW
+	for i in $attack_ui/options.get_children():
+		$attack_ui/options.remove_child(i)
+	var monster_position = Vector2.LEFT*180+Vector2.UP*90
+	var monster_size = 64
+	var monster_amount = 0
+	for rmonster in TribeManagement.army:
+		var sprite = Sprite2D.new()
+		var checkbox = CheckBox.new()
+		sprite.texture = commons.get_monster_textures(rmonster["kind"],1)
+		sprite.position = monster_position
+		
+		checkbox.set_meta("Monster", rmonster)
+		checkbox.position = monster_position+Vector2.DOWN*25
+		
+		$attack_ui/options.add_child(sprite)
+		$attack_ui/options.add_child(checkbox)
+		monster_amount+=1
+		if monster_amount%5==0:
+			monster_position+=Vector2.DOWN*monster_size+Vector2.LEFT* monster_size*5
+		else:
+			monster_position+=Vector2.RIGHT*monster_size
+	var button = Button.new()
+	button.position = Vector2.RIGHT*180+Vector2.DOWN*90
+	button.text = "Confirm"
+	button.connect("pressed", Callable(self, "monsters_picked"))
+	$attack_ui/options.add_child(button)
+	$attack_ui.visible = true
+
+func monsters_picked():
+	$attack_ui.visible = false
+	for i in $attack_ui/options.get_children():
+		if is_instance_of(i, CheckBox):
+			if i.button_pressed:
+				print( i.get_meta("Monster") )
+				utils.spawn_unit(i.get_meta("Monster")["kind"], Vector2.ZERO, false, self)
+
+
+
 
 
 func _ready():
@@ -267,7 +307,7 @@ func _ready():
 	font.font_data = commons.font_data
 
 
-	### BUILDINGS
+	### UIs
 	
 	var building_position = Vector2.LEFT*180+Vector2.UP*90
 	var building_size = 64
@@ -285,6 +325,7 @@ func _ready():
 		else:
 			building_position+=Vector2.RIGHT*building_size
 
+	
 
 
 
@@ -313,6 +354,8 @@ func _ready():
 	})
 	player_state.controlled = true
 	states.append(player_state)
+	### DEFAULT_PLAYER_ARMY
+	TribeManagement.add_to_army(commons.MONSTER_KINDS.YIPEEHORSE, 1)
 	
 	
 	var basic_state = state_supplier.new("Enemy Tribe", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
@@ -321,8 +364,8 @@ func _ready():
 		
 	].map(resize), 
 	[
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
 		#ARMY
@@ -430,8 +473,8 @@ func _ready():
 		Vector2.DOWN*4,
 	].map(resize), 
 	[
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
 		#ARMY
@@ -446,8 +489,8 @@ func _ready():
 		Vector2.LEFT*10+Vector2.UP*2
 	].map(resize), 
 	[
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
 		#ARMY
@@ -466,8 +509,8 @@ func _ready():
 		
 	].map(resize), 
 	[
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
 		#ARMY
@@ -486,8 +529,8 @@ func _ready():
 		
 	].map(resize), 
 	[
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT),
-		load("res://scripts/building.gd").new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO+ 428*Vector2.DOWN + 212*Vector2.RIGHT, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
 		#ARMY
@@ -565,6 +608,7 @@ func reload_render():
 	$map_ui.visible = false
 	$state_ui.visible = false
 	$building_ui.visible = false
+	$attack_ui.visible = false
 	$background.visible = false
 	$cutscene_ui.visible = false
 	stateVisibility(false)
@@ -605,7 +649,8 @@ func stateVisibility(bol):
 func buildingVisibility(bol):
 	if peeked_state:
 		for i in peeked_state.buildings:
-			i.sprite.visible = bol
+			#i.sprite.visible = bol
+			i.area.visible = bol
 
 func armyVisibility(bol):
 	if peeked_state:
