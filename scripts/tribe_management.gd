@@ -1,7 +1,7 @@
 extends Commons
 #For tribe and army management
 
-var resources = {}
+var resources = {"Food": 0, "Sulfur": 0, "Demon Blood": 0, "Poison": 0}
 var army = []
 var buildings = []
 

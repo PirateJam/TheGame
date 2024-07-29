@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://c407jopl0dk82"]
+
+[ext_resource type="Script" path="res://scripts/skill_resource.gd" id="1_omydc"]
+
+[resource]
+script = ExtResource("1_omydc")
+name = "Poison Attack"
+cooldown = 20.0
+effects = [{
+"args": [0.1],
+"function": "modify_power"
+}]
+animation = ""
+status_effects = ["res://nodes/status/Poison.tres"]

@@ -5,7 +5,7 @@ enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
 enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
-enum MONSTER_KINDS {YIPEEE, YIPEEEARCHER, YIPEEHORSE}	#this is just an example monster because I lack iDeas:tm:
+enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP}
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
@@ -69,11 +69,11 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 	if level>5 or level<0:
 		return unknown_texture
 	match kind:
-		MONSTER_KINDS.YIPEEE:
+		MONSTER_KINDS.EVILEYE:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
-		MONSTER_KINDS.YIPEEEARCHER:
+		MONSTER_KINDS.SPIDER:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
-		MONSTER_KINDS.YIPEEHORSE:
+		MONSTER_KINDS.GIANTFROG:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 
 
@@ -133,268 +133,255 @@ var font_data = load("res://assets/fonts/DaysOne.ttf")
 #Monsters Data
 var max_level = 5
 var monster_stats = {
-	MONSTER_KINDS.YIPEEE: {
+	MONSTER_KINDS.EVILEYE: {
 			"locked": false,
-			"name": "Yipee", 
-			"type": MONSTER_TYPES.MEELEE,
+			"name": "Evil Eye", 
+			"type": MONSTER_TYPES.RANGED,
 			"levels": {
 				1: {
 					"stats": {
+						"health": 50, 
+						"attack_power": 70, 
+						"attack_speed": 0.2, 
+						"attack_range": 300.0, 
+						"movement_speed": 60
+					},
+					"cost": {
+						"Food": 100, 
+						"Sulfur": 10
+					},
+					"skills": { 
+						0: "Petrify Stare"
+					}
+				},
+				2: {
+					"stats": {
 						"health": 100, 
-						"attack_power": 20, 
-						"attack_speed": 1.0, 
-						"attack_range": 30.0, 
+						"attack_power": 80, 
+						"attack_speed": 0.25, 
+						"attack_range": 510.0, 
+						"movement_speed": 65
+					},
+					"cost": {
+						"Food": 200, 
+						"Sulfur": 20
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 150, 
+						"attack_power": 90, 
+						"attack_speed": 0.3, 
+						"attack_range": 520.0, 
+						"movement_speed": 70,
+					},
+					"cost": {
+						"Food": 400, 
+						"resource2": 40, 
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 100, 
+						"attack_speed": 0.35, 
+						"attack_range": 540.0, 
+						"movement_speed": 75,
+					},
+					"cost": {
+						"Food": 600, 
+						"Sulfur": 60, 
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 400, 
+						"attack_power": 180, 
+						"attack_speed": 0.5, 
+						"attack_range": 600.0, 
 						"movement_speed": 100,
 					},
 					"cost": {
-						"resource1": 100, 
-						"resource2": 100, 
-						"resource3": 100
+						"Food": 1500, 
+						"Sulfur": 200, 
+						"Demon Blood": 1
 					},
-					"skills": { 
-						0: "Strong Attack"
+					"skills": {
+						0: "Petrify Stare"
+					}
+				},
+			},
+		},
+		MONSTER_KINDS.SPIDER: {
+			"locked": false,
+			"name": "Spider",
+						"type": MONSTER_TYPES.MEELEE,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 120, 
+						"attack_power": 10, 
+						"attack_speed": 2.0, 
+						"attack_range": 30.0, 
+						"movement_speed": 120,
+					},
+					"cost": {
+						"Food": 150, 
+						"Poison": 15
+					},
+					"skills": {
 					}
 				},
 				2: {
 					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
+						"health": 180, 
+						"attack_power": 15, 
+						"attack_speed": 2.1, 
+						"attack_range": 35.0, 
+						"movement_speed": 125,
 					},
 					"cost": {
-						"resource1": 200, 
-						"resource2": 200, 
-						"resource3": 200
+						"Food": 300, 
+						"resource2": 25, 
 					},
 					"skills": {
 					}
 				},
 				3: {
 					"stats": {
-						"health": 250, 
-						"attack_power": 30, 
-						"attack_speed": 1.2, 
-						"attack_range": 30.0, 
-						"movement_speed": 110,
+						"health": 240, 
+						"attack_power": 20, 
+						"attack_speed": 2.2, 
+						"attack_range": 40.0, 
+						"movement_speed": 130,
 					},
 					"cost": {
-						"resource1": 300, 
-						"resource2": 300, 
-						"resource3": 300
+						"Food": 600, 
+						"Poison": 45,
 					},
 					"skills": {
 					}
 				},
 				4: {
 					"stats": {
-						"health": 200, 
+						"health": 300, 
 						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
+						"attack_speed": 2.3, 
+						"attack_range": 45.0, 
+						"movement_speed": 135,
 					},
 					"cost": {
-						"resource1": 500, 
-						"resource2": 500, 
-						"resource3": 500
+						"Food": 900, 
+						"Poison": 65, 
 					},
 					"skills": {
 					}
 				},
 				5: {
 					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
+						"health": 600, 
+						"attack_power": 40, 
+						"attack_speed": 3, 
+						"attack_range": 50.0, 
+						"movement_speed": 180,
 					},
 					"cost": {
-						"resource1": 800, 
-						"resource2": 800, 
-						"resource3": 800
+						"Food": 2000, 
+						"Poison": 150, 
+						"Demon Blood": 1
 					},
 					"skills": {
-						0: "Strong Attack"
+						0: "Poison Strike"
 					}
 				},
 			},
 		},
-		MONSTER_KINDS.YIPEEEARCHER: {
+				MONSTER_KINDS.GIANTFROG: {
 			"locked": false,
-			"name": "Yipee Archer",
-						"type": MONSTER_TYPES.RANGED,
+			"name": "Giant Frog",
+						"type": MONSTER_TYPES.MEELEE,
 			"levels": {
 				1: {
 					"stats": {
-						"health": 80, 
-						"attack_power": 10, 
-						"attack_speed": 1.0, 
-						"attack_range": 300.0, 
+						"health": 300, 
+						"attack_power": 30, 
+						"attack_speed": 0.5, 
+						"attack_range": 40.0, 
 						"movement_speed": 90,
 					},
 					"cost": {
-						"resource1": 100, 
-						"resource2": 200
+						"Food": 400, 
 					},
 					"skills": {
+						0: "Swallow Whole"
 					}
 				},
 				2: {
 					"stats": {
-						"health": 85, 
-						"attack_power": 15, 
-						"attack_speed": 1.2, 
-						"attack_range": 310.0, 
-						"movement_speed": 93,
+						"health": 400, 
+						"attack_power": 35, 
+						"attack_speed": 0.55, 
+						"attack_range": 42.0, 
+						"movement_speed": 100,
 					},
 					"cost": {
-						"resource1": 200, 
-						"resource2": 600, 
+						"Food": 800, 
 					},
 					"skills": {
 					}
 				},
 				3: {
 					"stats": {
-						"health": 90, 
-						"attack_power": 20, 
-						"attack_speed": 1.4, 
-						"attack_range": 340.0, 
-						"movement_speed": 95,
+						"health": 500, 
+						"attack_power": 40, 
+						"attack_speed": 0.6, 
+						"attack_range": 44.0, 
+						"movement_speed": 110,
 					},
 					"cost": {
-						"resource1": 300, 
-						"resource2": 900,
+						"Food": 1200, 
 					},
 					"skills": {
 					}
 				},
 				4: {
 					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
+						"health": 600, 
+						"attack_power": 45, 
+						"attack_speed": 0.65, 
+						"attack_range": 46.0, 
+						"movement_speed": 120,
 					},
 					"cost": {
-						"resource1": 500, 
-						"resource2": 500, 
-						"resource3": 500
+						"Food": 1500, 
 					},
 					"skills": {
 					}
 				},
 				5: {
 					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
+						"health": 1500, 
+						"attack_power": 90, 
+						"attack_speed": 0.8, 
+						"attack_range": 50.0, 
+						"movement_speed": 155,
 					},
 					"cost": {
-						"resource1": 800, 
-						"resource2": 800, 
-						"resource3": 800
+						"Food": 5000, 
+						"Demon Blood": 1, 
 					},
 					"skills": {
-						0: "Snipe"
+						0: "Swallow Whole"
 					}
 				},
 			},
 		},
-		MONSTER_KINDS.YIPEEHORSE: {
-			"locked": false,
-			"name": "Yipee Cavalry",
-						"type": MONSTER_TYPES.CAVALRY,
-			"levels": {
-				1: {
-					"stats": {
-						"health": 200, 
-						"attack_power": 30, 
-						"attack_speed": 0.5, 
-						"attack_range": 30.0, 
-						"movement_speed": 200,
-					},
-					"cost": {
-						"resource1": 150, 
-						"resource2": 100, 
-						"resource3": 300
-					},
-					"skills": {
-					}
-				},
-				2: {
-					"stats": {
-						"health": 250, 
-						"attack_power": 35, 
-						"attack_speed": 0.6, 
-						"attack_range": 30.0, 
-						"movement_speed": 215,
-					},
-					"cost": {
-						"resource1": 300, 
-						"resource2": 200, 
-						"resource3": 600
-					},
-					"skills": {
-					}
-				},
-				3: {
-					"stats": {
-						"health": 300, 
-						"attack_power": 40, 
-						"attack_speed": 0.7, 
-						"attack_range": 30.0, 
-						"movement_speed": 230,
-					},
-					"cost": {
-						"resource1": 300, 
-						"resource2": 300, 
-						"resource3": 300
-					},
-					"skills": {
-					}
-				},
-				4: {
-					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
-					},
-					"cost": {
-						"resource1": 500, 
-						"resource2": 500, 
-						"resource3": 500
-					},
-					"skills": {
-					}
-				},
-				5: {
-					"stats": {
-						"health": 200, 
-						"attack_power": 25, 
-						"attack_speed": 1.1, 
-						"attack_range": 30.0, 
-						"movement_speed": 105,
-					},
-					"cost": {
-						"resource1": 800, 
-						"resource2": 800, 
-						"resource3": 800
-					},
-					"skills": {
-						0: "Charge"
-					}
-				},
-			},
-		}
 }
 
 

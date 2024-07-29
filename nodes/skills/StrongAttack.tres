@@ -11,3 +11,4 @@ effects = [{
 "function": "modify_power"
 }]
 animation = ""
+status_effects = []
