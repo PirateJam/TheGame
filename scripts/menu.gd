@@ -269,6 +269,7 @@ func _process(delta):
 					i.queue_free()
 
 
+
 	if !$AudioStreamPlayer2D.is_playing():
 		if peeked_state:
 			if !peeked_state.controlled:
