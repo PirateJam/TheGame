@@ -25,6 +25,35 @@ position = Vector2(4, -3)
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_r0noo")
 
+[node name="lab_ui" type="CanvasLayer" parent="."]
+
+[node name="options" type="Sprite2D" parent="lab_ui"]
+position = Vector2(600.5, 338.5)
+scale = Vector2(1.46289, 1.75391)
+texture = ExtResource("3_atnsh")
+
+[node name="default" type="Sprite2D" parent="lab_ui/options"]
+
+[node name="Recruit" type="Button" parent="lab_ui/options/default"]
+offset_left = -94.6756
+offset_top = 0.28508
+offset_right = -30.6756
+offset_bottom = 31.2851
+text = "Create"
+
+[node name="Upgrade" type="Button" parent="lab_ui/options/default"]
+offset_left = -0.341797
+offset_top = 0.28508
+offset_right = 74.6582
+offset_bottom = 31.2851
+text = "Upgrade"
+
+[node name="recruitMenu" type="Sprite2D" parent="lab_ui/options"]
+position = Vector2(-410.489, -192.998)
+scale = Vector2(0.683578, 0.570156)
+
+[node name="upgradeMenu" type="Sprite2D" parent="lab_ui/options"]
+
 [node name="attack_ui" type="CanvasLayer" parent="."]
 visible = false
 
@@ -42,7 +71,6 @@ scale = Vector2(1.29297, 1.4375)
 texture = ExtResource("3_atnsh")
 
 [node name="state_ui" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="options" type="Sprite2D" parent="state_ui"]
 position = Vector2(114, 361)
@@ -51,6 +79,27 @@ texture = ExtResource("3_atnsh")
 
 [node name="resize" type="Sprite2D" parent="state_ui/options"]
 scale = Vector2(2.37846, 1.97104)
+
+[node name="building_info" type="Sprite2D" parent="state_ui"]
+position = Vector2(116, 582)
+scale = Vector2(0.433862, 0.484571)
+texture = ExtResource("3_atnsh")
+
+[node name="resize" type="Sprite2D" parent="state_ui/building_info"]
+
+[node name="title" type="Label" parent="state_ui/building_info/resize"]
+offset_left = -225.878
+offset_top = -101.12
+offset_right = -169.878
+offset_bottom = -72.1203
+scale = Vector2(2.61276, 1.7879)
+
+[node name="desc" type="Label" parent="state_ui/building_info/resize"]
+offset_left = -223.573
+offset_top = -51.592
+offset_right = -167.573
+offset_bottom = -22.592
+scale = Vector2(1.36071, 1.30427)
 
 [node name="map_ui" type="CanvasLayer" parent="."]
 visible = false
@@ -141,3 +190,63 @@ icon = ExtResource("8_43lut")
 icon_alignment = 1
 
 [node name="dynamic_ui" type="CanvasLayer" parent="."]
+offset = Vector2(800, 0)
+transform = Transform2D(1, 0, 0, 1, 800, 0)
+
+[node name="resource_ui" type="CanvasLayer" parent="."]
+
+[node name="resources" type="Sprite2D" parent="resource_ui"]
+position = Vector2(139, 91.3916)
+scale = Vector2(0.504218, 0.684441)
+texture = ExtResource("3_atnsh")
+
+[node name="resize" type="Sprite2D" parent="resource_ui/resources"]
+
+[node name="wood" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -225.878
+offset_top = -103.184
+offset_right = -169.878
+offset_bottom = -74.1845
+scale = Vector2(2.61276, 1.7879)
+
+[node name="iron" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -223.573
+offset_top = -51.592
+offset_right = -167.573
+offset_bottom = -22.592
+scale = Vector2(2.65145, 1.8821)
+
+[node name="blood" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -226.093
+offset_top = 0.888905
+offset_right = -170.093
+offset_bottom = 29.8889
+scale = Vector2(2.61276, 1.7879)
+
+[node name="food" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = -105.768
+offset_right = 59.9666
+offset_bottom = -76.7675
+scale = Vector2(2.61276, 1.7879)
+
+[node name="bone" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = -63.3971
+offset_right = 59.9666
+offset_bottom = -34.3966
+scale = Vector2(2.61276, 1.7879)
+
+[node name="poison" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = -12.2605
+offset_right = 59.9666
+offset_bottom = 16.74
+scale = Vector2(2.61276, 1.7879)
+
+[node name="sulfur" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = 34.493
+offset_right = 59.9666
+offset_bottom = 63.4935
+scale = Vector2(2.61276, 1.7879)

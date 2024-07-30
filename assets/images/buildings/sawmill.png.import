@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brfcfx4plylms"
-path="res://.godot/imported/The Giant Spider.png-802686dc7dc463c8ce43bdedac2734a7.ctex"
+uid="uid://dbvmvt3v2nlpj"
+path="res://.godot/imported/sawmill.png-30c4f3bfae1269e1f937e4bfde24b40a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/monsters/The Giant Spider.png"
-dest_files=["res://.godot/imported/The Giant Spider.png-802686dc7dc463c8ce43bdedac2734a7.ctex"]
+source_file="res://assets/images/buildings/sawmill.png"
+dest_files=["res://.godot/imported/sawmill.png-30c4f3bfae1269e1f937e4bfde24b40a.ctex"]
 
 [params]
 

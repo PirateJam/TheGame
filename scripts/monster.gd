@@ -40,7 +40,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if ai:
-	# Update status effects
 		update_status_effects(delta)
 		if get_tree().get_nodes_in_group("allies").has(self):
 			#print(self, is_enemy, path)
