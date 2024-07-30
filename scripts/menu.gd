@@ -62,8 +62,8 @@ func _draw() -> void:
 				draw_line(last_line, state.position, border_color, border_line_width)
 				logger.log("Drawn: "+ state.id)
 		RENDERS.MAIN_MENU:
-			var text = 'Bellum Monstrum'#'Example Title (Fok)!'
-			draw_string(font, Vector2.UP*250+Vector2.LEFT*4*text.length(), text) # move to left by 4/char - to center text
+			#var text = 'Bellum Monstrum'#'Example Title (Fok)!'
+			#draw_string(font, Vector2.UP*250+Vector2.LEFT*4*text.length(), text) # move to left by 4/char - to center text
 			for button in buttons:
 				var last_line = button.position
 				for line in button.curves:
@@ -228,6 +228,8 @@ func _process(delta):
 		$resource_ui/resources/resize/food.text = str("food: ", TribeManagement.resources["FOOD"])
 		$resource_ui/resources/resize/poison.text = str("poison: ", TribeManagement.resources["POISON"])
 		$resource_ui/resources/resize/sulfur.text = str("sulfur: ", TribeManagement.resources["SULFUR"])
+		$resource_ui/resources/resize/ice.text = str("ice: ", TribeManagement.resources["MAGIC_ICE"])
+		$resource_ui/resources/resize/bone.text = str("sulfur: ", TribeManagement.resources["BONE"])
 
 
 	if raid_phase==2:
@@ -536,6 +538,15 @@ func create_unit(kind):
 
 
 func _ready():
+	## fix my hand not being able to align these properly
+	$resource_ui/resources/resize/bone.position.x = $resource_ui/resources/resize/food.position.x
+	$resource_ui/resources/resize/sulfur.position.x = $resource_ui/resources/resize/food.position.x
+	$resource_ui/resources/resize/poison.position.x = $resource_ui/resources/resize/food.position.x
+
+	$resource_ui/resources/resize/wood.position = Vector2.LEFT*220 + $resource_ui/resources/resize/food.position
+	$resource_ui/resources/resize/iron.position = Vector2.LEFT*220 + $resource_ui/resources/resize/bone.position
+	$resource_ui/resources/resize/blood.position = Vector2.LEFT*220 + $resource_ui/resources/resize/sulfur.position
+	$resource_ui/resources/resize/ice.position = Vector2.LEFT*220 + $resource_ui/resources/resize/poison.position
 	
 	
 	font = FontFile.new()
@@ -787,7 +798,7 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*65+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
-		{"kind": commons.MONSTER_KINDS.EVILEYE, "level": 1},
+		{"kind": commons.MONSTER_KINDS.SKELETON, "level": 1},
 		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
 		{"kind": commons.MONSTER_KINDS.EVILEYE, "level": 1},
 		#ARMY
@@ -857,6 +868,8 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
 	],
 	[
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
 		
 		#ARMY
 	], {"SULFUR": 400}, commons.BIOMES.SNOW)
@@ -875,6 +888,8 @@ func _ready():
 	],
 	[
 		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 3},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
 		#ARMY
 	], {"BONE": 200, "SULFUR": 500}, commons.BIOMES.SNOW)
 	states.append(snow2)
@@ -897,6 +912,9 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.RIGHT*45, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
+		{"kind": commons.MONSTER_KINDS.SKELETON, "level": 4},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
 		#ARMY
 	], {"SULFUR": 1000, "BONE": 500}, commons.BIOMES.SNOW)
 	states.append(snow3)
@@ -904,14 +922,14 @@ func _ready():
 
 
 
-	var lake1 = state_supplier.new("Lake 1", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*Vector2.LEFT*commons.map_size, [
+	var lake1 = state_supplier.new("East Medditeria'e", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*Vector2.LEFT*commons.map_size, [
 		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,
 		Vector2.LEFT*10, Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10, 
 		
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
 	states.append(lake1)
 	
-	var lake2 = state_supplier.new("Lake 2", player_state_pos + 33*commons.map_size*Vector2.DOWN + 22*commons.map_size*Vector2.LEFT, [
+	var lake2 = state_supplier.new("West Medditeria'e", player_state_pos + 33*commons.map_size*Vector2.DOWN + 22*commons.map_size*Vector2.LEFT, [
 		Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10,
 		Vector2.LEFT*15+Vector2.UP*5,Vector2.DOWN*10+Vector2.LEFT*5,
 		Vector2.RIGHT*2+Vector2.DOWN*5,Vector2.LEFT*2+Vector2.DOWN*5, Vector2.DOWN*8+Vector2.RIGHT, Vector2.DOWN*4+Vector2.LEFT, Vector2.RIGHT*5
@@ -919,7 +937,7 @@ func _ready():
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
 	states.append(lake2)
 	
-	var lake3 = state_supplier.new("Lake 3", player_state_pos + 330*Vector2.DOWN + 120*Vector2.LEFT, [
+	var lake3 = state_supplier.new("South Medditeria'e", player_state_pos + 330*Vector2.DOWN + 120*Vector2.LEFT, [
 		Vector2.LEFT*10, Vector2.LEFT*15+Vector2.DOWN*2, Vector2.LEFT*5,
 		Vector2.DOWN*5, Vector2.RIGHT*5+Vector2.DOWN*5, Vector2.RIGHT*5+Vector2.DOWN*2, Vector2.RIGHT*10,
 		Vector2.RIGHT*5+Vector2.UP*5
@@ -927,7 +945,7 @@ func _ready():
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
 	states.append(lake3)
 	
-	var lake4 = state_supplier.new("Lake 4", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
+	var lake4 = state_supplier.new("North Medditeria'e", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
 		Vector2.LEFT*13+Vector2.DOWN*5,Vector2.LEFT*15+Vector2.UP*5,
 		Vector2.UP*5+Vector2.RIGHT*2, Vector2.RIGHT*5+Vector2.UP*5, Vector2.RIGHT*10, Vector2.DOWN*5+Vector2.RIGHT*10
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://brbost6856v51"]
+[gd_scene load_steps=10 format=3 uid="uid://brbost6856v51"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_ge7qy"]
+[ext_resource type="Texture2D" uid="uid://2utc7lnok1ab" path="res://assets/images/title_screen.png" id="2_pauwu"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_r0noo"]
 [ext_resource type="Texture2D" uid="uid://bv7ipoabn0w2q" path="res://assets/images/UI/tablica_temp.png" id="3_atnsh"]
 [ext_resource type="FontFile" uid="uid://ca26oej50rc4k" path="res://assets/fonts/DaysOne.ttf" id="4_87u51"]
@@ -19,6 +20,11 @@ z_index = -1
 position = Vector2(4, -3)
 
 [node name="menu_ui" type="CanvasGroup" parent="."]
+
+[node name="TitleScreen" type="Sprite2D" parent="menu_ui"]
+position = Vector2(-2, -1)
+scale = Vector2(1.8254, 1.292)
+texture = ExtResource("2_pauwu")
 
 [node name="buttons" type="Sprite2D" parent="menu_ui"]
 
@@ -102,7 +108,6 @@ offset_bottom = -22.592
 scale = Vector2(1.36071, 1.30427)
 
 [node name="map_ui" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="state_info_ui" type="Sprite2D" parent="map_ui"]
 position = Vector2(153, 567)
@@ -117,6 +122,14 @@ offset_left = -77.4313
 offset_top = -44.6171
 offset_right = -37.4313
 offset_bottom = -21.6171
+scale = Vector2(0.881214, 0.73218)
+theme_override_fonts/font = ExtResource("4_87u51")
+
+[node name="controlled" type="Label" parent="map_ui/state_info_ui/font-resize"]
+offset_left = -78.0362
+offset_top = -24.5394
+offset_right = -38.0362
+offset_bottom = -1.53943
 scale = Vector2(0.687635, 0.688746)
 theme_override_fonts/font = ExtResource("4_87u51")
 
@@ -203,24 +216,10 @@ texture = ExtResource("3_atnsh")
 [node name="resize" type="Sprite2D" parent="resource_ui/resources"]
 
 [node name="wood" type="Label" parent="resource_ui/resources/resize"]
-offset_left = -225.878
-offset_top = -103.184
-offset_right = -169.878
-offset_bottom = -74.1845
-scale = Vector2(2.61276, 1.7879)
-
-[node name="iron" type="Label" parent="resource_ui/resources/resize"]
-offset_left = -223.573
-offset_top = -51.592
-offset_right = -167.573
-offset_bottom = -22.592
-scale = Vector2(2.65145, 1.8821)
-
-[node name="blood" type="Label" parent="resource_ui/resources/resize"]
-offset_left = -226.093
-offset_top = 0.888905
-offset_right = -170.093
-offset_bottom = 29.8889
+offset_left = -216.033
+offset_top = -105.768
+offset_right = -160.033
+offset_bottom = -76.7685
 scale = Vector2(2.61276, 1.7879)
 
 [node name="food" type="Label" parent="resource_ui/resources/resize"]
@@ -230,6 +229,13 @@ offset_right = 59.9666
 offset_bottom = -76.7675
 scale = Vector2(2.61276, 1.7879)
 
+[node name="iron" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -216.033
+offset_top = -63.3971
+offset_right = -160.033
+offset_bottom = -34.3971
+scale = Vector2(2.65145, 1.8821)
+
 [node name="bone" type="Label" parent="resource_ui/resources/resize"]
 offset_left = 3.96655
 offset_top = -63.3971
@@ -237,11 +243,25 @@ offset_right = 59.9666
 offset_bottom = -34.3966
 scale = Vector2(2.61276, 1.7879)
 
+[node name="ice" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -216.033
+offset_top = -12.2605
+offset_right = -160.033
+offset_bottom = 16.7395
+scale = Vector2(2.61276, 1.7879)
+
 [node name="poison" type="Label" parent="resource_ui/resources/resize"]
 offset_left = 3.96655
 offset_top = -12.2605
 offset_right = 59.9666
 offset_bottom = 16.74
+scale = Vector2(2.61276, 1.7879)
+
+[node name="blood" type="Label" parent="resource_ui/resources/resize"]
+offset_left = -216.033
+offset_top = 34.493
+offset_right = -160.033
+offset_bottom = 63.4929
 scale = Vector2(2.61276, 1.7879)
 
 [node name="sulfur" type="Label" parent="resource_ui/resources/resize"]

@@ -25,6 +25,10 @@ func _input_event(viewport, event, shape_idx):
 		if event.button_index == MOUSE_BUTTON_LEFT:
 
 			get_node("/root/Menu/map_ui/state_info_ui/font-resize/state_name").text = fparent.id
+			if fparent.controlled:
+				get_node("/root/Menu/map_ui/state_info_ui/font-resize/controlled").text = "Controlled"
+			else:
+				get_node("/root/Menu/map_ui/state_info_ui/font-resize/controlled").text = "not Controlled"
 			get_node("/root/Menu").reset_select_focus()
 			self.select_focus = true
 			get_node("/root/Menu").update_focus()

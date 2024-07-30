@@ -2,7 +2,7 @@ extends Node2D
 class_name Commons
 
 enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY, SNOW}
-enum RESOURCES {WOOD, IRON, DEMON_BLOOD, SULFUR, POISON, FOOD, BONE}
+enum RESOURCES {WOOD, IRON, DEMON_BLOOD, SULFUR, POISON, FOOD, BONE, MAGIC_ICE}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON, SNOWGOLEM}	#this is just an example monster because I lack iDeas:tm:
@@ -106,9 +106,9 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int=1):
 		MONSTER_KINDS.BIES:
 			return load("res://assets/images/monsters/bies.png")
 		MONSTER_KINDS.SKELETON:
-      return load("res://assets/images/monsters/Skeleton.png")
+			return load("res://assets/images/monsters/Skeleton.png")
 		MONSTER_KINDS.SNOWGOLEM:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/snow golem.png")
 			
 
 			
@@ -127,6 +127,8 @@ func get_monster_texture_from_string(kind: String, level: int=1):
 			return load("res://assets/images/monsters/bies.png")
 		"SKELETON":
 			return load("res://assets/images/monsters/Skeleton.png")
+		"SNOWGOLEM":
+			return load("res://assets/images/monsters/snow golem.png")
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
 
@@ -196,6 +198,8 @@ func get_monster_index(s: String):	#istg godot can't handle enums properly
 			return MONSTER_KINDS.BIES
 		"SKELETON":
 			return MONSTER_KINDS.SKELETON
+		"SNOWGOLEM":
+			return MONSTER_KINDS.SNOWGOLEM
 
 #Monsters Data
 
@@ -625,8 +629,8 @@ var monster_stats = {
 						"movement_speed": 80
 					},
 					"cost": {
-						"Food": 50, 
-						"Magic Ice": 10
+						"FOOD": 50, 
+						"MAGIC_ICE": 10
 					},
 					"skills": { 
 					}
@@ -640,8 +644,8 @@ var monster_stats = {
 						"movement_speed": 85
 					},
 					"cost": {
-						"Food": 150, 
-						"Magic Ice": 20
+						"FOOD": 150, 
+						"MAGIC_ICE": 20
 					},
 					"skills": {
 					}
@@ -655,8 +659,8 @@ var monster_stats = {
 						"movement_speed": 90,
 					},
 					"cost": {
-						"Food": 250, 
-						"Magic Ice": 30, 
+						"FOOD": 250, 
+						"MAGIC_ICE": 30, 
 					},
 					"skills": {
 					}
@@ -670,8 +674,8 @@ var monster_stats = {
 						"movement_speed": 100,
 					},
 					"cost": {
-						"Food": 450, 
-						"Magic Ice": 50, 
+						"FOOD": 450, 
+						"MAGIC_ICE": 50, 
 					},
 					"skills": {
 					}
@@ -685,9 +689,9 @@ var monster_stats = {
 						"movement_speed": 150,
 					},
 					"cost": {
-						"Food": 1000, 
-						"Magic Ice": 100, 
-						"Demon Blood": 1
+						"FOOD": 1000, 
+						"MAGIC_ICE": 100, 
+						"DEMON_BLOOD": 1
 					},
 					"skills": {
 						0: "Blizzard"
