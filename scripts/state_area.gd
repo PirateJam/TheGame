@@ -4,7 +4,7 @@ extends Area2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var menu = load("res://scripts/menu.gd").new()
+var commons = load("res://scripts/commons.gd").new()
 
 var fparent
 var select_focus = false
@@ -40,9 +40,9 @@ func _input_event(viewport, event, shape_idx):
 			get_node("/root/Menu").reset_select_focus()
 			self.select_focus = true
 			get_node("/root/Menu").update_focus()
-			
-			get_node("/root/Menu").render = get_node("/root/Menu").RENDERS.STATE
-			get_node("/root/Menu").reload_render()
+			if fparent.biome != commons.BIOMES.WATER_BODY:
+				get_node("/root/Menu").render = get_node("/root/Menu").RENDERS.STATE
+				get_node("/root/Menu").reload_render()
 			pass
 
 # Called when the node enters the scene tree for the first time.

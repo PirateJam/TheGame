@@ -52,7 +52,7 @@ func _draw() -> void:
 		RENDERS.MAP:
 			draw_line(Vector2.ZERO, Vector2.DOWN*300, Color.AQUA, 0)
 	
-			draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Foko here!')
+			#draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Foko here!')
 			logger.log("Drawing states...")
 			for state in states:
 				var last_line = state.position
@@ -72,9 +72,9 @@ func _draw() -> void:
 				draw_line(last_line, button.position, border_color, border_line_width)
 				logger.log("Drawn: "+ button.id)
 		RENDERS.STATE:
-			draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Welcome to the State View!')
-			if !peeked_state.controlled:
-				draw_string(font, Vector2.ZERO+Vector2.DOWN*50+Vector2.LEFT*50, 'state not controlled, shall we attack?')
+			#draw_string(font, Vector2.ZERO+Vector2.DOWN*30+Vector2.LEFT*50, 'Welcome to the State View!')
+			#if !peeked_state.controlled:
+				#draw_string(font, Vector2.ZERO+Vector2.DOWN*50+Vector2.LEFT*50, 'state not controlled, shall we attack?')
 			
 			if is_planning && plan:
 				var previous = g_position
@@ -229,7 +229,7 @@ func _process(delta):
 		$resource_ui/resources/resize/poison.text = str("poison: ", TribeManagement.resources["POISON"])
 		$resource_ui/resources/resize/sulfur.text = str("sulfur: ", TribeManagement.resources["SULFUR"])
 		$resource_ui/resources/resize/ice.text = str("ice: ", TribeManagement.resources["MAGIC_ICE"])
-		$resource_ui/resources/resize/bone.text = str("sulfur: ", TribeManagement.resources["BONE"])
+		$resource_ui/resources/resize/bone.text = str("bone: ", TribeManagement.resources["BONE"])
 
 
 	if raid_phase==2:
@@ -538,6 +538,7 @@ func create_unit(kind):
 
 
 func _ready():
+
 	## fix my hand not being able to align these properly
 	$resource_ui/resources/resize/bone.position.x = $resource_ui/resources/resize/food.position.x
 	$resource_ui/resources/resize/sulfur.position.x = $resource_ui/resources/resize/food.position.x
@@ -868,8 +869,10 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
 	],
 	[
-		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
-		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 2},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 5},
+		{"kind": commons.MONSTER_KINDS.SNOWGOLEM, "level": 5},
+		{"kind": commons.MONSTER_KINDS.SKELETON, "level": 5},
+		{"kind": commons.MONSTER_KINDS.BIES, "level": 5},
 		
 		#ARMY
 	], {"SULFUR": 400}, commons.BIOMES.SNOW)
@@ -894,7 +897,7 @@ func _ready():
 	], {"BONE": 200, "SULFUR": 500}, commons.BIOMES.SNOW)
 	states.append(snow2)
 	
-	var snow3 = state_supplier.new("Land of Living Snow", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
+	var snow3 = state_supplier.new("Mountaineers", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
 		Vector2.UP*12+Vector2.LEFT*4,
 		Vector2.RIGHT*15,
 		Vector2.RIGHT*15+Vector2.DOWN*10,
