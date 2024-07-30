@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://cau1bmmwvfbgv"]
+
+[ext_resource type="Script" path="res://scripts/skill_resource.gd" id="1_c3nsd"]
+
+[resource]
+script = ExtResource("1_c3nsd")
+name = "Summon Skeleton"
+cooldown = 25.0
+effects = [{
+"args": [1],
+"function": "summon"
+}]
+animation = ""
+status_effects = []

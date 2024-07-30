@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1722277893
+::res://::1722346945
 export_presets.cfg::TextFile::-1::1722015702::0::1::::<><>::
 icon.svg::CompressedTexture2D::1558419703527209922::1722015702::1722015702::1::::<><>::
 README.md::TextFile::-1::1722015702::0::1::::<><>::
@@ -8,62 +8,78 @@ README.md::TextFile::-1::1722015702::0::1::::<><>::
 DaysOne.ttf::FontFile::4830487020030027908::1722015702::1722015702::1::::<><>::
 ::res://assets/images/::1722015702
 Actual Trees_1.png::CompressedTexture2D::5541160374455690429::1722015702::1722015702::1::::<><>::
-::res://assets/images/biomes/::1722021274
-desert.png::CompressedTexture2D::9162012732717309912::1722015702::1722015702::1::::<><>::
-forest.png::CompressedTexture2D::925257418345614073::1722015702::1722015702::1::::<><>::
-swamp.png::CompressedTexture2D::902585155198148361::1722015702::1722021274::1::::<><>::
-water.png::CompressedTexture2D::4406788771285245587::1722015702::1722021274::1::::<><>::
-::res://assets/images/buildings/::1722015702
+::res://assets/images/biomes/::1722346916
+desert.png::CompressedTexture2D::9162012732717309912::1722346915::1722346947::1::::<><>::
+desert_stateview.png::CompressedTexture2D::8892438629533492052::1722346915::1722346947::1::::<><>::
+Forest Biome.png::CompressedTexture2D::3984610703677044533::1722346915::1722346947::1::::<><>::
+forest.png::CompressedTexture2D::925257418345614073::1722346915::1722346947::1::::<><>::
+forest_stateview.png::CompressedTexture2D::2608381856864551601::1722346916::1722346947::1::::<><>::
+snow biome.png::CompressedTexture2D::6384556361174836343::1722346916::1722346947::1::::<><>::
+snow.png::CompressedTexture2D::3437224884546395911::1722346916::1722346947::1::::<><>::
+swamp.png::CompressedTexture2D::1955423815461439064::1722346916::1722346947::1::::<><>::
+swamp_stateview.png::CompressedTexture2D::2162187068332649433::1722346916::1722346947::1::::<><>::
+water.png::CompressedTexture2D::8312492553405209521::1722346916::1722346947::1::::<><>::
+water_stateview.png::CompressedTexture2D::7062062127017481432::1722346916::1722346947::1::::<><>::
+::res://assets/images/buildings/::1722346916
+commander_camp.png::CompressedTexture2D::8548787914799791565::1722346916::1722346947::1::::<><>::
 wall_front-1.png::CompressedTexture2D::7548476048236147042::1722015702::1722015702::1::::<><>::
 wall_side-1.png::CompressedTexture2D::3245166512248153568::1722015702::1722015702::1::::<><>::
-::res://assets/images/misc/::1722021274
+::res://assets/images/misc/::1722346916
+close.png::CompressedTexture2D::6298665379120849375::1722346916::1722346947::1::::<><>::
+crosshair.png::CompressedTexture2D::1494893040168280638::1722346916::1722346947::1::::<><>::
 tree1.png::CompressedTexture2D::3031722917385131396::1722015702::1722015702::1::::<><>::
 tree2.png::CompressedTexture2D::2259662747392151704::1722015702::1722021274::1::::<><>::
 tree3.png::CompressedTexture2D::4745790776130150702::1722015702::1722021274::1::::<><>::
 tree_temp.png::CompressedTexture2D::367237703957802266::1722015702::1722015702::1::::<><>::
 unknown.png::CompressedTexture2D::983616271856604081::1722015702::1722015702::1::::<><>::
-::res://assets/images/monsters/::1722015702
+::res://assets/images/monsters/::1722346916
+bies.png::CompressedTexture2D::4289216357134319721::1722346916::1722346947::1::::<><>::
+Giant Fucking Frog.png::CompressedTexture2D::8993475050463217898::1722346916::1722346947::1::::<><>::
+snow golem.png::CompressedTexture2D::8955805921637126678::1722346916::1722346947::1::::<><>::
+The Giant Spider.png::CompressedTexture2D::3590084530798576742::1722346916::1722346947::1::::<><>::
 yippe_example_monster1.png::CompressedTexture2D::1317159384749616522::1722015702::1722015702::1::::<><>::
 ::res://assets/images/UI/::1722015702
 tablica_temp.png::CompressedTexture2D::3926959746463117878::1722015702::1722015702::1::::<><>::
-::res://assets/music/::1722015702
+::res://assets/music/::1722346916
 combat_A.mp3::AudioStreamMP3::2643462579661210424::1722015702::1722015702::1::::<><>::
 combat_B.mp3::AudioStreamMP3::8394329086103570007::1722015702::1722015702::1::::<><>::
-Peace 7.20 .mp3::AudioStreamMP3::316415892931606058::1722015702::1722015702::1::::<><>::
-::res://assets/music/Premix loops/::1722021274
-Combat A premix.mp3::AudioStreamMP3::4721214767641244406::1722015702::1722021274::1::::<><>::
-Combat B premix.mp3::AudioStreamMP3::2672281728123613988::1722015702::1722021274::1::::<><>::
-Combat C premix.mp3::AudioStreamMP3::8198444140074758802::1722015702::1722021274::1::::<><>::
-Peace premix.mp3::AudioStreamMP3::6290140019044269770::1722015702::1722021274::1::::<><>::
-Themes data.txt::TextFile::-1::1722015702::0::1::::<><>::
-::res://nodes/::1722279799
-battlefield.tscn::PackedScene::9176000184663343811::1722279827::0::1::::<><>::res://scripts/battlefield.gd
-lab.tscn::PackedScene::6394401902014600667::1722279799::0::1::::<><>::res://scripts/lab.gd
-monster.tscn::PackedScene::2121645249088467725::1722279799::0::1::::<><>::res://scripts/monster.gd
-node_2d.tscn::PackedScene::3582578632856022434::1722279799::0::1::::<><>::res://scripts/menu.gd<>res://scripts/Camera2D.gd<>uid://bv7ipoabn0w2q::::res://assets/images/UI/tablica_temp.png<>uid://ca26oej50rc4k::::res://assets/fonts/DaysOne.ttf<>uid://wg57ehtf5t2a::::res://icon.svg
-::res://nodes/skills/::1722279799
+peace_A.mp3::AudioStreamMP3::316415892931606058::1722346916::1722346947::1::::<><>::
+::res://assets/music/premix_loops/::1722346916
+combatA_premix.mp3::AudioStreamMP3::3854650812362503268::1722346916::1722346947::1::::<><>::
+combatB_premix.mp3::AudioStreamMP3::5673277920978975151::1722346916::1722346947::1::::<><>::
+combatC_premix.mp3::AudioStreamMP3::1860439252041482545::1722346916::1722346947::1::::<><>::
+peace_premix.mp3::AudioStreamMP3::3787499104755004460::1722346916::1722346947::1::::<><>::
+Themes data.txt::TextFile::-1::1722346916::0::1::::<><>::
+::res://nodes/::1722346916
+battlefield.tscn::PackedScene::9176000184663343811::1722281896::0::1::::<><>::res://scripts/battlefield.gd
+lab.tscn::PackedScene::6394401902014600667::1722281804::0::1::::<><>::res://scripts/lab.gd
+monster.tscn::PackedScene::2121645249088467725::1722281804::0::1::::<><>::res://scripts/monster.gd
+node_2d.tscn::PackedScene::3582578632856022434::1722346916::0::1::::<><>::res://scripts/menu.gd<>res://scripts/Camera2D.gd<>uid://bv7ipoabn0w2q::::res://assets/images/UI/tablica_temp.png<>uid://ca26oej50rc4k::::res://assets/fonts/DaysOne.ttf<>uid://wg57ehtf5t2a::::res://icon.svg<>uid://ngg4b2g56c2d::::res://assets/images/biomes/forest.png<>uid://bt7xs61gsats3::::res://assets/music/premix_loops/peace_premix.mp3<>uid://cv0edl6kxux8r::::res://assets/images/misc/close.png
+::res://nodes/skills/::1722283945
 PetrifyStare.tres::Resource/SkillResource::6392409331566671353::1722275897::0::1::::<><>::res://scripts/skill_resource.gd
 PoisonAttack.tres::Resource/SkillResource::6861887051686603501::1722274594::0::1::::<><>::res://scripts/skill_resource.gd
 StrongAttack.tres::Resource/SkillResource::7975931511001835007::1722278106::0::1::::<><>::res://scripts/skill_resource.gd
-SwallowWhole .tres::Resource/SkillResource::2576963271332047864::1722279827::0::1::::<><>::res://scripts/skill_resource.gd
+SwallowWhole.tres::Resource/SkillResource::2576963271332047864::1722283945::0::1::::<><>::res://scripts/skill_resource.gd
 ::res://nodes/status/::1722275772
 Petrify.tres::Resource/StatusResource::4796134570983188476::1722275772::0::1::::<><>::res://scripts/status_resource.gd
 Poison.tres::Resource/StatusResource::6852038740055413331::1722275772::0::1::::<><>::res://scripts/status_resource.gd
-::res://scripts/::1722279771
+::res://scripts/::1722346916
 battlefield.gd::GDScript::-1::1722279574::0::1::::<>Commons<>::
-building.gd::GDScript::-1::1722015702::0::1::::<>Commons<>::
+building.gd::GDScript::-1::1722346916::0::1::::<>Commons<>::
 button_area.gd::GDScript::-1::1722015702::0::1::::<>Area2D<>::
 Camera2D.gd::GDScript::-1::1722015702::0::1::::<>Camera2D<>::
-commons.gd::GDScript::-1::1722279827::0::1::::Commons<>Node2D<>::
+commons.gd::GDScript::-1::1722346916::0::1::::Commons<>Node2D<>::
+cutscene.gd::GDScript::-1::1722346916::0::1::::<>Node<>::
 lab.gd::GDScript::-1::1722278719::0::1::::<>Commons<>::
 logger.gd::GDScript::-1::1722015702::0::1::::<>Node<>::
-menu.gd::GDScript::-1::1722015702::0::1::::<>Node2D<>::
+menu.gd::GDScript::-1::1722346916::0::1::::<>Node2D<>::
 menu_supplier.gd::GDScript::-1::1722015702::0::1::::MenuSupplier<>Node<>::
-monster.gd::GDScript::-1::1722279698::0::1::::<>Commons<>::
+monster.gd::GDScript::-1::1722346916::0::1::::<>Commons<>::
 monsters_config.gd::GDScript::-1::1722268654::0::1::::<>Resource<>::
+planning.gd::GDScript::-1::1722346916::0::1::::<>Area2D<>::
 skill_resource.gd::GDScript::-1::1722273316::0::1::::SkillResource<>Resource<>::
-state.gd::GDScript::-1::1722015702::0::1::::State<>Node<>::
+state.gd::GDScript::-1::1722346916::0::1::::State<>Node<>::
 state_area.gd::GDScript::-1::1722015702::0::1::::<>Area2D<>::
 status_resource.gd::GDScript::-1::1722275112::0::1::::StatusResource<>Resource<>::
-tribe_management.gd::GDScript::-1::1722278858::0::1::::<>Commons<>::
-utils.gd::GDScript::-1::1722015702::0::1::::<>Node<>::
+tribe_management.gd::GDScript::-1::1722346916::0::1::::<>Commons<>::
+utils.gd::GDScript::-1::1722346916::0::1::::<>Commons<>::

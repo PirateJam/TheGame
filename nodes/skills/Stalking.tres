@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://dutgwbur4s0xn"]
+
+[ext_resource type="Script" path="res://scripts/skill_resource.gd" id="1_h4rhi"]
+
+[resource]
+script = ExtResource("1_h4rhi")
+name = "Stalking"
+cooldown = 10.0
+effects = [{
+"args": [1.2],
+"function": "stalking"
+}]
+animation = ""
+status_effects = []

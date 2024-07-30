@@ -40,10 +40,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if ai:
-    # Update status effects
-    update_status_effects(delta)
+	# Update status effects
+		update_status_effects(delta)
 		if get_tree().get_nodes_in_group("allies").has(self):
-			print(self, is_enemy, path)
+			#print(self, is_enemy, path)
 			if target and is_instance_valid(target):
 				var distance_to_target = position.distance_to(target.position)
 				if distance_to_target <= attack_range:
@@ -88,16 +88,30 @@ func find_target(targets: Array) -> Node2D:
 			closest_distance = distance_to_target
 	return closest_target
 
-func find_low_hp_enemy(args):
+func find_low_hp_enemy(args, range):
 	var enemies_in_range = get_target()
 	var distance_to_target
 	
 	for enemy in enemies_in_range:
 		distance_to_target = position.distance_to(target.position)
-		if float(enemy.current_health) / float(enemy.health) <= args[0] and distance_to_target <= attack_range:
+		if float(enemy.current_health) / float(enemy.health) <= args[0] and distance_to_target <= range:
 			skill_target = enemy
-			print("enemy found: " + skill_target.name)
+			#print("enemy found: " + skill_target.name)
 			return true
+
+func find_lowest_hp_enemy(range):
+	var enemies = get_target()
+	var lowest_hp_enemy = null
+	var lowest_hp = 99999
+	var distance_to_target
+	
+	for enemy in enemies:
+		distance_to_target = position.distance_to(enemy.position)
+		if enemy.current_health < lowest_hp and distance_to_target <= range:
+			lowest_hp_enemy = enemy
+			lowest_hp = enemy.current_health
+			skill_target = enemy
+	return true
 
 
 func get_target() -> Array:
@@ -188,15 +202,19 @@ func use_skill(skill_name: String):
 	if skill_timers[skill_name] <= 0:
 		var skill = get_skill_by_name(skill_name)
 		if skill:
+			skill_timers[skill_name] = skill.cooldown  # Reset cooldown
+			
+			#Execute the skill
 			for effect in skill.effects:
 				call(effect.function, effect.args)
-				
+			
+			#Apply status effect if any
 			for status_effect_path in skill.status_effects:
 				print(status_effect_path)
 				var status_effect = load(status_effect_path)
 				target.apply_status_effect(status_effect)
+				
 			#play_animation(skill.animation)
-			skill_timers[skill_name] = skill.cooldown  # Reset cooldown
 		else:
 			print("Skill not found")
 
@@ -204,12 +222,13 @@ func automatic_skill_usage():
 	for skill in skills:
 		if skill_timers[skill.name] <= 0 and target:
 			if skill.name == "Swallow Whole":
-				if find_low_hp_enemy(skill.effects[0].args):
+				if find_low_hp_enemy(skill.effects[0].args, attack_range):
 					use_skill(skill.name)
 				break
 			else:
 				use_skill(skill.name)
 				break
+
 
 #Skills effect
 func modify_power(power: Array): #Increases or decreases the effect of an attack
@@ -226,6 +245,34 @@ func drain_execution(args: Array): #Executes below args[0]% and heal args[1]%
 func apply_skill_status_effect(skill_status_effect: Resource):
 	apply_status_effect(skill_status_effect)
 
+func stalking(args: Array): #Teleport behind a low hp enemies
+	if find_lowest_hp_enemy(1000):
+		target = skill_target
+		target.take_damage(attack_power * args[0])
+		var teleport_position = target.position + Vector2(-50, 0)
+		global_position = teleport_position
+		print("Teleported behind the enemy.")
+		
+func summon(args: Array):
+	var summon_unit_scene: PackedScene 
+	var summon_count: int = 1
+	summon_unit_scene = load("res://nodes/monster.tscn")
+	
+	var summon_instance = summon_unit_scene.instantiate()
+	if summon_instance:
+		summon_instance.set_monster_kind(MONSTER_KINDS.SKELETON, 1)
+		summon_instance.global_position = global_position + Vector2(randf_range(-50, 50), randf_range(-50, 50))
+		if is_in_group("allies"):
+			summon_instance.add_to_group("allies")
+			summon_instance.set_color(Color(0,1,0,1))
+		else:
+			summon_instance.add_to_group("enemies")
+			summon_instance.set_color(Color(1,0,0,1))
+		
+		get_tree().root.add_child(summon_instance)
+		print("Summoned a unit.")
+
+	
 #Status related functions
 func apply_status_effect(effect: Resource):
 	var status_effect = {

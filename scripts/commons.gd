@@ -5,7 +5,7 @@ enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
 enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
-enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG}	#this is just an example monster because I lack iDeas:tm:
+enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP}
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
@@ -74,6 +74,10 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 		MONSTER_KINDS.SPIDER:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 		MONSTER_KINDS.GIANTFROG:
+			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+		MONSTER_KINDS.BIES:
+			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+		MONSTER_KINDS.SKELETON:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 
 
@@ -151,7 +155,6 @@ var monster_stats = {
 						"Sulfur": 10
 					},
 					"skills": { 
-						0: "Petrify Stare"
 					}
 				},
 				2: {
@@ -302,7 +305,7 @@ var monster_stats = {
 				},
 			},
 		},
-				MONSTER_KINDS.GIANTFROG: {
+		MONSTER_KINDS.GIANTFROG: {
 			"locked": false,
 			"name": "Giant Frog",
 						"type": MONSTER_TYPES.MEELEE,
@@ -319,7 +322,6 @@ var monster_stats = {
 						"Food": 400, 
 					},
 					"skills": {
-						0: "Swallow Whole"
 					}
 				},
 				2: {
@@ -378,6 +380,169 @@ var monster_stats = {
 					},
 					"skills": {
 						0: "Swallow Whole"
+					}
+				},
+			},
+		},
+		MONSTER_KINDS.BIES: {
+			"locked": false,
+			"name": "Bies",
+						"type": MONSTER_TYPES.CAVALRY,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 150, 
+						"attack_power": 20, 
+						"attack_speed": 1.0, 
+						"attack_range": 30.0, 
+						"movement_speed": 200,
+					},
+					"cost": {
+						"Food": 200, 
+						"Bone": 20
+					},
+					"skills": {
+					}
+				},
+				2: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 25, 
+						"attack_speed": 1.1, 
+						"attack_range": 35.0, 
+						"movement_speed": 215,
+					},
+					"cost": {
+						"Food": 400, 
+						"Bone": 40, 
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 250, 
+						"attack_power": 30, 
+						"attack_speed": 1.2, 
+						"attack_range": 40.0, 
+						"movement_speed": 230,
+					},
+					"cost": {
+						"Food": 600, 
+						"Bone": 60,
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 300, 
+						"attack_power": 30, 
+						"attack_speed": 1.3, 
+						"attack_range": 45.0, 
+						"movement_speed": 245,
+					},
+					"cost": {
+						"Food": 900, 
+						"Bone": 90, 
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 600, 
+						"attack_power": 50, 
+						"attack_speed": 1.8, 
+						"attack_range": 50.0, 
+						"movement_speed": 300,
+					},
+					"cost": {
+						"Food": 2000, 
+						"Bone": 200, 
+						"Demon Blood": 1
+					},
+					"skills": {
+						0: "Stalking"
+					}
+				},
+			},
+		},
+		MONSTER_KINDS.SKELETON: {
+			"locked": false,
+			"name": "Bies",
+						"type": MONSTER_TYPES.MEELEE,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 200, 
+						"attack_power": 15, 
+						"attack_speed": 1.5, 
+						"attack_range": 30.0, 
+						"movement_speed": 100,
+					},
+					"cost": {
+						"Bone": 25, 
+					},
+					"skills": {
+					}
+				},
+				2: {
+					"stats": {
+						"health": 250, 
+						"attack_power": 20, 
+						"attack_speed": 1.6, 
+						"attack_range": 35.0, 
+						"movement_speed": 110,
+					},
+					"cost": {
+						"Bone": 50, 
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 300, 
+						"attack_power": 25, 
+						"attack_speed": 1.7, 
+						"attack_range": 40.0, 
+						"movement_speed": 120,
+					},
+					"cost": {
+						"Bone": 75, 
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 350, 
+						"attack_power": 30, 
+						"attack_speed": 1.8, 
+						"attack_range": 45.0, 
+						"movement_speed": 120,
+					},
+					"cost": {
+						"Bone": 100, 
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 700, 
+						"attack_power": 60, 
+						"attack_speed": 2.5, 
+						"attack_range": 50.0, 
+						"movement_speed": 180,
+					},
+					"cost": {
+						"Bone": 300, 
+						"Demon Blood": 1, 
+					},
+					"skills": {
+						0: "Summon Skeleton"
 					}
 				},
 			},
