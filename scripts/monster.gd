@@ -27,9 +27,9 @@ var status_effects: Array = []
 var level: int = -1
 var sprite: Sprite2D
 
-var current_index = -1
-var path = []
-var ai = false
+var current_index = 0
+var path = [Vector2.ZERO]
+var ai = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -269,6 +269,11 @@ func summon(args: Array):
 		
 		get_tree().root.add_child(summon_instance)
 		print("Summoned a unit.")
+		
+func damage_all(args: Array):
+	var all_targets = get_target()
+	for enemy in all_targets:
+		enemy.take_damage(attack_power * args[0])
 
 	
 #Status related functions
