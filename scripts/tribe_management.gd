@@ -1,7 +1,7 @@
 extends Commons
 #For tribe and army management
 
-var resources = {"Food": 0, "Sulfur": 0, "Demon Blood": 0, "Poison": 0}
+var resources = {}
 var army = []
 var buildings = []
 
@@ -68,7 +68,12 @@ func add_resources(resources_amount):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for i in RESOURCES:
-		resources[i] = 5000
+		resources[i] = 500
+	resources["SULFUR"] = 250
+	resources["FOOD"] = 250
+	resources["POISON"] = 100
+	resources["DEMON_BLOOD"] = 0
+
 	print("RESOURCES: ", resources)
 	#resources["resource1"] = 999999
 	#resources["resource2"] = 999999
