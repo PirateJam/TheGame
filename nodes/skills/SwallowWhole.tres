@@ -7,7 +7,7 @@ script = ExtResource("1_fffsl")
 name = "Swallow Whole"
 cooldown = 10.0
 effects = [{
-"args": [0.35, 0.1],
+"args": [0.15, 0.1],
 "function": "drain_execution"
 }]
 animation = ""

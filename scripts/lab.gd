@@ -76,7 +76,6 @@ func _on_Upgrade_Button_Pressed():
 	upgrade_menu.visible = not upgrade_menu.visible
 
 func _on_Monster_Button_Hovered(monster: Dictionary):
-	print("Upgrade Button Hover")
 	update_monster_stats(monster)
 
 func _on_Upgrade_Monster(monster: Dictionary):

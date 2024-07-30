@@ -1,23 +1,6 @@
-res://nodes/lab.tscn
-res://scripts/monsters_config.gd
-res://scripts/status_resource.gd
-res://nodes/status/poison.tres
-res://scripts/status.gd
 res://nodes/monster.tscn
+res://scripts/commons.gd
 res://scripts/monster.gd
 res://nodes/node_2d.tscn
+res://nodes/lab.tscn
 res://nodes/battlefield.tscn
-res://nodes/status/petrify.tres
-res://nodes/skills/Petrify.tres
-res://nodes/skills/StrongAttack.tres
-res://scripts/commons.gd
-res://scripts/battlefield.gd
-res://nodes/skills/PoisonAttack.tres
-res://nodes/status/Poison.tres
-res://scripts/skill_resource.gd
-res://nodes/status/Petrify.tres
-res://nodes/skills/PetrifyStare.tres
-res://nodes/skills/SwallowWhole .tres
-res://scripts/lab.gd
-res://scripts/tribe_management.gd
-res://nodes/skills/SwallowWhole.tres

@@ -5,4 +5,4 @@ class_name StatusResource
 @export var duration: float
 @export var effect_function: String  # Name of the function to call for this effect
 @export var args: Array = []  # Arguments to pass to the func
-@export var tick_interval: float = 1.0  # Interval in seconds for the effect to tick
+@export var tick_interval: float = 1.0  # Interval in seconds for the effect to tic
