@@ -70,11 +70,11 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 		return unknown_texture
 	match kind:
 		MONSTER_KINDS.EVILEYE:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/eye_monster.png")
 		MONSTER_KINDS.SPIDER:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/spider.png")
 		MONSTER_KINDS.GIANTFROG:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/giant_frog.png")
 
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")

@@ -453,7 +453,7 @@ func _ready():
 	player_state.controlled = true
 	states.append(player_state)
 	### DEFAULT_PLAYER_ARMY
-	TribeManagement.add_to_army(commons.MONSTER_KINDS.YIPEEE, 1)
+	TribeManagement.add_to_army(commons.MONSTER_KINDS.EVILEYE, 1)
 	
 	
 	var basic_state = state_supplier.new("Enemy Tribe", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
@@ -466,7 +466,7 @@ func _ready():
 		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
 	],
 	[
-		{"kind": commons.MONSTER_KINDS.YIPEEHORSE, "level": 1},
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
 		#ARMY
 	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
