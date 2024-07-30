@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://brwuwu830ntqn"]
+
+[ext_resource type="Script" path="res://scripts/skill_resource.gd" id="1_wq4cv"]
+
+[resource]
+script = ExtResource("1_wq4cv")
+name = "Blizzard"
+cooldown = 20.0
+effects = [{
+"args": [4],
+"function": "damage_all"
+}]
+animation = ""
+status_effects = []

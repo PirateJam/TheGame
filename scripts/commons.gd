@@ -5,7 +5,7 @@ enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
 enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
-enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON}	#this is just an example monster because I lack iDeas:tm:
+enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON, SNOWGOLEM}	#this is just an example monster because I lack iDeas:tm:
 
 enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP}
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
@@ -78,6 +78,8 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int):
 		MONSTER_KINDS.BIES:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 		MONSTER_KINDS.SKELETON:
+			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+		MONSTER_KINDS.SNOWGOLEM:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 
 
@@ -543,6 +545,90 @@ var monster_stats = {
 					},
 					"skills": {
 						0: "Summon Skeleton"
+					}
+				},
+			},
+		},
+		MONSTER_KINDS.SNOWGOLEM: {
+			"locked": false,
+			"name": "Snow Golem", 
+			"type": MONSTER_TYPES.RANGED,
+			"levels": {
+				1: {
+					"stats": {
+						"health": 70, 
+						"attack_power": 5, 
+						"attack_speed": 2.5, 
+						"attack_range": 300.0, 
+						"movement_speed": 80
+					},
+					"cost": {
+						"Food": 50, 
+						"Magic Ice": 10
+					},
+					"skills": { 
+					}
+				},
+				2: {
+					"stats": {
+						"health": 110, 
+						"attack_power": 9, 
+						"attack_speed": 2.6, 
+						"attack_range": 310.0, 
+						"movement_speed": 85
+					},
+					"cost": {
+						"Food": 150, 
+						"Magic Ice": 20
+					},
+					"skills": {
+					}
+				},
+				3: {
+					"stats": {
+						"health": 150, 
+						"attack_power": 13, 
+						"attack_speed": 2.7, 
+						"attack_range": 320.0, 
+						"movement_speed": 90,
+					},
+					"cost": {
+						"Food": 250, 
+						"Magic Ice": 30, 
+					},
+					"skills": {
+					}
+				},
+				4: {
+					"stats": {
+						"health": 190, 
+						"attack_power": 17, 
+						"attack_speed": 2.8, 
+						"attack_range": 330.0, 
+						"movement_speed": 100,
+					},
+					"cost": {
+						"Food": 450, 
+						"Magic Ice": 50, 
+					},
+					"skills": {
+					}
+				},
+				5: {
+					"stats": {
+						"health": 400, 
+						"attack_power": 30, 
+						"attack_speed": 3.5, 
+						"attack_range": 450.0, 
+						"movement_speed": 150,
+					},
+					"cost": {
+						"Food": 1000, 
+						"Magic Ice": 100, 
+						"Demon Blood": 1
+					},
+					"skills": {
+						0: "Blizzard"
 					}
 				},
 			},

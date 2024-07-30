@@ -1,6 +1,8 @@
 res://nodes/monster.tscn
 res://scripts/commons.gd
+res://nodes/skills/blizzard.tres
 res://scripts/monster.gd
+res://nodes/battlefield.tscn
+res://scripts/battlefield.gd
 res://nodes/node_2d.tscn
 res://nodes/lab.tscn
-res://nodes/battlefield.tscn

@@ -45,7 +45,7 @@ func _on_Spawn_Player_Warrior():
 	spawn_unit(MONSTER_KINDS.SKELETON, Vector2(400, 100), false)
 
 func _on_Spawn_Player_Archer():
-	spawn_unit(MONSTER_KINDS.EVILEYE, Vector2(550, 100), false)
+	spawn_unit(MONSTER_KINDS.SNOWGOLEM, Vector2(550, 100), false)
 
 func _on_Spawn_Player_Horse():
 	spawn_unit(MONSTER_KINDS.BIES, Vector2(600, 100), false)
@@ -54,7 +54,7 @@ func _on_Spawn_Enemy_Warrior():
 	spawn_unit(MONSTER_KINDS.SKELETON, Vector2(400, 500), true)
 
 func _on_Spawn_Enemy_Archer():
-	spawn_unit(MONSTER_KINDS.EVILEYE, Vector2(550, 500), true)
+	spawn_unit(MONSTER_KINDS.SNOWGOLEM, Vector2(550, 500), true)
 
 func _on_Spawn_Enemy_Horse():
 	spawn_unit(MONSTER_KINDS.BIES, Vector2(600, 500), true)
