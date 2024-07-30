@@ -1,7 +1,7 @@
 extends Node2D
 class_name Commons
 
-enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
+enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY, SNOW}
 enum RESOURCES {WOOD, IRON, ELIXIR}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
@@ -44,6 +44,8 @@ func get_biome_texture(biome: BIOMES):
 			return load("res://assets/images/biomes/swamp.png")
 		BIOMES.WATER_BODY:
 			return load("res://assets/images/biomes/water.png")
+		BIOMES.SNOW:
+			return load("res://assets/images/biomes/snow.png")
 func get_biome_stateview(biome: BIOMES):
 	match biome:
 		BIOMES.FOREST:
@@ -54,6 +56,8 @@ func get_biome_stateview(biome: BIOMES):
 			return load("res://assets/images/biomes/swamp_stateview.png")
 		BIOMES.WATER_BODY:
 			return load("res://assets/images/biomes/water_stateview.png")
+		BIOMES.SNOW:
+			return load("res://assets/images/biomes/snow_stateview.png")
 
 func get_building_textures(kind: BUILDING_KINDS, level = 1):
 	if level>5 or level<0:
@@ -111,6 +115,9 @@ var forest_trees = [
 	load("res://assets/images/misc/tree1.png"),
 	load("res://assets/images/misc/tree2.png"),
 ]
+var snow_trees = [
+	load("res://assets/images/misc/tree1.png"),
+]
 
 var desert_trees = [
 	load("res://assets/images/misc/tree3.png"),
@@ -123,7 +130,7 @@ var swamp_trees = [
 const forest_trees_amount = 8
 const swamp_trees_amount = 10
 const desert_trees_amount = 4
-
+const snow_trees_amount = 9
 
 
 

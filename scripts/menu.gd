@@ -221,6 +221,41 @@ func passive_resource_gain(delay):
 
 
 func _process(delta):
+	if raid_phase==2:
+		print(temp_army, " <- Player army")
+		print(enemy_army, " <- Enemy army")
+		
+		var result = false
+		var result2 = false
+		for i in temp_army:
+			result = result or is_instance_valid(i)
+		print(result)
+		if !result:			# LOST
+			cutscene.cutscene($cutscene_ui, "You lost!", "Try upgrading your units, or using different ones.", null)
+			for i in enemy_army:
+				if is_instance_valid(i):
+					i.queue_free()
+		else:
+			for i in enemy_army:
+				result2 = result2 or is_instance_valid(i)
+				
+		
+			if !result2:			# LOST
+				cutscene.cutscene($cutscene_ui, "You won!", "The state is yours, congratulations!.", null)
+				peeked_state.controlled = true
+		if !result or !result2:
+			raid_phase = 0
+	if raid_phase == 0:
+		if temp_army:
+			for i in temp_army:
+				if is_instance_valid(i):
+					i.queue_free()
+		if enemy_army:
+			for i in enemy_army:
+				if is_instance_valid(i):
+					i.queue_free()
+
+
 	if !$AudioStreamPlayer2D.is_playing():
 		if peeked_state:
 			if !peeked_state.controlled:
@@ -317,10 +352,11 @@ func monster_choice(position):
 	$attack_ui.visible = true
 
 
-
+var enemy_army
+var temp_army
 
 func monsters_picked(position):
-	var temp_army=[]
+	temp_army=[]
 	var monster_pos = position+Vector2.RIGHT*64
 	$attack_ui.visible = false
 	for i in $attack_ui/options.get_children():
@@ -338,7 +374,7 @@ func monsters_picked(position):
 
 
 	plan = planning.new(self)
-	var height = 500
+	var height = 400
 	var poly = CollisionPolygon2D.new()
 	poly.set_polygon(PackedVector2Array([Vector2.LEFT*height*3+Vector2.UP*height, Vector2.LEFT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.UP*height]))
 	plan.add_child(poly)
@@ -353,7 +389,7 @@ func monsters_picked(position):
 	
 	
 	
-	var enemy_army = []
+	enemy_army = []
 	for i in peeked_state.army:
 		
 		enemy_army.append(utils.spawn_unit(i["kind"], Vector2(randi()%(height*3), randi()%height), true, self, i["level"]))
@@ -651,6 +687,61 @@ func _ready():
 	], {}, commons.BIOMES.SWAMP)
 	states.append(swamp4)
 	
+	
+	
+	var snow1 = state_supplier.new("Snow 1", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*24+Vector2.UP*5,
+		Vector2.LEFT*5,
+		Vector2.LEFT*5+Vector2.DOWN*5,
+		Vector2.UP*5+Vector2.LEFT*5,
+		Vector2.UP*5,
+		Vector2.UP*5+Vector2.RIGHT*15,
+		Vector2.RIGHT*10+Vector2.DOWN*5,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow1)
+	
+	var snow2 = state_supplier.new("Snow 2", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*14+Vector2.UP*10,
+		Vector2.LEFT*10+Vector2.UP*5,
+		Vector2.RIGHT*15+Vector2.UP*2,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*4+Vector2.DOWN*12,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow2)
+	
+	var snow3 = state_supplier.new("Snow 3", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
+		Vector2.UP*12+Vector2.LEFT*4,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*15+Vector2.DOWN*10,
+		Vector2.RIGHT*5+Vector2.DOWN*15,
+		Vector2.LEFT*8,
+		Vector2.LEFT*13+Vector2.UP*8,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow3)
 
 
 
@@ -868,7 +959,7 @@ func state_init():
 	# TREES
 	logger.log("adding trees")
 
-	'''for state in states:
+	for state in states:
 		logger.log("adding trees for " + state.id)
 		triangles = Geometry2D.triangulate_polygon(state.poly.polygon)
 		_rand = RandomNumberGenerator.new()
@@ -889,6 +980,17 @@ func state_init():
 					tree.scale = Vector2(1,1)
 					tree.position = get_random_point(state.poly.polygon)
 					tree.texture = commons.forest_trees[randi() % commons.forest_trees.size()]
+					logger.log(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.SNOW:
+				for i in range(commons.snow_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.snow_trees[randi() % commons.snow_trees.size()]
 					logger.log(tree.position)
 					#$BACKGROUND_OBJ.
 					add_child(tree)
@@ -914,7 +1016,7 @@ func state_init():
 					logger.log(tree.position)
 					#$BACKGROUND_OBJ.
 					add_child(tree)
-					trees.append(tree)'''
+					trees.append(tree)
 
 
 

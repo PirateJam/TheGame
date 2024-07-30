@@ -52,7 +52,21 @@ func gen_poly() -> CollisionPolygon2D:
 	else:
 		self.color_obj.color = commons.default_state_color
 	self.color_obj.texture = commons.get_biome_texture(self.biome)
-	self.color_obj.texture_scale = Vector2(4,4)
+	match self.biome:
+		commons.BIOMES.SNOW:
+			self.color_obj.texture_offset = Vector2(300, 200)
+			self.color_obj.texture_scale = Vector2(5,5)
+		commons.BIOMES.WATER_BODY:
+			self.color_obj.texture_scale = Vector2(4,4)
+			self.color_obj.texture_offset = Vector2(250, -200)
+		commons.BIOMES.DESERT:
+			self.color_obj.texture_scale = Vector2(4,4)
+			self.color_obj.texture_offset = Vector2(-150, -200)
+		commons.BIOMES.SWAMP:
+			self.color_obj.texture_scale = Vector2(4,4)
+			self.color_obj.texture_offset = Vector2(450, -400)
+		_:
+			self.color_obj.texture_scale = Vector2(6,6)
 
 	return self.poly
 
