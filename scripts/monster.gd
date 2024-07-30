@@ -27,9 +27,9 @@ var status_effects: Array = []
 var level: int = -1
 var sprite: Sprite2D
 
-var current_index = -1
-var path = []
-var ai = false
+var current_index = 0
+var path = [Vector2.ZERO]
+var ai = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -79,12 +79,12 @@ func _process(delta):
 # Function to set the target for the unit
 func find_target(targets: Array) -> Node2D:
 	var closest_target = null
-	var closest_distance = attack_range
+	var closest_distance = 999999
 	var distance_to_target
-	for target in targets:
-		distance_to_target = position.distance_to(target.position)
-		if distance_to_target > closest_distance:
-			closest_target = target
+	for found_target in targets:
+		distance_to_target = position.distance_to(found_target.position)
+		if distance_to_target <= closest_distance:
+			closest_target = found_target
 			closest_distance = distance_to_target
 	return closest_target
 

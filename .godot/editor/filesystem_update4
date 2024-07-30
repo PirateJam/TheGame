@@ -1,11 +1,6 @@
 res://nodes/monster.tscn
 res://scripts/commons.gd
 res://scripts/monster.gd
-res://nodes/battlefield.tscn
-res://scripts/battlefield.gd
-res://nodes/skills/Stalking.tres
 res://nodes/node_2d.tscn
 res://nodes/lab.tscn
-res://nodes/skills/SummonSkeleton.tres
-res://scripts/lab.gd
-res://scripts/status_resource.gd
+res://nodes/battlefield.tscn

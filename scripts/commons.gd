@@ -147,7 +147,7 @@ var monster_stats = {
 						"health": 50, 
 						"attack_power": 70, 
 						"attack_speed": 0.2, 
-						"attack_range": 300.0, 
+						"attack_range": 500.0, 
 						"movement_speed": 60
 					},
 					"cost": {
