@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brfcfx4plylms"
-path="res://.godot/imported/The Giant Spider.png-802686dc7dc463c8ce43bdedac2734a7.ctex"
+uid="uid://dxw5huqoeoubj"
+path="res://.godot/imported/witch_hut.png-b93d6fda580c35748542fad6b99d80ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/monsters/The Giant Spider.png"
-dest_files=["res://.godot/imported/The Giant Spider.png-802686dc7dc463c8ce43bdedac2734a7.ctex"]
+source_file="res://assets/images/buildings/witch_hut.png"
+dest_files=["res://.godot/imported/witch_hut.png-b93d6fda580c35748542fad6b99d80ab.ctex"]
 
 [params]
 

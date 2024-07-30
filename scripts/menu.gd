@@ -221,6 +221,52 @@ func passive_resource_gain(delay):
 
 
 func _process(delta):
+	if $resource_ui.visible:
+		$resource_ui/resources/resize/wood.text = str("wood: ", TribeManagement.resources["WOOD"])	# it errors but it works sooo, it'll stay that way because screw proper code
+		$resource_ui/resources/resize/iron.text = str("iron: ", TribeManagement.resources["IRON"])
+		$resource_ui/resources/resize/blood.text = str("blood: ", TribeManagement.resources["DEMON_BLOOD"])
+		$resource_ui/resources/resize/food.text = str("food: ", TribeManagement.resources["FOOD"])
+		$resource_ui/resources/resize/poison.text = str("poison: ", TribeManagement.resources["POISON"])
+		$resource_ui/resources/resize/sulfur.text = str("sulfur: ", TribeManagement.resources["SULFUR"])
+
+
+	if raid_phase==2:
+		print(temp_army, " <- Player army")
+		print(enemy_army, " <- Enemy army")
+		
+		var result = false
+		var result2 = false
+		for i in temp_army:
+			result = result or is_instance_valid(i)
+		print(result)
+		if !result:			# LOST
+			cutscene.cutscene($cutscene_ui, "You lost!", "Try upgrading your units, or using different ones.", null)
+			for i in enemy_army:
+				if is_instance_valid(i):
+					i.queue_free()
+		else:
+			for i in enemy_army:
+				result2 = result2 or is_instance_valid(i)
+				
+		
+			if !result2:			# LOST
+				cutscene.cutscene($cutscene_ui, "You won!", "The state is yours, congratulations! For winning you also earned 1 demon blood sample and resources of the state", null)
+				TribeManagement.add_resources({"DEMON_BLOOD": 1})
+				TribeManagement.add_resources(peeked_state.resources)
+				peeked_state.controlled = true
+		if !result or !result2:
+			raid_phase = 0
+	if raid_phase == 0:
+		if temp_army:
+			for i in temp_army:
+				if is_instance_valid(i):
+					i.queue_free()
+		if enemy_army:
+			for i in enemy_army:
+				if is_instance_valid(i):
+					i.queue_free()
+
+
 	if !$AudioStreamPlayer2D.is_playing():
 		if peeked_state:
 			if !peeked_state.controlled:
@@ -240,22 +286,45 @@ func _process(delta):
 		if $cutscene_ui.visible:
 			$cutscene_ui.visible = false
 		else:
-			match render:
-				RENDERS.MAP:
-					render = RENDERS.MAIN_MENU
-					reload_render()
-					queue_redraw()
-				RENDERS.STATE:
-					render = RENDERS.MAP
-					reload_render()
-					queue_redraw()
+			match aiming:
+				AIMING_MODES.NONE:
+					if $lab_ui/options/recruitMenu.visible:
+						open_lab()
+					elif $lab_ui/options/upgradeMenu.visible:
+						open_lab()
+					elif $lab_ui/options/default.visible:
+						exit_lab()
+					else:
+						if raid_phase==0:
+						#else:
+							match render:
+								RENDERS.MAP:
+									render = RENDERS.MAIN_MENU
+									reload_render()
+									queue_redraw()
+								RENDERS.STATE:
+									render = RENDERS.MAP
+									reload_render()
+									queue_redraw()
+				_:
+					aiming = AIMING_MODES.NONE
+					Input.set_custom_mouse_cursor(null)		# default cursor
+			
+		
+				
+
 	if Input.is_action_just_pressed("key_left_click"):
 		match aiming:
 			AIMING_MODES.BUILDING:
 				Input.set_custom_mouse_cursor(null)		# default cursor
 				aiming = AIMING_MODES.NONE
 				print(get_global_mouse_position())
-				var building = building_supplier.new(to_build, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT)
+				var building
+				match to_build:
+					commons.BUILDING_KINDS.WITCH_HUT:
+						building = building_supplier.new(to_build, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize, Callable(self, "open_lab"))
+					_:
+						building = building_supplier.new(to_build, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
 				#var sprite = Sprite2D.new()
 				var building_i = commons.building_info[to_build]
 				print(building_i["cost"])
@@ -269,7 +338,7 @@ func _process(delta):
 				Input.set_custom_mouse_cursor(null)		# default cursor6
 				aiming = AIMING_MODES.NONE
 				print(get_global_mouse_position())
-				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, Callable(self, "monster_choice").bindv([get_global_mouse_position()]))
+				var building = building_supplier.new(commons.BUILDING_KINDS.COMMANDER_CAMP, 1, get_global_mouse_position(), Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize, Callable(self, "monster_choice").bindv([get_global_mouse_position()]))
 
 				var building_i = commons.building_info[commons.BUILDING_KINDS.COMMANDER_CAMP]
 				add_child(building.get_area())
@@ -279,7 +348,6 @@ func _process(delta):
 				cutscene.cutscene($cutscene_ui, "Commander Camp!", "Now, that we have a place for our generals - we can plan the attack!\n Left click on the camp to go into next stage of preparation.", null)
 
 
-	
 
 
 func monster_choice(position):
@@ -317,10 +385,11 @@ func monster_choice(position):
 	$attack_ui.visible = true
 
 
-
+var enemy_army
+var temp_army
 
 func monsters_picked(position):
-	var temp_army=[]
+	temp_army=[]
 	var monster_pos = position+Vector2.RIGHT*64
 	$attack_ui.visible = false
 	for i in $attack_ui/options.get_children():
@@ -330,7 +399,7 @@ func monsters_picked(position):
 				temp_army.append(utils.spawn_unit(i.get_meta("Monster")["kind"], monster_pos, false, self))
 				monster_pos+=Vector2.DOWN*96
 	
-	cutscene.cutscene($cutscene_ui, "Planning!", "Now, the art. Use left mouse button to draw an arrow your units will follow. After that, in top left corner commence the plan.", null)
+	cutscene.cutscene($cutscene_ui, "Planning!", "Now, the art. Use left mouse button to draw an arrow your units will follow. After that, in top right corner commence the plan.", null)
 
 
 	
@@ -338,7 +407,7 @@ func monsters_picked(position):
 
 
 	plan = planning.new(self)
-	var height = 500
+	var height = 400
 	var poly = CollisionPolygon2D.new()
 	poly.set_polygon(PackedVector2Array([Vector2.LEFT*height*3+Vector2.UP*height, Vector2.LEFT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.DOWN*height, Vector2.RIGHT*height*3+Vector2.UP*height]))
 	plan.add_child(poly)
@@ -353,7 +422,7 @@ func monsters_picked(position):
 	
 	
 	
-	var enemy_army = []
+	enemy_army = []
 	for i in peeked_state.army:
 		
 		enemy_army.append(utils.spawn_unit(i["kind"], Vector2(randi()%(height*3), randi()%height), true, self, i["level"]))
@@ -394,8 +463,76 @@ func send_confirmation_signal():
 	attack_conf_signal.emit()
 
 
+func exit_lab():
+	$lab_ui.visible = false
 
 
+
+func open_lab():
+	$lab_ui.visible = true
+	$lab_ui/options/default.visible = true
+	$lab_ui/options/upgradeMenu.visible = false
+	$lab_ui/options/recruitMenu.visible = false
+
+
+
+func lab_recruit_menu():
+	$lab_ui/options/default.visible = false
+	$lab_ui/options/upgradeMenu.visible = false
+	$lab_ui/options/recruitMenu.visible = true											# it's static.. luckily
+
+func lab_upgrade_menu():
+	$lab_ui/options/default.visible = false
+	$lab_ui/options/recruitMenu.visible = false
+	$lab_ui/options/upgradeMenu.visible = true
+	for i in $lab_ui/options/upgradeMenu.get_children():
+		$lab_ui/options/upgradeMenu.remove_child(i)
+	var monster_position = Vector2.LEFT*190+Vector2.UP*80
+	#var monster_position = Vector2.RIGHT*310+Vector2.DOWN*185
+	var monster_count = 0
+	for i in TribeManagement.army:
+		var monster = Sprite2D.new()
+		monster.texture = commons.get_monster_textures(i["kind"])
+		monster.position = monster_position
+		
+		var payment = Label.new()
+		if i["level"] == 5:
+			payment.text = "max"
+		else:
+			payment.text = "level " + str(i["level"]) +":"
+			for x in commons.monster_stats[i["kind"]]["levels"][i["level"]]["stats"]:
+				payment.text += "\n" + str(x) + ": " + str(commons.monster_stats[i["kind"]]["levels"][i["level"]]["stats"][x])
+				payment.text += " [ +" + str(commons.monster_stats[i["kind"]]["levels"][i["level"]+1]["stats"][x] - commons.monster_stats[i["kind"]]["levels"][i["level"]]["stats"][x]) + "]"
+
+			payment.text += "\nprice:"
+			for x in commons.monster_stats[i["kind"]]["levels"][i["level"]+1]["cost"]:
+				payment.text += "\n" + str(x) + ": " + str(commons.monster_stats[i["kind"]]["levels"][i["level"]+1]["cost"][x])
+
+		payment.add_theme_font_size_override("font_size", 8)
+		payment.position = monster_position+Vector2.DOWN*32+Vector2.LEFT*32
+		var recruit_button = Button.new()
+		recruit_button.position = monster_position+Vector2.DOWN*172+Vector2.LEFT*32
+		recruit_button.text = "Upgrade"
+		recruit_button.scale = Vector2(0.7, 0.7)
+		
+		recruit_button.connect("pressed", Callable(self, "upgrade_unit").bindv([i]))
+		
+		$lab_ui/options/upgradeMenu.add_child(monster)
+		$lab_ui/options/upgradeMenu.add_child(payment)
+		$lab_ui/options/upgradeMenu.add_child(recruit_button)
+		monster_position+=Vector2.RIGHT*64
+		monster_count+=1
+		if monster_count % 8 == 0:
+			monster_position+=Vector2.LEFT*64*8 + Vector2.DOWN*128
+
+func upgrade_unit(unit):
+	TribeManagement.level_monster(unit)
+	lab_upgrade_menu()
+func create_unit(kind):
+	print(kind)
+	TribeManagement.spend_resources(commons.monster_stats[commons.get_monster_index(kind)]["levels"][1]["cost"])
+	TribeManagement.add_to_army(commons.get_monster_index(kind))
+	open_lab()
 
 
 func _ready():
@@ -404,14 +541,56 @@ func _ready():
 	font = FontFile.new()
 	font.font_data = commons.font_data
 
-
+	
 	### UIs
 	
+	## lab
+	var monster_position = Vector2.RIGHT*310+Vector2.DOWN*185
+	var monster_count = 0
+	for i in commons.MONSTER_KINDS:
+		
+		var monster = Sprite2D.new()
+		monster.texture = commons.get_monster_texture_from_string(i)
+		monster.position = monster_position
+		
+		var payment = Label.new()
+		for x in commons.monster_stats[commons.get_monster_index(i)]["levels"][1]["cost"]:
+			payment.text += "\n" + str(x) + ": " + str(commons.monster_stats[commons.get_monster_index(i)]["levels"][1]["cost"][x])
+		print(payment.text)
+		payment.add_theme_font_size_override("font_size", 10)
+		payment.position = monster_position+Vector2.DOWN*32+Vector2.LEFT*32
+		var recruit_button = Button.new()
+		recruit_button.position = monster_position+Vector2.DOWN*96+Vector2.LEFT*32
+		recruit_button.text = "Create"
+		
+		recruit_button.connect("pressed", Callable(self, "create_unit").bindv([i]))
+		
+		$lab_ui/options/recruitMenu.add_child(monster)
+		$lab_ui/options/recruitMenu.add_child(payment)
+		$lab_ui/options/recruitMenu.add_child(recruit_button)
+		monster_position+=Vector2.RIGHT*64
+		monster_count+=1
+		if monster_count % 8 == 0:
+			monster_position+=Vector2.LEFT*64*8 + Vector2.DOWN*128
+	
+	var close_lab_button = Button.new()
+	close_lab_button.icon = load("res://assets/images/misc/close.png")
+	close_lab_button.connect("pressed", Callable(self, "exit_lab"))
+	close_lab_button.position = Vector2.RIGHT*950+Vector2.DOWN*120
+	$lab_ui.add_child(close_lab_button)
+	
+	$lab_ui/options/default/Recruit.connect("pressed", Callable(self, "lab_recruit_menu"))
+	$lab_ui/options/default/Upgrade.connect("pressed", Callable(self, "lab_upgrade_menu"))
+	
+	
+	
+	
+	## building
 	var building_position = Vector2.LEFT*180+Vector2.UP*90
 	var building_size = 64
 	var building_amount = 0
 	for rbuilding in commons.building_info:
-		var building = building_supplier.new(rbuilding, 1, building_position, Vector2.ZERO, commons.ROTATION.FRONT, Callable(self, "building_picked").bindv([rbuilding]))
+		var building = building_supplier.new(rbuilding, 1, building_position, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize, Callable(self, "building_picked").bindv([rbuilding]))
 		
 		#var sprite = Sprite2D.new()
 		var building_i = commons.building_info[rbuilding]
@@ -427,8 +606,11 @@ func _ready():
 
 
 
-	### DEFAULT MONSTERS
 
+
+
+	### DEFAULT_PLAYER_ARMY
+	TribeManagement.add_to_army(commons.MONSTER_KINDS.EVILEYE, 1)
 	
 	### SETUP_STATES
 	var player_state_pos = 118*Vector2.DOWN + 122*Vector2.RIGHT
@@ -440,20 +622,13 @@ func _ready():
 		Vector2.UP*15+Vector2.RIGHT*5
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO+ 118*Vector2.DOWN + 122*Vector2.RIGHT, Vector2.ZERO, commons.ROTATION.FRONT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, player_state_pos, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY (nevermind)
-	],
-	{
-		commons.RESOURCES.WOOD: 100,
-		commons.RESOURCES.IRON: 100,
-		commons.RESOURCES.ELIXIR: 50,	#or something
-	})
+	])
 	player_state.controlled = true
 	states.append(player_state)
-	### DEFAULT_PLAYER_ARMY
-	TribeManagement.add_to_army(commons.MONSTER_KINDS.YIPEEE, 1)
 	
 	
 	var basic_state = state_supplier.new("Enemy Tribe", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
@@ -462,11 +637,11 @@ func _ready():
 		
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
-		{"kind": commons.MONSTER_KINDS.YIPEEHORSE, "level": 1},
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
 		#ARMY
 	], {}, commons.BIOMES.DESERT)
 	states.append(basic_state)
@@ -587,8 +762,8 @@ func _ready():
 		Vector2.DOWN*4,
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY
@@ -603,8 +778,8 @@ func _ready():
 		Vector2.LEFT*10+Vector2.UP*2
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY
@@ -623,8 +798,8 @@ func _ready():
 		
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY
@@ -643,14 +818,69 @@ func _ready():
 		
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY
 	], {}, commons.BIOMES.SWAMP)
 	states.append(swamp4)
 	
+	
+	
+	var snow1 = state_supplier.new("Snow 1", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*24+Vector2.UP*5,
+		Vector2.LEFT*5,
+		Vector2.LEFT*5+Vector2.DOWN*5,
+		Vector2.UP*5+Vector2.LEFT*5,
+		Vector2.UP*5,
+		Vector2.UP*5+Vector2.RIGHT*15,
+		Vector2.RIGHT*10+Vector2.DOWN*5,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow1)
+	
+	var snow2 = state_supplier.new("Snow 2", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*14+Vector2.UP*10,
+		Vector2.LEFT*10+Vector2.UP*5,
+		Vector2.RIGHT*15+Vector2.UP*2,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*4+Vector2.DOWN*12,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow2)
+	
+	var snow3 = state_supplier.new("Snow 3", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
+		Vector2.UP*12+Vector2.LEFT*4,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*15+Vector2.DOWN*10,
+		Vector2.RIGHT*5+Vector2.DOWN*15,
+		Vector2.LEFT*8,
+		Vector2.LEFT*13+Vector2.UP*8,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		#ARMY
+	], {}, commons.BIOMES.SNOW)
+	states.append(snow3)
 
 
 
@@ -725,6 +955,8 @@ func reload_render():
 	$attack_ui.visible = false
 	$background.visible = false
 	$cutscene_ui.visible = false
+	$resource_ui.visible = false
+	$lab_ui.visible = false
 	stateVisibility(false)
 	buildingVisibility(false)
 	armyVisibility(false)
@@ -794,6 +1026,7 @@ var peeked_state
 
 
 func draw_state():
+	$resource_ui.visible = true
 	if first_time_state:
 		cutscene.cutscene($cutscene_ui, "State View", "Welcome to the state view! Here you can conquer the state, and if you already control it - build stuff (via menu on the left).", null)
 		first_time_state = false
@@ -849,6 +1082,7 @@ func draw_menu():
 
 
 func draw_map():
+	$resource_ui.visible = true
 	if first_time_map:
 		cutscene.cutscene($cutscene_ui, "Map View", "This is map view. Here you can see all the states. States controlled by you are highlighted, There you can start building your empire!\n Controls are listen on the right.", null)
 		first_time_map = false
@@ -868,7 +1102,7 @@ func state_init():
 	# TREES
 	logger.log("adding trees")
 
-	'''for state in states:
+	for state in states:
 		logger.log("adding trees for " + state.id)
 		triangles = Geometry2D.triangulate_polygon(state.poly.polygon)
 		_rand = RandomNumberGenerator.new()
@@ -889,6 +1123,17 @@ func state_init():
 					tree.scale = Vector2(1,1)
 					tree.position = get_random_point(state.poly.polygon)
 					tree.texture = commons.forest_trees[randi() % commons.forest_trees.size()]
+					logger.log(tree.position)
+					#$BACKGROUND_OBJ.
+					add_child(tree)
+					trees.append(tree)
+			commons.BIOMES.SNOW:
+				for i in range(commons.snow_trees_amount):
+					var tree = Sprite2D.new()
+					tree.offset.y = -32
+					tree.scale = Vector2(1,1)
+					tree.position = get_random_point(state.poly.polygon)
+					tree.texture = commons.snow_trees[randi() % commons.snow_trees.size()]
 					logger.log(tree.position)
 					#$BACKGROUND_OBJ.
 					add_child(tree)
@@ -914,7 +1159,7 @@ func state_init():
 					logger.log(tree.position)
 					#$BACKGROUND_OBJ.
 					add_child(tree)
-					trees.append(tree)'''
+					trees.append(tree)
 
 
 

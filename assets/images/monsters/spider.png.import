@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baio0l1nblpod"
-path="res://.godot/imported/snow.png-5d7573a6fcfe1817cb3fab59bae02720.ctex"
+uid="uid://brfcfx4plylms"
+path="res://.godot/imported/spider.png-d43981d21416afee9939a558906ec906.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/biomes/snow.png"
-dest_files=["res://.godot/imported/snow.png-5d7573a6fcfe1817cb3fab59bae02720.ctex"]
+source_file="res://assets/images/monsters/spider.png"
+dest_files=["res://.godot/imported/spider.png-d43981d21416afee9939a558906ec906.ctex"]
 
 [params]
 

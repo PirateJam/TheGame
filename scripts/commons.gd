@@ -1,13 +1,13 @@
 extends Node2D
 class_name Commons
 
-enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY}
-enum RESOURCES {WOOD, IRON, ELIXIR}
+enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY, SNOW}
+enum RESOURCES {WOOD, IRON, DEMON_BLOOD, SULFUR, POISON, FOOD}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON}	#this is just an example monster because I lack iDeas:tm:
 
-enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP}
+enum BUILDING_KINDS {WALL, WITCH_HUT, COMMANDER_CAMP, SAWMILL, BLACKSMITH}
 enum ROTATION {FRONT, LEFT, BACK, RIGHT}
 
 
@@ -31,6 +31,24 @@ var building_info = {
 		"rotatable": false,
 		"passive_resource_gain": {"WOOD": 50},
 		"texture": get_building_textures(BUILDING_KINDS.COMMANDER_CAMP, 1)
+	},
+	BUILDING_KINDS.SAWMILL: {
+		"cost": {"WOOD": 150, "IRON": 50},
+		"rotatable": false,
+		"passive_resource_gain": {"WOOD": 100},
+		"texture": get_building_textures(BUILDING_KINDS.SAWMILL, 1)
+	},
+	BUILDING_KINDS.BLACKSMITH: {
+		"cost": {"WOOD": 200, "IRON": 100},
+		"rotatable": false,
+		"passive_resource_gain": {"IRON": 50},
+		"texture": get_building_textures(BUILDING_KINDS.BLACKSMITH, 1)
+	},
+	BUILDING_KINDS.WITCH_HUT: {
+		"cost": {"WOOD": 200, "IRON": 200},
+		"rotatable": false,
+		"passive_resource_gain": {},
+		"texture": get_building_textures(BUILDING_KINDS.BLACKSMITH, 1)
 	}
 }
 
@@ -44,6 +62,8 @@ func get_biome_texture(biome: BIOMES):
 			return load("res://assets/images/biomes/swamp.png")
 		BIOMES.WATER_BODY:
 			return load("res://assets/images/biomes/water.png")
+		BIOMES.SNOW:
+			return load("res://assets/images/biomes/snow.png")
 func get_biome_stateview(biome: BIOMES):
 	match biome:
 		BIOMES.FOREST:
@@ -54,6 +74,8 @@ func get_biome_stateview(biome: BIOMES):
 			return load("res://assets/images/biomes/swamp_stateview.png")
 		BIOMES.WATER_BODY:
 			return load("res://assets/images/biomes/water_stateview.png")
+		BIOMES.SNOW:
+			return load("res://assets/images/biomes/snow_stateview.png")
 
 func get_building_textures(kind: BUILDING_KINDS, level = 1):
 	if level>5 or level<0:
@@ -64,21 +86,41 @@ func get_building_textures(kind: BUILDING_KINDS, level = 1):
 			return [load("res://assets/images/buildings/wall_front-1.png"), load("res://assets/images/buildings/wall_side-1.png")]
 		BUILDING_KINDS.COMMANDER_CAMP:
 			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+		BUILDING_KINDS.SAWMILL:
+			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+		BUILDING_KINDS.BLACKSMITH:
+			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+		BUILDING_KINDS.WITCH_HUT:
+			return [load("res://assets/images/buildings/witch_hut.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 
-func get_monster_textures(kind: MONSTER_KINDS, level: int):
+func get_monster_textures(kind: MONSTER_KINDS, level: int=1):
 	if level>5 or level<0:
 		return unknown_texture
 	match kind:
 		MONSTER_KINDS.EVILEYE:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/eye_monster.png")
 		MONSTER_KINDS.SPIDER:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/spider.png")
 		MONSTER_KINDS.GIANTFROG:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+      return load("res://assets/images/monsters/giant_frog.png")
 		MONSTER_KINDS.BIES:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
 		MONSTER_KINDS.SKELETON:
 			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+
+			
+
+func get_monster_texture_from_string(kind: String, level: int=1):
+	match kind:
+		"EVILEYE":
+			return load("res://assets/images/monsters/eye_monster.png")
+			
+		"SPIDER":
+			return load("res://assets/images/monsters/spider.png")
+			
+		"GIANTFROG":
+			return load("res://assets/images/monsters/giant_frog.png")
+
 
 
 var unknown_texture = load("res://assets/images/misc/unknown.png")
@@ -115,6 +157,9 @@ var forest_trees = [
 	load("res://assets/images/misc/tree1.png"),
 	load("res://assets/images/misc/tree2.png"),
 ]
+var snow_trees = [
+	load("res://assets/images/misc/tree1.png"),
+]
 
 var desert_trees = [
 	load("res://assets/images/misc/tree3.png"),
@@ -127,14 +172,24 @@ var swamp_trees = [
 const forest_trees_amount = 8
 const swamp_trees_amount = 10
 const desert_trees_amount = 4
-
+const snow_trees_amount = 9
 
 
 
 var font_data = load("res://assets/fonts/DaysOne.ttf")
 
 
+func get_monster_index(s: String):	#istg godot can't handle enums properly
+	match s:
+		"EVILEYE":
+			return MONSTER_KINDS.EVILEYE
+		"SPIDER":
+			return MONSTER_KINDS.SPIDER
+		"GIANTFROG":
+			return MONSTER_KINDS.GIANTFROG
+
 #Monsters Data
+
 var max_level = 5
 var monster_stats = {
 	MONSTER_KINDS.EVILEYE: {
@@ -151,8 +206,8 @@ var monster_stats = {
 						"movement_speed": 60
 					},
 					"cost": {
-						"Food": 100, 
-						"Sulfur": 10
+						"FOOD": 100, 
+						"SULFUR": 10
 					},
 					"skills": { 
 					}
@@ -166,8 +221,8 @@ var monster_stats = {
 						"movement_speed": 65
 					},
 					"cost": {
-						"Food": 200, 
-						"Sulfur": 20
+						"FOOD": 200, 
+						"SULFUR": 20
 					},
 					"skills": {
 					}
@@ -181,8 +236,8 @@ var monster_stats = {
 						"movement_speed": 70,
 					},
 					"cost": {
-						"Food": 400, 
-						"resource2": 40, 
+						"FOOD": 400, 
+						"SULFUR": 40, 
 					},
 					"skills": {
 					}
@@ -196,8 +251,8 @@ var monster_stats = {
 						"movement_speed": 75,
 					},
 					"cost": {
-						"Food": 600, 
-						"Sulfur": 60, 
+						"FOOD": 600, 
+						"SULFUR": 60, 
 					},
 					"skills": {
 					}
@@ -211,9 +266,9 @@ var monster_stats = {
 						"movement_speed": 100,
 					},
 					"cost": {
-						"Food": 1500, 
-						"Sulfur": 200, 
-						"Demon Blood": 1
+						"FOOD": 1500, 
+						"SULFUR": 200, 
+						"DEMON_BLOOD": 1
 					},
 					"skills": {
 						0: "Petrify Stare"
@@ -235,8 +290,8 @@ var monster_stats = {
 						"movement_speed": 120,
 					},
 					"cost": {
-						"Food": 150, 
-						"Poison": 15
+						"FOOD": 150, 
+						"POISON": 15
 					},
 					"skills": {
 					}
@@ -250,8 +305,8 @@ var monster_stats = {
 						"movement_speed": 125,
 					},
 					"cost": {
-						"Food": 300, 
-						"resource2": 25, 
+						"FOOD": 300, 
+						"SULFUR": 25, 
 					},
 					"skills": {
 					}
@@ -265,8 +320,8 @@ var monster_stats = {
 						"movement_speed": 130,
 					},
 					"cost": {
-						"Food": 600, 
-						"Poison": 45,
+						"FOOD": 600, 
+						"POISON": 45,
 					},
 					"skills": {
 					}
@@ -280,8 +335,8 @@ var monster_stats = {
 						"movement_speed": 135,
 					},
 					"cost": {
-						"Food": 900, 
-						"Poison": 65, 
+						"FOOD": 900, 
+						"POISON": 65, 
 					},
 					"skills": {
 					}
@@ -295,9 +350,9 @@ var monster_stats = {
 						"movement_speed": 180,
 					},
 					"cost": {
-						"Food": 2000, 
-						"Poison": 150, 
-						"Demon Blood": 1
+						"FOOD": 2000, 
+						"POISON": 150, 
+						"DEMON_BLOOD": 1
 					},
 					"skills": {
 						0: "Poison Strike"
@@ -319,7 +374,7 @@ var monster_stats = {
 						"movement_speed": 90,
 					},
 					"cost": {
-						"Food": 400, 
+						"FOOD": 400, 
 					},
 					"skills": {
 					}
@@ -333,7 +388,7 @@ var monster_stats = {
 						"movement_speed": 100,
 					},
 					"cost": {
-						"Food": 800, 
+						"FOOD": 800, 
 					},
 					"skills": {
 					}
@@ -347,7 +402,7 @@ var monster_stats = {
 						"movement_speed": 110,
 					},
 					"cost": {
-						"Food": 1200, 
+						"FOOD": 1200, 
 					},
 					"skills": {
 					}
@@ -361,7 +416,7 @@ var monster_stats = {
 						"movement_speed": 120,
 					},
 					"cost": {
-						"Food": 1500, 
+						"FOOD": 1500, 
 					},
 					"skills": {
 					}
@@ -375,8 +430,8 @@ var monster_stats = {
 						"movement_speed": 155,
 					},
 					"cost": {
-						"Food": 5000, 
-						"Demon Blood": 1, 
+						"FOOD": 5000, 
+						"DEMON_BLOOD": 1, 
 					},
 					"skills": {
 						0: "Swallow Whole"

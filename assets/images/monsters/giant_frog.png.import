@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baio0l1nblpod"
-path="res://.godot/imported/snow.png-5d7573a6fcfe1817cb3fab59bae02720.ctex"
+uid="uid://d1erhqprt0wji"
+path="res://.godot/imported/giant_frog.png-bceeaf9b989736b417b34accb4c7f7b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/biomes/snow.png"
-dest_files=["res://.godot/imported/snow.png-5d7573a6fcfe1817cb3fab59bae02720.ctex"]
+source_file="res://assets/images/monsters/giant_frog.png"
+dest_files=["res://.godot/imported/giant_frog.png-bceeaf9b989736b417b34accb4c7f7b7.ctex"]
 
 [params]
 

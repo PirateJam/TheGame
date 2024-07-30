@@ -14,18 +14,43 @@ var action
 #var r_position
 var parent_position
 
+var ui
+
 func display_building_info(kind):
 	print("trying to display building info...")
+	var title = ""
+	var desc = ""
+	match kind:
+		BUILDING_KINDS.WITCH_HUT:
+			title = "Witch Hut"
+			desc = "Witch hut. The place where you can\n manage your monsters."
+		BUILDING_KINDS.WALL:
+			title = "Wall"
+			desc = "Wall, decoration."
+		BUILDING_KINDS.SAWMILL:
+			title = "Sawmill"
+			desc = "Sawmill, produces wood for your tribe"
+		BUILDING_KINDS.BLACKSMITH:
+			title = "Blacksmith"
+			desc = "Blacksmith, produces iron for your tribe"
+		BUILDING_KINDS.COMMANDER_CAMP:
+			title = "Commander Camp"
+			desc = "Commander Camp. Used for planning\n attacks. In peace time produces \nsmall amounts of wood."
+	ui.get_children()[0].text = title
+	ui.get_children()[1].text = desc
 
-func _init(kind=null, level=-1, position=Vector2.ZERO, parent_position=Vector2.ZERO, sprite_rotation=ROTATION.FRONT, action=Callable(self, "display_building_info").bindv([self.kind])):
+func _init(kind=null, level=-1, position=Vector2.ZERO, parent_position=Vector2.ZERO, sprite_rotation=ROTATION.FRONT, ui=null, action=Callable(self, "display_building_info")):
 	self.kind = kind
 	self.level = level
 	
 	self.position = position
 	self.parent_position = parent_position
 	
-	self.action = action
-	
+	self.ui = ui
+	if action == Callable(self, "display_building_info"):
+		self.action = action.bindv([self.kind])
+	else:
+		self.action = action
 	
 	self.sprite_rotation = sprite_rotation
 	

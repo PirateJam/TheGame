@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw7yyfko5xj48"
-path="res://.godot/imported/snow biome.png-5baab20b0716f589326e8698ee067353.ctex"
+uid="uid://drwf641plbv71"
+path="res://.godot/imported/eye_monster.png-6e1a898ee3308b8f49991f057d631b83.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/biomes/snow biome.png"
-dest_files=["res://.godot/imported/snow biome.png-5baab20b0716f589326e8698ee067353.ctex"]
+source_file="res://assets/images/monsters/eye_monster.png"
+dest_files=["res://.godot/imported/eye_monster.png-6e1a898ee3308b8f49991f057d631b83.ctex"]
 
 [params]
 

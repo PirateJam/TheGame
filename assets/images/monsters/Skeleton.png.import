@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1erhqprt0wji"
-path="res://.godot/imported/Giant Fucking Frog.png-141f309175ba1e8a92d7bfc6d4c6d2df.ctex"
+uid="uid://otpvqilwdh4k"
+path="res://.godot/imported/Skeleton.png-637339926547e38e0292edfdb6efa691.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/monsters/Giant Fucking Frog.png"
-dest_files=["res://.godot/imported/Giant Fucking Frog.png-141f309175ba1e8a92d7bfc6d4c6d2df.ctex"]
+source_file="res://assets/images/monsters/Skeleton.png"
+dest_files=["res://.godot/imported/Skeleton.png-637339926547e38e0292edfdb6efa691.ctex"]
 
 [params]
 
