@@ -72,6 +72,7 @@ func _ready():
 	resources["SULFUR"] = 250
 	resources["FOOD"] = 250
 	resources["POISON"] = 100
+	resources["BONE"] = 25
 	resources["DEMON_BLOOD"] = 0
 
 	print("RESOURCES: ", resources)
