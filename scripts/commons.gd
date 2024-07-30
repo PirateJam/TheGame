@@ -2,7 +2,7 @@ extends Node2D
 class_name Commons
 
 enum BIOMES {FOREST, DESERT, SWAMP, WATER_BODY, SNOW}
-enum RESOURCES {WOOD, IRON, DEMON_BLOOD, SULFUR, POISON, FOOD}
+enum RESOURCES {WOOD, IRON, DEMON_BLOOD, SULFUR, POISON, FOOD, BONE}
 
 enum MONSTER_TYPES {RANGED, MEELEE, CAVALRY}
 enum MONSTER_KINDS {EVILEYE, SPIDER, GIANTFROG, BIES, SKELETON}	#this is just an example monster because I lack iDeas:tm:
@@ -48,7 +48,7 @@ var building_info = {
 		"cost": {"WOOD": 200, "IRON": 200},
 		"rotatable": false,
 		"passive_resource_gain": {},
-		"texture": get_building_textures(BUILDING_KINDS.BLACKSMITH, 1)
+		"texture": get_building_textures(BUILDING_KINDS.WITCH_HUT, 1)
 	}
 }
 
@@ -87,9 +87,9 @@ func get_building_textures(kind: BUILDING_KINDS, level = 1):
 		BUILDING_KINDS.COMMANDER_CAMP:
 			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 		BUILDING_KINDS.SAWMILL:
-			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+			return [load("res://assets/images/buildings/sawmill.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 		BUILDING_KINDS.BLACKSMITH:
-			return [load("res://assets/images/buildings/commander_camp.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
+			return [load("res://assets/images/buildings/blacksmith.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 		BUILDING_KINDS.WITCH_HUT:
 			return [load("res://assets/images/buildings/witch_hut.png"), load("res://assets/images/buildings/wall_side-" + str(level) + ".png")]
 
@@ -102,11 +102,11 @@ func get_monster_textures(kind: MONSTER_KINDS, level: int=1):
 		MONSTER_KINDS.SPIDER:
 			return load("res://assets/images/monsters/spider.png")
 		MONSTER_KINDS.GIANTFROG:
-      return load("res://assets/images/monsters/giant_frog.png")
+			return load("res://assets/images/monsters/giant_frog.png")
 		MONSTER_KINDS.BIES:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/bies.png")
 		MONSTER_KINDS.SKELETON:
-			return load("res://assets/images/monsters/yippe_example_monster" + str(level) + ".png")
+			return load("res://assets/images/monsters/Skeleton.png")
 
 			
 
@@ -120,6 +120,10 @@ func get_monster_texture_from_string(kind: String, level: int=1):
 			
 		"GIANTFROG":
 			return load("res://assets/images/monsters/giant_frog.png")
+		"BIES":
+			return load("res://assets/images/monsters/bies.png")
+		"SKELETON":
+			return load("res://assets/images/monsters/Skeleton.png")
 
 
 
@@ -187,6 +191,10 @@ func get_monster_index(s: String):	#istg godot can't handle enums properly
 			return MONSTER_KINDS.SPIDER
 		"GIANTFROG":
 			return MONSTER_KINDS.GIANTFROG
+		"BIES":
+			return MONSTER_KINDS.BIES
+		"SKELETON":
+			return MONSTER_KINDS.SKELETON
 
 #Monsters Data
 
@@ -453,8 +461,8 @@ var monster_stats = {
 						"movement_speed": 200,
 					},
 					"cost": {
-						"Food": 200, 
-						"Bone": 20
+						"FOOD": 200, 
+						"BONE": 20
 					},
 					"skills": {
 					}
@@ -468,8 +476,8 @@ var monster_stats = {
 						"movement_speed": 215,
 					},
 					"cost": {
-						"Food": 400, 
-						"Bone": 40, 
+						"FOOD": 400, 
+						"BONE": 40, 
 					},
 					"skills": {
 					}
@@ -483,8 +491,8 @@ var monster_stats = {
 						"movement_speed": 230,
 					},
 					"cost": {
-						"Food": 600, 
-						"Bone": 60,
+						"FOOD": 600, 
+						"BONE": 60,
 					},
 					"skills": {
 					}
@@ -498,8 +506,8 @@ var monster_stats = {
 						"movement_speed": 245,
 					},
 					"cost": {
-						"Food": 900, 
-						"Bone": 90, 
+						"FOOD": 900, 
+						"BONE": 90, 
 					},
 					"skills": {
 					}
@@ -513,9 +521,9 @@ var monster_stats = {
 						"movement_speed": 300,
 					},
 					"cost": {
-						"Food": 2000, 
-						"Bone": 200, 
-						"Demon Blood": 1
+						"FOOD": 2000, 
+						"BONE": 200, 
+						"DEMON_BLOOD": 1
 					},
 					"skills": {
 						0: "Stalking"
@@ -537,7 +545,7 @@ var monster_stats = {
 						"movement_speed": 100,
 					},
 					"cost": {
-						"Bone": 25, 
+						"BONE": 25, 
 					},
 					"skills": {
 					}
@@ -551,7 +559,7 @@ var monster_stats = {
 						"movement_speed": 110,
 					},
 					"cost": {
-						"Bone": 50, 
+						"BONE": 50, 
 					},
 					"skills": {
 					}
@@ -565,7 +573,7 @@ var monster_stats = {
 						"movement_speed": 120,
 					},
 					"cost": {
-						"Bone": 75, 
+						"BONE": 75, 
 					},
 					"skills": {
 					}
@@ -579,7 +587,7 @@ var monster_stats = {
 						"movement_speed": 120,
 					},
 					"cost": {
-						"Bone": 100, 
+						"BONE": 100, 
 					},
 					"skills": {
 					}
@@ -593,8 +601,8 @@ var monster_stats = {
 						"movement_speed": 180,
 					},
 					"cost": {
-						"Bone": 300, 
-						"Demon Blood": 1, 
+						"BONE": 300, 
+						"DEMON_BLOOD": 1, 
 					},
 					"skills": {
 						0: "Summon Skeleton"

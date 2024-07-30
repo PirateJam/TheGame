@@ -217,10 +217,10 @@ offset_bottom = -22.592
 scale = Vector2(2.65145, 1.8821)
 
 [node name="blood" type="Label" parent="resource_ui/resources/resize"]
-offset_left = -225.878
-offset_top = 10.3182
-offset_right = -169.878
-offset_bottom = 39.3182
+offset_left = -226.093
+offset_top = 0.888905
+offset_right = -170.093
+offset_bottom = 29.8889
 scale = Vector2(2.61276, 1.7879)
 
 [node name="food" type="Label" parent="resource_ui/resources/resize"]
@@ -230,16 +230,23 @@ offset_right = 59.9666
 offset_bottom = -76.7675
 scale = Vector2(2.61276, 1.7879)
 
-[node name="sulfur" type="Label" parent="resource_ui/resources/resize"]
-offset_left = 5.94981
-offset_top = -35.6373
-offset_right = 61.9498
-offset_bottom = -6.63729
+[node name="bone" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = -63.3971
+offset_right = 59.9666
+offset_bottom = -34.3966
 scale = Vector2(2.61276, 1.7879)
 
 [node name="poison" type="Label" parent="resource_ui/resources/resize"]
-offset_left = 1.98327
-offset_top = 43.2592
-offset_right = 57.9833
-offset_bottom = 72.2592
+offset_left = 3.96655
+offset_top = -12.2605
+offset_right = 59.9666
+offset_bottom = 16.74
+scale = Vector2(2.61276, 1.7879)
+
+[node name="sulfur" type="Label" parent="resource_ui/resources/resize"]
+offset_left = 3.96655
+offset_top = 34.493
+offset_right = 59.9666
+offset_bottom = 63.4935
 scale = Vector2(2.61276, 1.7879)

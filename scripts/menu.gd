@@ -288,11 +288,11 @@ func _process(delta):
 		else:
 			match aiming:
 				AIMING_MODES.NONE:
-					if $lab_ui/options/recruitMenu.visible:
+					if $lab_ui/options/recruitMenu.visible && $lab_ui.visible:
 						open_lab()
-					elif $lab_ui/options/upgradeMenu.visible:
+					elif $lab_ui/options/upgradeMenu.visible && $lab_ui.visible:
 						open_lab()
-					elif $lab_ui/options/default.visible:
+					elif $lab_ui.visible:
 						exit_lab()
 					else:
 						if raid_phase==0:
@@ -530,8 +530,8 @@ func upgrade_unit(unit):
 	lab_upgrade_menu()
 func create_unit(kind):
 	print(kind)
-	TribeManagement.spend_resources(commons.monster_stats[commons.get_monster_index(kind)]["levels"][1]["cost"])
-	TribeManagement.add_to_army(commons.get_monster_index(kind))
+	if TribeManagement.spend_resources(commons.monster_stats[commons.get_monster_index(kind)]["levels"][1]["cost"]):
+		TribeManagement.add_to_army(commons.get_monster_index(kind))
 	open_lab()
 
 
@@ -622,7 +622,9 @@ func _ready():
 		Vector2.UP*15+Vector2.RIGHT*5
 	].map(resize), 
 	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, player_state_pos, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, player_state_pos, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, player_state_pos+Vector2.LEFT*64, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, player_state_pos+Vector2.LEFT*128, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
 	],
 	[
 		#ARMY (nevermind)
@@ -631,7 +633,7 @@ func _ready():
 	states.append(player_state)
 	
 	
-	var basic_state = state_supplier.new("Enemy Tribe", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
+	var basic_state = state_supplier.new("Eastern Scouters", player_state_pos+31*Vector2.DOWN*commons.map_size + 9*Vector2.RIGHT*commons.map_size, [
 		Vector2.UP*15+Vector2.RIGHT*5, Vector2.UP*14+Vector2.RIGHT*12,
 		Vector2.DOWN*10+Vector2.RIGHT*5, Vector2.DOWN*8+Vector2.LEFT*7
 		
@@ -643,16 +645,22 @@ func _ready():
 	[
 		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
 		#ARMY
-	], {}, commons.BIOMES.DESERT)
+	], {"SULFUR": 100, "FOOD": 100}, commons.BIOMES.DESERT)
 	states.append(basic_state)
 	
 	
 	
-	var basic_state2 = state_supplier.new("Enemy Tribe 2", player_state_pos+ 16*Vector2.DOWN*commons.map_size + commons.map_size*14*Vector2.RIGHT, [ 
+	var basic_state2 = state_supplier.new("People of The Forest", player_state_pos+ 16*Vector2.DOWN*commons.map_size + commons.map_size*14*Vector2.RIGHT, [ 
 				Vector2.LEFT*14+Vector2.UP*16,
 				Vector2.RIGHT*12+Vector2.UP*4, Vector2.RIGHT*8, Vector2.DOWN*6+Vector2.RIGHT*6
 		
-	].map(resize))
+	].map(resize), [
+		building_supplier.new(commons.BUILDING_KINDS.BLACKSMITH, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*55+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	], [
+		{"kind": commons.MONSTER_KINDS.BIES, "level": 1},
+		
+	], {"FOOD": 300})
 	states.append(basic_state2)
 	
 	
@@ -660,6 +668,242 @@ func _ready():
 	
 	
 	
+	
+	
+	
+	
+	var forest1 = state_supplier.new("Southern Bastion", player_state_pos + 33*commons.map_size*Vector2.DOWN + 12*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
+		Vector2.DOWN*9+Vector2.LEFT*5, 
+		Vector2.DOWN*5+Vector2.RIGHT*2,
+		Vector2.DOWN*2+Vector2.RIGHT*5,
+		Vector2.RIGHT*5, Vector2.RIGHT*10+Vector2.UP*4,
+		Vector2.RIGHT*5+Vector2.UP*1,
+		Vector2.LEFT*2+Vector2.UP*7,
+		Vector2.RIGHT*1+Vector2.UP*6,
+		Vector2.LEFT*5
+	].map(resize), [
+		building_supplier.new(commons.BUILDING_KINDS.SAWMILL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*55+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*55+Vector2.RIGHT*85, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*55+Vector2.RIGHT*125, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	], [
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
+		{"kind": commons.MONSTER_KINDS.SKELETON, "level": 1},
+	], {"POISON": 200, "FOOD": 100})
+	states.append(forest1)
+	
+	
+	
+	
+	
+	var swamp1 = state_supplier.new("The Frog People", player_state_pos + 42*commons.map_size*Vector2.DOWN + 17*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
+		Vector2.DOWN*5+Vector2.LEFT*5,
+		Vector2.LEFT*10,
+		Vector2.LEFT*5+Vector2.DOWN*5,
+		Vector2.DOWN*2+Vector2.RIGHT*5,
+		Vector2.RIGHT*5+Vector2.DOWN*5,
+		Vector2.RIGHT*4,
+		Vector2.RIGHT+Vector2.UP*5,
+		Vector2.RIGHT*12+Vector2.UP*5,
+		Vector2.LEFT*5+Vector2.UP*2
+	].map(resize), [
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*55+Vector2.RIGHT*45, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.DOWN*55+Vector2.RIGHT*25, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	], [
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 2},
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 1},
+	], {"BONE": 50, "POISON": 150}, commons.BIOMES.SWAMP)
+	states.append(swamp1)
+	var swamp2 = state_supplier.new("Frog Worshippers", player_state_pos + 47*commons.map_size*Vector2.DOWN + 32*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
+		Vector2.DOWN*5+Vector2.LEFT*5,
+		Vector2.DOWN*2+Vector2.RIGHT*5,
+		Vector2.RIGHT*5+Vector2.DOWN*5,
+		Vector2.LEFT*10+Vector2.DOWN*2,
+		Vector2.LEFT*10+Vector2.UP*10,
+		Vector2.UP*5,
+		Vector2.RIGHT*5+Vector2.UP*11,
+		Vector2.DOWN*5,
+		Vector2.DOWN*5+Vector2.RIGHT*5,
+	].map(resize), [
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.UP*55+Vector2.RIGHT*45, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.DOWN*55+Vector2.RIGHT*25, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	], [
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 3},
+	], {"POISON": 300}, commons.BIOMES.SWAMP)
+	states.append(swamp2)
+	
+	
+	var swamp3 = state_supplier.new("Swamp Partisants", player_state_pos + 51*commons.map_size*Vector2.DOWN + 47*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
+		Vector2.UP*5,
+		Vector2.RIGHT*5+Vector2.UP*11,
+		Vector2.UP*4+Vector2.RIGHT,
+		Vector2.UP*8+Vector2.LEFT,
+		Vector2.UP*5+Vector2.RIGHT*2,
+		Vector2.UP*5+Vector2.LEFT*2,
+		Vector2.UP*10+Vector2.RIGHT*5,
+		Vector2.UP*5+Vector2.RIGHT*2,
+		Vector2.LEFT*15+Vector2.DOWN*5,
+		Vector2.RIGHT+Vector2.DOWN*15,
+		Vector2.LEFT+Vector2.DOWN*5,
+		Vector2.DOWN*5+Vector2.LEFT*2,
+	].map(resize), [
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.UP*55+Vector2.RIGHT*45, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*55+Vector2.RIGHT*25, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	],[
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 1},
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 1},
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 1},
+	], {"BONE": 100, "POISON": 50}, commons.BIOMES.SWAMP)
+	states.append(swamp3)
+	
+	var desert1 = state_supplier.new("Home Of No One", player_state_pos+44*Vector2.DOWN*commons.map_size + 10*Vector2.RIGHT*commons.map_size, [
+		Vector2.LEFT*2+Vector2.UP*7,
+		Vector2.RIGHT*1+Vector2.UP*6,
+		Vector2.RIGHT*15 + Vector2.UP*11,
+		Vector2.RIGHT*7+Vector2.UP*8,
+		Vector2.RIGHT*5+Vector2.DOWN*1,
+		Vector2.DOWN*4,
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.SAWMILL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.SAWMILL, 1, Vector2.UP*55+Vector2.LEFT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	],
+	[
+		{"kind": commons.MONSTER_KINDS.EVILEYE, "level": 1},
+		{"kind": commons.MONSTER_KINDS.BIES, "level": 1},
+		#ARMY
+	], {"WOOD": 100, "IRON": 50}, commons.BIOMES.DESERT)
+	states.append(desert1)
+	var desert2 = state_supplier.new("Silent Gravern", player_state_pos+44*Vector2.DOWN*commons.map_size + 10*Vector2.RIGHT*commons.map_size, [
+		Vector2.RIGHT*26 + Vector2.UP*27,
+		Vector2.DOWN*8+Vector2.RIGHT*5,
+		Vector2.DOWN*5,
+		Vector2.DOWN*5+Vector2.LEFT*2,
+		Vector2.DOWN*5,
+		Vector2.LEFT*10+Vector2.UP*2
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.BLACKSMITH, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*65+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		{"kind": commons.MONSTER_KINDS.EVILEYE, "level": 1},
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 1},
+		{"kind": commons.MONSTER_KINDS.EVILEYE, "level": 1},
+		#ARMY
+	], {"WOOD": 100, "IRON": 50}, commons.BIOMES.DESERT)
+	states.append(desert2)
+	
+	
+	var forest2 = state_supplier.new("Free Land", player_state_pos, [
+		Vector2.LEFT*9+Vector2.DOWN*3,
+		Vector2.UP*5+Vector2.LEFT,
+		Vector2.LEFT*10+Vector2.UP*5,
+		Vector2.UP*5+Vector2.LEFT,
+		Vector2.UP*5+Vector2.RIGHT*10,
+		Vector2.RIGHT*10+Vector2.DOWN*5,
+		Vector2.RIGHT*13+Vector2.DOWN*8,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		{"kind": commons.MONSTER_KINDS.BIES, "level": 1},
+		#ARMY
+	], {"BONE": 10}, commons.BIOMES.FOREST)
+	states.append(forest2)
+	
+	
+	var swamp4 = state_supplier.new("Illuminate Witches", player_state_pos + Vector2.LEFT * 20 * commons.map_size + Vector2.UP*7  * commons.map_size, [
+		Vector2.LEFT*10,
+		Vector2.LEFT*5+Vector2.DOWN*5,
+		Vector2.LEFT*15+Vector2.DOWN*5,
+		Vector2.UP*15+Vector2.LEFT*5,
+		Vector2.RIGHT*5+Vector2.UP*5,
+		Vector2.RIGHT*5,
+		Vector2.RIGHT*24+Vector2.DOWN*5,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.UP*15+Vector2.RIGHT*150, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WITCH_HUT, 1, Vector2.DOWN*35+Vector2.LEFT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	],
+	[
+		{"kind": commons.MONSTER_KINDS.GIANTFROG, "level": 3},
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 3},
+		{"kind": commons.MONSTER_KINDS.SKELETON, "level": 4},
+		#ARMY
+	], {"POISON": 600, "DEMON_BLOOD": 2, "BONE": 200}, commons.BIOMES.SWAMP)
+	states.append(swamp4)
+	
+	
+	
+	var snow1 = state_supplier.new("Land Of Living Snow", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*24+Vector2.UP*5,
+		Vector2.LEFT*5,
+		Vector2.LEFT*5+Vector2.DOWN*5,
+		Vector2.UP*5+Vector2.LEFT*5,
+		Vector2.UP*5,
+		Vector2.UP*5+Vector2.RIGHT*15,
+		Vector2.RIGHT*10+Vector2.DOWN*5,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize)
+	],
+	[
+		
+		#ARMY
+	], {"SULFUR": 400}, commons.BIOMES.SNOW)
+	states.append(snow1)
+	
+	var snow2 = state_supplier.new("Howling Peaks", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
+		Vector2.LEFT*14+Vector2.UP*10,
+		Vector2.LEFT*10+Vector2.UP*5,
+		Vector2.RIGHT*15+Vector2.UP*2,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*4+Vector2.DOWN*12,
+		
+	].map(resize), 
+	[
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		{"kind": commons.MONSTER_KINDS.SPIDER, "level": 3},
+		#ARMY
+	], {"BONE": 200, "SULFUR": 500}, commons.BIOMES.SNOW)
+	states.append(snow2)
+	
+	var snow3 = state_supplier.new("Land of Living Snow", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
+		Vector2.UP*12+Vector2.LEFT*4,
+		Vector2.RIGHT*15,
+		Vector2.RIGHT*15+Vector2.DOWN*10,
+		Vector2.RIGHT*5+Vector2.DOWN*15,
+		Vector2.LEFT*8,
+		Vector2.LEFT*13+Vector2.UP*8,
+		
+	].map(resize), 
+	[
+		
+		building_supplier.new(commons.BUILDING_KINDS.SAWMILL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.SAWMILL, 1, Vector2.UP*65+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.LEFT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*75, Vector2.ZERO, commons.ROTATION.FRONT, $state_ui/building_info/resize),
+		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.DOWN*35+Vector2.RIGHT*45, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
+	],
+	[
+		#ARMY
+	], {"SULFUR": 1000, "BONE": 500}, commons.BIOMES.SNOW)
+	states.append(snow3)
+
+
+
+
 	var lake1 = state_supplier.new("Lake 1", player_state_pos + 3*commons.map_size*Vector2.DOWN + 9*Vector2.LEFT*commons.map_size, [
 		Vector2.DOWN*12+Vector2.LEFT*3, Vector2.RIGHT*6+Vector2.DOWN*3, Vector2.DOWN*6+Vector2.LEFT*6, Vector2.DOWN*9,
 		Vector2.LEFT*10, Vector2.UP*5+Vector2.LEFT*5, Vector2.UP*10, Vector2.RIGHT*5+Vector2.UP*10, 
@@ -688,200 +932,6 @@ func _ready():
 		Vector2.UP*5+Vector2.RIGHT*2, Vector2.RIGHT*5+Vector2.UP*5, Vector2.RIGHT*10, Vector2.DOWN*5+Vector2.RIGHT*10
 	].map(resize), [], [], {}, commons.BIOMES.WATER_BODY)
 	states.append(lake4)
-	
-	
-	
-	
-	
-	
-	
-	var forest1 = state_supplier.new("Forest 1", player_state_pos + 33*commons.map_size*Vector2.DOWN + 12*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
-		Vector2.DOWN*9+Vector2.LEFT*5, 
-		Vector2.DOWN*5+Vector2.RIGHT*2,
-		Vector2.DOWN*2+Vector2.RIGHT*5,
-		Vector2.RIGHT*5, Vector2.RIGHT*10+Vector2.UP*4,
-		Vector2.RIGHT*5+Vector2.UP*1,
-		Vector2.LEFT*2+Vector2.UP*7,
-		Vector2.RIGHT*1+Vector2.UP*6,
-		Vector2.LEFT*5
-	].map(resize))
-	states.append(forest1)
-	
-	
-	
-	
-	
-	var swamp1 = state_supplier.new("Swamp 1", player_state_pos + 42*commons.map_size*Vector2.DOWN + 17*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
-		Vector2.DOWN*5+Vector2.LEFT*5,
-		Vector2.LEFT*10,
-		Vector2.LEFT*5+Vector2.DOWN*5,
-		Vector2.DOWN*2+Vector2.RIGHT*5,
-		Vector2.RIGHT*5+Vector2.DOWN*5,
-		Vector2.RIGHT*4,
-		Vector2.RIGHT+Vector2.UP*5,
-		Vector2.RIGHT*12+Vector2.UP*5,
-		Vector2.LEFT*5+Vector2.UP*2
-	].map(resize), [], [], {}, commons.BIOMES.SWAMP)
-	states.append(swamp1)
-	var swamp2 = state_supplier.new("Swamp 2", player_state_pos + 47*commons.map_size*Vector2.DOWN + 32*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
-		Vector2.DOWN*5+Vector2.LEFT*5,
-		Vector2.DOWN*2+Vector2.RIGHT*5,
-		Vector2.RIGHT*5+Vector2.DOWN*5,
-		Vector2.LEFT*10+Vector2.DOWN*2,
-		Vector2.LEFT*10+Vector2.UP*10,
-		Vector2.UP*5,
-		Vector2.RIGHT*5+Vector2.UP*11,
-		Vector2.DOWN*5,
-		Vector2.DOWN*5+Vector2.RIGHT*5,
-	].map(resize), [], [], {}, commons.BIOMES.SWAMP)
-	states.append(swamp2)
-	
-	
-	var swamp3 = state_supplier.new("Swamp 3", player_state_pos + 51*commons.map_size*Vector2.DOWN + 47*commons.map_size*Vector2.LEFT, [#118*Vector2.DOWN + 122*Vector2.RIGHT
-		Vector2.UP*5,
-		Vector2.RIGHT*5+Vector2.UP*11,
-		Vector2.UP*4+Vector2.RIGHT,
-		Vector2.UP*8+Vector2.LEFT,
-		Vector2.UP*5+Vector2.RIGHT*2,
-		Vector2.UP*5+Vector2.LEFT*2,
-		Vector2.UP*10+Vector2.RIGHT*5,
-		Vector2.UP*5+Vector2.RIGHT*2,
-		Vector2.LEFT*15+Vector2.DOWN*5,
-		Vector2.RIGHT+Vector2.DOWN*15,
-		Vector2.LEFT+Vector2.DOWN*5,
-		Vector2.DOWN*5+Vector2.LEFT*2,
-	].map(resize), [], [], {}, commons.BIOMES.SWAMP)
-	states.append(swamp3)
-	
-	var desert1 = state_supplier.new("Desert 1", player_state_pos+44*Vector2.DOWN*commons.map_size + 10*Vector2.RIGHT*commons.map_size, [
-		Vector2.LEFT*2+Vector2.UP*7,
-		Vector2.RIGHT*1+Vector2.UP*6,
-		Vector2.RIGHT*15 + Vector2.UP*11,
-		Vector2.RIGHT*7+Vector2.UP*8,
-		Vector2.RIGHT*5+Vector2.DOWN*1,
-		Vector2.DOWN*4,
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.DESERT)
-	states.append(desert1)
-	var desert2 = state_supplier.new("Desert 2", player_state_pos+44*Vector2.DOWN*commons.map_size + 10*Vector2.RIGHT*commons.map_size, [
-		Vector2.RIGHT*26 + Vector2.UP*27,
-		Vector2.DOWN*8+Vector2.RIGHT*5,
-		Vector2.DOWN*5,
-		Vector2.DOWN*5+Vector2.LEFT*2,
-		Vector2.DOWN*5,
-		Vector2.LEFT*10+Vector2.UP*2
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.DESERT)
-	states.append(desert2)
-	
-	
-	var forest2 = state_supplier.new("Forest 2", player_state_pos, [
-		Vector2.LEFT*9+Vector2.DOWN*3,
-		Vector2.UP*5+Vector2.LEFT,
-		Vector2.LEFT*10+Vector2.UP*5,
-		Vector2.UP*5+Vector2.LEFT,
-		Vector2.UP*5+Vector2.RIGHT*10,
-		Vector2.RIGHT*10+Vector2.DOWN*5,
-		Vector2.RIGHT*13+Vector2.DOWN*8,
-		
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.FOREST)
-	states.append(forest2)
-	
-	
-	var swamp4 = state_supplier.new("Swamp 4", player_state_pos + Vector2.LEFT * 20 * commons.map_size + Vector2.UP*7  * commons.map_size, [
-		Vector2.LEFT*10,
-		Vector2.LEFT*5+Vector2.DOWN*5,
-		Vector2.LEFT*15+Vector2.DOWN*5,
-		Vector2.UP*15+Vector2.LEFT*5,
-		Vector2.RIGHT*5+Vector2.UP*5,
-		Vector2.RIGHT*5,
-		Vector2.RIGHT*24+Vector2.DOWN*5,
-		
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.SWAMP)
-	states.append(swamp4)
-	
-	
-	
-	var snow1 = state_supplier.new("Snow 1", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
-		Vector2.LEFT*24+Vector2.UP*5,
-		Vector2.LEFT*5,
-		Vector2.LEFT*5+Vector2.DOWN*5,
-		Vector2.UP*5+Vector2.LEFT*5,
-		Vector2.UP*5,
-		Vector2.UP*5+Vector2.RIGHT*15,
-		Vector2.RIGHT*10+Vector2.DOWN*5,
-		
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.SNOW)
-	states.append(snow1)
-	
-	var snow2 = state_supplier.new("Snow 2", player_state_pos + Vector2.LEFT * 21* commons.map_size + Vector2.UP*12  * commons.map_size, [
-		Vector2.LEFT*14+Vector2.UP*10,
-		Vector2.LEFT*10+Vector2.UP*5,
-		Vector2.RIGHT*15+Vector2.UP*2,
-		Vector2.RIGHT*15,
-		Vector2.RIGHT*4+Vector2.DOWN*12,
-		
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.SNOW)
-	states.append(snow2)
-	
-	var snow3 = state_supplier.new("Snow 3", player_state_pos + Vector2.LEFT * 11* commons.map_size + Vector2.UP*17  * commons.map_size, [
-		Vector2.UP*12+Vector2.LEFT*4,
-		Vector2.RIGHT*15,
-		Vector2.RIGHT*15+Vector2.DOWN*10,
-		Vector2.RIGHT*5+Vector2.DOWN*15,
-		Vector2.LEFT*8,
-		Vector2.LEFT*13+Vector2.UP*8,
-		
-	].map(resize), 
-	[
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.ZERO, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize),
-		building_supplier.new(commons.BUILDING_KINDS.WALL, 1, Vector2.UP*35+Vector2.RIGHT*15, Vector2.ZERO, commons.ROTATION.LEFT, $state_ui/building_info/resize)
-	],
-	[
-		#ARMY
-	], {}, commons.BIOMES.SNOW)
-	states.append(snow3)
-
 
 
 	
