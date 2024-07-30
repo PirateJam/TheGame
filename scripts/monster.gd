@@ -27,9 +27,9 @@ var status_effects: Array = []
 var level: int = -1
 var sprite: Sprite2D
 
-var current_index = 0
-var path = [Vector2.ZERO]
-var ai = true
+var current_index = -1
+var path = []
+var ai = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,7 +56,6 @@ func _process(delta):
 						position += direction * movement_speed * delta
 					else:
 						move_towards_target(target, delta)
-
 			else:
 				target = find_target(get_target())
 		else:
